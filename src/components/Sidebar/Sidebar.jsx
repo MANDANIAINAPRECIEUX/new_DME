@@ -1,25 +1,26 @@
 import { NavLink } from "react-router-dom";
 import menuItems, { logoutItem } from "./menuItems";
-import docteurImage from "../../assets/Docteur.png";
+import {doctor} from "../../mock/doctor"
 import "./Sidebar.css";
 
 function Sidebar() {
     return (
         <aside className="sidebar">
 
-            {/* Profil du docteur */} 
+            {/* Profil du docteur */}  
+            {/* TODO: Replace mock doctor data with API response when backend is available.*/}
 
             <div className="doctor-profile">
 
                 <img
-                    src={docteurImage}
-                    alt="Docteur"
+                    src={doctor.photo}
+                    alt={doctor.name}
                     className="doctor-image"
                 />
 
-                <h3>Dr. Mandaniaina Précieux</h3>
+                <h3>{doctor.name}</h3>
 
-                <p>Chirurgien-dentiste</p>
+                <p>{doctor.speciality}</p>
 
             </div>
 
