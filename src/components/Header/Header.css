@@ -1,0 +1,67 @@
+.header {
+  min-height: 120px;
+  background: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 35px;
+  margin: 25px 35px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.header-date h1 {
+  font-size: 32px;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: #2c3e50;
+}
+
+.header-date p {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #2fa8b8;
+}
+
+.header-welcome {
+  flex: 1;
+  margin-left: 50px;
+}
+
+.header-welcome h2 {
+  font-size: 20px;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.header-welcome p {
+  font-size: 14px;
+  color: #777;
+}
+
+.header-welcome strong {
+  color: #2fa8b8;
+  font-size: 18px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.notification-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background: #f5fafa;
+  color: #2fa8b8;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.notification-btn:hover {
+  background: #2fa8b8;
+  color: white;
+}
