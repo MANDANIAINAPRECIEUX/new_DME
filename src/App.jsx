@@ -1,10 +1,10 @@
 import { BrowserRouter } from "react-router-dom";
-import Sidebar from "./components/Sidebar/Sidebar";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
   return (
     <BrowserRouter>
-      <Sidebar />
+      <MainLayout />
     </BrowserRouter>
   );
 }
