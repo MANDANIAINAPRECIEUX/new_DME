@@ -9,7 +9,7 @@ export const todayAppointments = [
     id: 2,
     patient: "Marie Rasoa",
     time: "09:00",
-    status: "consultation",
+    status: "in-progress",
   },
   {
     id: 3,
