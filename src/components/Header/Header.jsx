@@ -1,5 +1,6 @@
 import { FaBell } from "react-icons/fa";
 import { todayAppointments } from "../../mock/appointments";
+import welcomeImage from "../../assets/Welcome.jpg"
 import "./Header.css";
 
 function Header() {
@@ -20,31 +21,51 @@ function Header() {
       appointment.status !== "completed"
   ).length;
 
+  const patientsToday = todayAppointments.filter(
+    (appointment) => 
+      appointment.status === "completed" ||
+      appointment.status === "in-progress"
+  ).length;
+
   return (
     <header className="header">
-      <div className="header-date">
+
+      <div className="header-card date-card">
         <h1>{weekday}</h1>
         <p>{fullDate}</p>
       </div>
 
-       <div className="header-welcome">
-        <h2>
-          Bonjour, Docteur 👋
-        </h2>
-        <p>
-          Vous avez{" "}
-          <strong>
-            {remainingAppointments}
-          </strong>{" "}
-          rendez-vous aujourd'hui
-        </p>
+      <div className="header-card welcome-card">
+        <div className="welcome-text">
+          <h2>Bonjour, Docteur 👋</h2>
+          <p>
+            Vous avez <strong>{remainingAppointments}</strong> rendez-vous aujourd'hui
+          </p>
+        </div>
+        <img
+          src={welcomeImage}
+          alt="Bienvenue"
+          className="welcome-image"
+        />
       </div>
 
-      <div className="header-actions">
+      <div className="header-card patient-card">
+
+        <div className="patient-info">
+          
+          <p className="patient-title">
+            Patients reçus aujourd'hui
+          </p>
+
+          <h3>{patientsToday}</h3>
+          
+        </div>
+
         <button className="notification-btn">
           <FaBell />
         </button>
       </div>
+
     </header>
   );
 }
