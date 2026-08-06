@@ -1,14 +1,14 @@
-.sidebar {
-  width: 260px;
-  min-height: calc(100vh - 40px);
-  margin: 20px;
-  border-radius: 24px;
-  background: #2FA8B8;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 25px;
+.sidebar{
+  width:260px;
+  min-height:calc(100vh - 40px);
+  margin:20px;
+  border-radius:24px;
+  background:#2FA8B8;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  padding:25px;
+  flex-shrink:0;
 }
 
 .doctor-profile {
@@ -34,11 +34,12 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 40px;
+.sidebar-menu{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:40px;
+  flex:1;
 }
 
 .menu-item {
@@ -67,6 +68,6 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-.logout {
-  margin-top: 30px;
+.logout{
+  margin-top:auto;
 }

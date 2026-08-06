@@ -1,26 +1,34 @@
-export const todayAppointments = [
+export const appointments = [
   {
     id: 1,
-    patient: "Jean Rakoto",
+    patientId: 1,
+    doctorId: 1,
+    date: "2026-08-07",
     time: "08:30",
-    status: "waiting",
+    status: "waiting"
   },
   {
     id: 2,
-    patient: "Marie Rasoa",
+    patientId: 2,
+    doctorId: 1,
+    date: "2026-08-07",
     time: "09:00",
-    status: "in-progress",
+    status: "in-progress"
   },
   {
     id: 3,
-    patient: "Paul Dupont",
+    patientId: 3,
+    doctorId: 1,
+    date: "2026-08-06",
     time: "10:30",
-    status: "waiting",
+    status: "waiting"
   },
   {
     id: 4,
-    patient: "Anna Martin",
+    patientId: 4,
+    doctorId: 1,
+    date: "2026-08-06",
     time: "11:30",
-    status: "completed",
-  },
+    status: "completed"
+  }
 ];

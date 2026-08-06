@@ -1,4 +1,4 @@
-import AppointmentList from "../components/Dashboard/AppointmentList";
+import AppointmentList from "../../components/Dashboard/AppointmentList";
 
 function Dashboard() {
   return (

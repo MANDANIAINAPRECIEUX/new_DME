@@ -1,14 +1,9 @@
-.layout {
-
-    display:flex;
-
+.layout{
+  display:flex;
+  min-height:100vh;
 }
 
-
-.main-content {
-
-    flex:1;
-
-    background:#F6F8FC;
-
+.main-content{
+  flex:1;
+  background:#F6F8FC;
 }

@@ -1,0 +1,55 @@
+.patient-table-card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.patient-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.patient-table thead{
+  background:#f6f8fc;
+}
+
+.patient-table th{
+  padding:14px 18px;
+  text-align:left;
+  font-size:14px;
+  color:#6b7280;
+  font-weight:600;
+}
+
+.patient-table td{
+  padding:16px 18px;
+  border-top:1px solid #eef1f5;
+  font-size:14px;
+  color:#2c3e50;
+}
+
+.patient-table tbody tr{
+  transition:.2s;
+}
+
+.patient-table tbody tr:hover{
+  background:#fafcfd;
+}
+
+.details-btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#eaf8fa;
+  color:#2fa8b8;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:600;
+  transition:.3s;
+}
+
+.details-btn:hover{
+  background:#2fa8b8;
+  color:#fff;
+}

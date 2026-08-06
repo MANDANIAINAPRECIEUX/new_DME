@@ -1,0 +1,37 @@
+.patients-page{
+  padding:20px 35px;
+}
+
+.patients-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.patients-header h1{
+  font-size:28px;
+  color:#2c3e50;
+  margin-bottom:4px;
+}
+
+.patients-header p{
+  font-size:14px;
+  color:#7f8c8d;
+}
+
+.add-patient-btn{
+  border:none;
+  background:#2fa8b8;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.add-patient-btn:hover{
+  background:#2F80ED;
+}
