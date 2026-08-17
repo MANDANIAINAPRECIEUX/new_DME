@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PatientSearch from "../../components/Patients/PatientSearch";
 import PatientTable from "../../components/Patients/PatientTable";
 import "./Patients.css";
@@ -13,9 +14,12 @@ function Patients() {
           <p>Gestion des patients du cabinet</p>
         </div>
 
-        <button className="add-patient-btn">
+         <Link
+          to="/patients/new"
+          className="add-patient-btn"
+        >
           + Nouveau patient
-        </button>
+        </Link>
 
       </div>
 
