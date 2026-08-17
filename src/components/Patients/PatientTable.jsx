@@ -1,16 +1,10 @@
-import { usePatients } from "../../context/PatientContext";
 import "./PatientTable.css";
 
-function PatientTable() {
-  const { patients }=usePatients();
-  
+function PatientTable({ patients }) {
   return (
     <div className="patient-table-card">
-
       <table className="patient-table">
-
         <thead>
-
           <tr>
             <th>Patient</th>
             <th>Sexe</th>
@@ -19,51 +13,38 @@ function PatientTable() {
             <th>Adresse</th>
             <th>Actions</th>
           </tr>
-
         </thead>
-
         <tbody>
-
-          {patients.map((patient) => (
-
-            <tr key={patient.id}>
-
-              <td>
-                {patient.firstName} {patient.lastName}
+          {patients.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="empty-message">
+                Aucun patient trouvé.
               </td>
-
-              <td>
-                {patient.gender === "M" ? "Homme" : "Femme"}
-              </td>
-
-              <td>
-                {new Date(patient.birthDate).toLocaleDateString("fr-FR")}
-              </td>
-
-              <td>
-                {patient.phone}
-              </td>
-
-              <td>
-                {patient.address}
-              </td>
-
-              <td>
-
-                <button className="details-btn">
-                  Voir
-                </button>
-
-              </td>
-
             </tr>
-
-          ))}
-
+          ) : (
+            patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>
+                  {patient.firstName} {patient.lastName}
+                </td>
+                <td>
+                  {patient.gender === "M" ? "Homme" : "Femme"}
+                </td>
+                <td>
+                  {new Date(patient.birthDate).toLocaleDateString("fr-FR")}
+                </td>
+                <td>{patient.phone}</td>
+                <td>{patient.address || "—"}</td>
+                <td>
+                  <button className="details-btn">
+                    Voir
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
-
       </table>
-
     </div>
   );
 }

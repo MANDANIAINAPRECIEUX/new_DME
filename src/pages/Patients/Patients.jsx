@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { usePatients } from "../../context/PatientContext";
 import PatientSearch from "../../components/Patients/PatientSearch";
 import PatientTable from "../../components/Patients/PatientTable";
 import "./Patients.css";
 
 function Patients() {
+  const { patients } = usePatients();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredPatients = patients.filter((patient) => {
+    const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
+    const search = searchTerm.toLowerCase().trim();
+
+    return fullName.includes(search);
+  });
+
   return (
     <div className="patients-page">
 
@@ -14,7 +26,7 @@ function Patients() {
           <p>Gestion des patients du cabinet</p>
         </div>
 
-         <Link
+        <Link
           to="/patients/new"
           className="add-patient-btn"
         >
@@ -23,9 +35,12 @@ function Patients() {
 
       </div>
 
-      <PatientSearch />
+      <PatientSearch
+        searchTerm={searchTerm}
+        onSearch={setSearchTerm}
+      />
 
-      <PatientTable />
+      <PatientTable patients={filteredPatients} />
 
     </div>
   );
