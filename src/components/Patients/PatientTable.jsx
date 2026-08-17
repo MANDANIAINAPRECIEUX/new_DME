@@ -1,7 +1,9 @@
-import { patients } from "../../mock/patients";
+import { usePatients } from "../../context/PatientContext";
 import "./PatientTable.css";
 
 function PatientTable() {
+  const { patients }=usePatients();
+  
   return (
     <div className="patient-table-card">
 
