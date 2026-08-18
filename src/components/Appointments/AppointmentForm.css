@@ -1,0 +1,148 @@
+.appointment-form-card{
+  background:#fff;
+  border-radius:16px;
+  padding:30px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+  max-width:900px;
+  margin:0 auto;
+}
+
+.appointment-form-header{
+  margin-bottom:30px;
+}
+
+.appointment-form-header h2{
+  font-size:24px;
+  color:#2c3e50;
+  margin-bottom:5px;
+}
+
+.appointment-form-header p{
+  font-size:14px;
+  color:#7f8c8d;
+  margin-bottom:8px;
+}
+
+.required-info{
+  font-size:12px;
+  color:#95a5a6;
+}
+
+.form-section{
+  margin-bottom:30px;
+}
+
+.form-section h3{
+  font-size:17px;
+  color:#2c3e50;
+  margin-bottom:20px;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  margin-bottom:20px;
+}
+
+.form-group label{
+  font-size:14px;
+  font-weight:600;
+  color:#2c3e50;
+  margin-bottom:8px;
+}
+
+.form-group input,
+.form-group select{
+  height:46px;
+  padding:0 14px;
+  border:1px solid #dfe5e9;
+  border-radius:10px;
+  outline:none;
+  font-size:14px;
+  color:#2c3e50;
+  background:#fff;
+  transition:.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.1);
+}
+
+.form-group input::placeholder{
+  color:#95a5a6;
+}
+
+.form-error{
+  margin-top:6px;
+  font-size:12px;
+  color:#e74c3c;
+}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  padding-top:10px;
+  border-top:1px solid #eef1f4;
+}
+
+.cancel-btn,
+.save-btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.cancel-btn{
+  background:#f1f3f5;
+  color:#5f6b73;
+}
+
+.cancel-btn:hover{
+  background:#e5e8eb;
+}
+
+.save-btn{
+  background:#2fa8b8;
+  color:#fff;
+}
+
+.save-btn:hover{
+  background:#2F80ED;
+}
+
+@media(max-width:768px){
+  .appointment-form-page{
+    padding:20px;
+  }
+
+  .appointment-form-card{
+    padding:20px;
+  }
+
+  .form-row{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .form-actions{
+    flex-direction:column-reverse;
+  }
+
+  .cancel-btn,
+  .save-btn{
+    width:100%;
+  }
+}

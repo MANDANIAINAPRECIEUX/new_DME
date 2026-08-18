@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Patients from "../pages/Patients/Patients";
 import PatientFormPage from "../pages/Patients/PatientFormPage";
 import Appointments from "../pages/Appointments/Appointments";
+import AppointmentFormPage from "../pages/Appointments/AppointmentFormPage";
 
 const router=createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router=createBrowserRouter([
       {
         path:"appointments",
         element:<Appointments />
+      },
+      {
+        path:"appointments/new",
+        element: <AppointmentFormPage />
       }
     ]
   }

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import AppointmentTable from "../../components/Appointments/AppointmentTable";
 import "./Appointments.css";
 
@@ -10,9 +11,12 @@ function Appointments(){
           <p>Gestion des rendez-vous du cabinet</p>
         </div>
 
-        <button className="add-appointment-btn">
-          + Nouveau rendez-vous
-        </button>
+        <Link
+            to="/appointments/new"
+            className="add-appointment-btn"
+        >
+            + Nouveau rendez-vous
+        </Link>
       </div>
 
       <AppointmentTable />

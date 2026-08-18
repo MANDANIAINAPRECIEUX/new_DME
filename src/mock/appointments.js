@@ -5,7 +5,7 @@ export const appointments=[
     date:"2026-08-18",
     time:"08:30",
     status:"pending",
-    reason:"Consultation de contrôle"
+    reason:"Contrôle"
   },
   {
     id:2,

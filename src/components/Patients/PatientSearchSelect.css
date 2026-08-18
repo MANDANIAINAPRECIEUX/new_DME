@@ -1,0 +1,105 @@
+.patient-search-select{
+  position:relative;
+  margin-bottom:20px;
+}
+
+.patient-search-box{
+  display:flex;
+  align-items:center;
+  height:46px;
+  padding:0 14px;
+  border:1px solid #dfe5e9;
+  border-radius:10px;
+  background:#fff;
+  transition:.3s;
+}
+
+.patient-search-box:focus-within{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.1);
+}
+
+.patient-search-icon{
+  color:#95a5a6;
+  font-size:14px;
+  margin-right:10px;
+}
+
+.patient-search-box input{
+  flex:1;
+  border:none;
+  outline:none;
+  background:transparent;
+  font-size:14px;
+  color:#2c3e50;
+}
+
+.patient-search-box input::placeholder{
+  color:#95a5a6;
+}
+
+.patient-search-results{
+  position:absolute;
+  top:52px;
+  left:0;
+  right:0;
+  z-index:10;
+  background:#fff;
+  border:1px solid #e5e9ec;
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+
+.patient-result{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  padding:12px 14px;
+  border:none;
+  border-bottom:1px solid #f0f2f4;
+  background:#fff;
+  text-align:left;
+  cursor:pointer;
+}
+
+.patient-result:last-child{
+  border-bottom:none;
+}
+
+.patient-result:hover{
+  background:#f6f8fc;
+}
+
+.patient-result strong{
+  color:#2c3e50;
+  font-size:14px;
+}
+
+.patient-result span{
+  color:#7f8c8d;
+  font-size:12px;
+}
+
+.no-patient-result{
+  padding:15px;
+  color:#95a5a6;
+  font-size:13px;
+  text-align:center;
+}
+
+.change-patient-btn{
+  margin-top:8px;
+  padding:0;
+  border:none;
+  background:none;
+  color:#2fa8b8;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.change-patient-btn:hover{
+  text-decoration:underline;
+}
