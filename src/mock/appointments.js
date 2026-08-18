@@ -1,34 +1,42 @@
-export const appointments = [
+export const appointments=[
   {
-    id: 1,
-    patientId: 1,
-    doctorId: 1,
-    date: "2026-08-07",
-    time: "08:30",
-    status: "waiting"
+    id:1,
+    patientId:1,
+    date:"2026-08-18",
+    time:"08:30",
+    status:"pending",
+    reason:"Consultation de contrôle"
   },
   {
-    id: 2,
-    patientId: 2,
-    doctorId: 1,
-    date: "2026-08-07",
-    time: "09:00",
-    status: "in-progress"
+    id:2,
+    patientId:2,
+    date:"2026-08-18",
+    time:"09:30",
+    status:"cancelled",
+    reason:"Douleur dentaire"
   },
   {
-    id: 3,
-    patientId: 3,
-    doctorId: 1,
-    date: "2026-08-06",
-    time: "10:30",
-    status: "waiting"
+    id:3,
+    patientId:3,
+    date:"2026-08-18",
+    time:"10:30",
+    status:"completed",
+    reason:"Détartrage"
   },
   {
-    id: 4,
-    patientId: 4,
-    doctorId: 1,
-    date: "2026-08-06",
-    time: "11:30",
-    status: "completed"
+    id:4,
+    patientId:4,
+    date:"2026-08-19",
+    time:"09:00",
+    status:"pending",
+    reason:"Contrôle"
+  },
+  {
+    id:5,
+    patientId:1,
+    date:"2026-08-22",
+    time:"09:30",
+    status:"pending",
+    reason:"Suivi"
   }
 ];

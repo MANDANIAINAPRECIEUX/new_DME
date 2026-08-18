@@ -15,9 +15,9 @@ function AppointmentList() {
     switch (status) {
       case "completed":
         return "Terminé";
-      case "in-progress":
-        return "En cours";
-      case "waiting":
+      case "cancelled":
+        return "Annulé";
+      case "pending":
         return "En attente";
       default:
         return status;

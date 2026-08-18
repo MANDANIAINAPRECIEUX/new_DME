@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Patients from "../pages/Patients/Patients";
 import PatientFormPage from "../pages/Patients/PatientFormPage";
-
+import Appointments from "../pages/Appointments/Appointments";
 
 const router=createBrowserRouter([
   {
@@ -21,6 +21,10 @@ const router=createBrowserRouter([
       {
         path: "patients/new",
         element: <PatientFormPage />
+      },
+      {
+        path:"appointments",
+        element:<Appointments />
       }
     ]
   }

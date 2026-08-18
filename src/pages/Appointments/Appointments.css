@@ -1,0 +1,37 @@
+.appointments-page{
+  padding:20px 35px;
+}
+
+.appointments-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.appointments-header h1{
+  font-size:28px;
+  color:#2c3e50;
+  margin-bottom:4px;
+}
+
+.appointments-header p{
+  font-size:14px;
+  color:#7f8c8d;
+}
+
+.add-appointment-btn{
+  border:none;
+  background:#2fa8b8;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.add-appointment-btn:hover{
+  background:#2F80ED;
+}
