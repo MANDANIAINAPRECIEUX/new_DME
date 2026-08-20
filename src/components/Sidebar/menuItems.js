@@ -3,8 +3,6 @@ import {
     FaUserFriends,
     FaCalendarAlt,
     FaTooth,
-    FaFileMedical,
-    FaPills,
     FaCog,
     FaSignOutAlt
 } from "react-icons/fa";
@@ -26,20 +24,10 @@ const menuItems = [
         path: "/appointments"
     },
     {
-        title: "DME",
-        icon: FaFileMedical,
-        path: "/dme"
-    },
-    {
         title: "Traitements",
         icon: FaTooth,
         path: "/treatments"
     },
-    /*{
-        title: "Médicaments",
-        icon: FaPills,
-        path: "/medications"
-    },*/
     {
         title: "Paramètres",
         icon: FaCog,

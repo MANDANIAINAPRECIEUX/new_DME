@@ -1,4 +1,5 @@
 import "./PatientTable.css";
+import { Link } from "react-router-dom";
 
 function PatientTable({ patients }) {
   return (
@@ -11,7 +12,7 @@ function PatientTable({ patients }) {
             <th>Date de naissance</th>
             <th>Téléphone</th>
             <th>Adresse</th>
-            <th>Actions</th>
+            <th>DME</th>
           </tr>
         </thead>
         <tbody>
@@ -36,9 +37,12 @@ function PatientTable({ patients }) {
                 <td>{patient.phone}</td>
                 <td>{patient.address || "—"}</td>
                 <td>
-                  <button className="details-btn">
-                    Voir
-                  </button>
+                  <Link
+                    to={`/patients/${patient.id}`}
+                    className="details-btn"
+                  >
+                    Ouvrir le dossier
+                  </Link>
                 </td>
               </tr>
             ))

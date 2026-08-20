@@ -20,8 +20,17 @@ export function PatientProvider({ children }){
     return newPatient;
   };
 
+  const updatePatient=(id,patientData)=>{
+    setPatients((prevPatients)=>
+      prevPatients.map((patient)=>
+        patient.id.toString()===id.toString()
+          ? {...patient,...patientData}
+          : patient
+      )
+    );
+  };
   return(
-    <PatientContext.Provider value={{patients,addPatient}}>
+    <PatientContext.Provider value={{patients,addPatient,updatePatient}}>
       {children}
     </PatientContext.Provider>
   );

@@ -1,0 +1,294 @@
+.patient-record-page{
+  padding:25px 35px 40px;
+  max-width:1400px;
+  margin:0 auto;
+}
+
+.record-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.back-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#2fa8b8;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:600;
+  transition:.3s;
+}
+
+.back-link:hover{
+  color:#2f80ed;
+  transform:translateX(-2px);
+}
+
+.record-label{
+  color:#95a5a6;
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+
+.patient-hero{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:26px 30px;
+  margin-bottom:30px;
+  background:linear-gradient(135deg,#2fa8b8,#2697a7);
+  color:#fff;
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(47,168,184,.18);
+}
+
+.patient-avatar{
+  width:72px;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border:3px solid rgba(255,255,255,.7);
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  font-size:22px;
+  font-weight:700;
+}
+
+.patient-hero-info{
+  flex:1;
+}
+
+.patient-tag{
+  display:block;
+  margin-bottom:4px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  opacity:.8;
+}
+
+.patient-hero-info h1{
+  margin:0 0 5px;
+  font-size:27px;
+  font-weight:700;
+}
+
+.patient-hero-info p{
+  margin:0;
+  font-size:14px;
+  opacity:.9;
+}
+
+.edit-patient-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:none;
+  padding:11px 18px;
+  border-radius:10px;
+  background:#fff;
+  color:#2fa8b8;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.edit-patient-btn:hover{
+  background:#f6f8fc;
+  transform:translateY(-1px);
+}
+
+.medical-section{
+  margin-top:5px;
+}
+
+.section-heading{
+  margin-bottom:16px;
+}
+
+.section-heading span{
+  color:#2fa8b8;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.section-heading h2{
+  margin:4px 0 0;
+  color:#2c3e50;
+  font-size:21px;
+}
+
+.medical-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.medical-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:20px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+  transition:.3s;
+}
+
+.medical-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(0,0,0,.07);
+}
+
+.medical-icon{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border-radius:11px;
+  background:#f0f8f9;
+  color:#2fa8b8;
+  font-size:17px;
+}
+
+.medical-card > div:nth-child(2){
+  flex:1;
+}
+
+.medical-card h3{
+  margin:0 0 4px;
+  color:#2c3e50;
+  font-size:14px;
+}
+
+.medical-card p{
+  margin:0;
+  color:#95a5a6;
+  font-size:11px;
+}
+
+.medical-count{
+  min-width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#f6f8fc;
+  color:#7f8c8d;
+  font-size:12px;
+  font-weight:700;
+}
+
+.record-empty-state{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:220px;
+  margin-top:25px;
+  padding:30px;
+  background:#fff;
+  border:1px dashed #dce5e8;
+  border-radius:18px;
+  text-align:center;
+}
+
+.record-empty-state svg{
+  margin-bottom:12px;
+  color:#2fa8b8;
+  font-size:28px;
+}
+
+.record-empty-state h3{
+  margin:0 0 6px;
+  color:#2c3e50;
+  font-size:16px;
+}
+
+.record-empty-state p{
+  max-width:450px;
+  margin:0;
+  color:#95a5a6;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.patient-not-found{
+  padding:50px;
+  background:#fff;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+.patient-not-found h2{
+  margin:0 0 8px;
+  color:#2c3e50;
+}
+
+.patient-not-found p{
+  margin:0 0 20px;
+  color:#95a5a6;
+  font-size:14px;
+}
+
+.back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 18px;
+  border-radius:10px;
+  background:#2fa8b8;
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+}
+
+@media(max-width:1000px){
+  .medical-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .patient-record-page{
+    padding:20px;
+  }
+
+  .record-topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .patient-hero{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .patient-hero-info{
+    min-width:calc(100% - 100px);
+  }
+
+  .patient-hero-action{
+    width:100%;
+  }
+
+  .edit-patient-btn{
+    width:100%;
+    justify-content:center;
+  }
+}

@@ -40,6 +40,7 @@
 .details-btn{
   padding:8px 14px;
   border:none;
+  text-decoration: none;
   border-radius:8px;
   background:#eaf8fa;
   color:#2fa8b8;

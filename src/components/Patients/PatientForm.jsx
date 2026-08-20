@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePatients } from "../../context/PatientContext";
 import "./PatientForm.css";
 
 function PatientForm() {
-  const navigate = useNavigate();
-  const { addPatient }=usePatients();
+  const navigate=useNavigate();
+  const { id }=useParams();
+  const { patients,addPatient,updatePatient }=usePatients();
+
+  const isEditMode=Boolean(id);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -18,6 +21,27 @@ function PatientForm() {
   });
 
   const [errors,setErrors]=useState({});
+
+  useEffect(()=>{
+    if(isEditMode){
+      const patient=patients.find(
+        (patient)=>patient.id.toString()===id
+      );
+
+      if(patient){
+        setFormData({
+          firstName:patient.firstName || "",
+          lastName:patient.lastName || "",
+          birthDate:patient.birthDate || "",
+          gender:patient.gender || "",
+          phone:patient.phone || "",
+          email:patient.email || "",
+          address:patient.address || "",
+        });
+      }
+    }
+  },[id,isEditMode,patients]);
+
   const validateForm=()=>{
     const newErrors={};
 
@@ -62,6 +86,11 @@ function PatientForm() {
     return;
   }
 
+  if(isEditMode){
+    updatePatient(id,formData);
+    navigate(`/patients/${id}`);
+    return;
+  }
   addPatient(formData);
   navigate("/patients");
 };
@@ -70,8 +99,17 @@ function PatientForm() {
     <div className="patient-form-card">
 
       <div className="patient-form-header">
-        <h2>Nouveau patient</h2>
-        <p>Enregistrer les informations administratives du patient</p>
+        <h2>
+          {isEditMode
+            ? "Modifier le patient"
+            : "Nouveau patient"}
+        </h2>
+        <p>
+          {isEditMode
+            ? "Modifier les informations administratives du patient"
+            : "Enregistrer les informations administratives du patient"}
+        </p>
+
         <span className="required-info">* Champs obligatoires</span>
       </div>
 
@@ -222,7 +260,11 @@ function PatientForm() {
           <button
             type="button"
             className="cancel-btn"
-            onClick={() => navigate("/patients")}
+            onClick={()=>
+              navigate(
+                isEditMode
+                  ? `/patients/${id}`
+                  : "/patients")}
           >
             Annuler
           </button>
@@ -231,7 +273,9 @@ function PatientForm() {
             type="submit"
             className="save-btn"
           >
-            Enregistrer le patient
+            {isEditMode
+              ? "Enregistrer les modifications"
+              : "Enregistrer le patient"}
           </button>
 
         </div>
