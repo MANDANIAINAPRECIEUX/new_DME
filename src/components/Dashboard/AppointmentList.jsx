@@ -1,10 +1,11 @@
-import { appointments } from "../../mock/appointments";
-import { patients } from "../../mock/patients";
+import { useAppointments } from "../../context/AppointmentContext";
+import { usePatients } from "../../context/PatientContext";
 import { getTodayAppointments } from "../../utils/appointmentUtils";
 import "./AppointmentList.css";
 
 function AppointmentList() {
-
+  const { appointments }=useAppointments();
+  const { patients }=usePatients();
   const todayAppointments = getTodayAppointments(appointments);
 
   const patientsMap = Object.fromEntries(

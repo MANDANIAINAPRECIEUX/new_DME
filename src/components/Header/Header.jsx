@@ -1,12 +1,12 @@
 import { FaBell } from "react-icons/fa";
-import { appointments } from "../../mock/appointments";
+import { useAppointments } from "../../context/AppointmentContext";
 import { doctor } from "../../mock/doctor";
 import { getTodayAppointments } from "../../utils/appointmentUtils";
 import welcomeImage from "../../assets/Welcome.jpg";
 import "./Header.css";
 
 function Header() {
-
+  const { appointments }=useAppointments();
   const today = new Date();
 
   const weekday = today.toLocaleDateString("fr-FR", {
