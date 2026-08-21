@@ -54,20 +54,52 @@
   color:#c0392b;
 }
 
-.details-btn{
-  border:none;
-  background:#eef8fa;
+.appointment-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+
+.edit-appointment-btn{
+  border:1px solid #dce5e8;
+  background:#fff;
   color:#2fa8b8;
   padding:7px 12px;
   border-radius:8px;
   font-size:12px;
   font-weight:600;
   cursor:pointer;
+  transition:.3s;
 }
 
-.details-btn:hover{
+.edit-appointment-btn:hover{
+  background:#eef8fa;
+  border-color:#2fa8b8;
+}
+
+.start-consultation-btn{
+  border:none;
+  padding:7px 12px;
+  border-radius:8px;
   background:#2fa8b8;
   color:#fff;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.start-consultation-btn:hover:not(:disabled){
+  background:#2f80ed;
+  transform:translateY(-1px);
+}
+
+.start-consultation-btn:disabled{
+  background:#eef1f4;
+  color:#a0aaad;
+  cursor:not-allowed;
+  opacity:.8;
 }
 
 .empty-message{

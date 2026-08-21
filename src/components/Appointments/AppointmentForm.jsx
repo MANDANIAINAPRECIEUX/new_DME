@@ -1,14 +1,23 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import PatientSearchSelect from "../Patients/PatientSearchSelect";
+import { hasAppointmentConflict } from "../../utils/appointmentUtils";
 import "./AppointmentForm.css";
 
 function AppointmentForm(){
   const navigate=useNavigate();
+  const { id }=useParams();
+
   const { patients }=usePatients();
-  const { addAppointment }=useAppointments();
+  const {
+    appointments,
+    addAppointment,
+    updateAppointment
+  }=useAppointments();
+
+  const isEditMode=Boolean(id);
 
   const [formData,setFormData]=useState({
     patientId:"",
@@ -18,6 +27,22 @@ function AppointmentForm(){
   });
 
   const [errors,setErrors]=useState({});
+
+  const appointmentToEdit=appointments.find(
+    (appointment)=>
+      appointment.id.toString()===id
+  );
+
+  useEffect(()=>{
+    if(appointmentToEdit){
+      setFormData({
+        patientId:appointmentToEdit.patientId,
+        date:appointmentToEdit.date,
+        time:appointmentToEdit.time,
+        reason:appointmentToEdit.reason||"",
+      });
+    }
+  },[appointmentToEdit]);
 
   const validateForm=()=>{
     const newErrors={};
@@ -46,7 +71,12 @@ function AppointmentForm(){
       ...prev,
       [name]:value,
     }));
-  };
+
+    setErrors((prev)=>({
+      ...prev,
+      [name]:"",
+    }));
+    };
 
   const handleSubmit=(e)=>{
     e.preventDefault();
@@ -54,49 +84,118 @@ function AppointmentForm(){
     if(!validateForm()){
       return;
     }
+    const conflict=hasAppointmentConflict(
+    appointments,
+    formData,
+    isEditMode ? id : null
+    );
 
-    addAppointment({
+    if(conflict){
+      setErrors({
+      time:"Ce créneau est déjà occupé. Veuillez choisir un autre horaire.",
+      });
+    return;
+    }
+
+    const appointmentData={
       ...formData,
       patientId:Number(formData.patientId),
-      status:"pending",
-    });
+    };
+
+    if(isEditMode){
+      updateAppointment(
+        Number(id),
+        appointmentData
+      );
+    }else{
+      addAppointment({
+        ...appointmentData,
+        status:"pending",
+      });
+    }
 
     navigate("/appointments");
   };
 
+  if(isEditMode&&!appointmentToEdit){
+    return(
+      <div className="appointment-form-card">
+        <div className="appointment-form-header">
+          <h2>Rendez-vous introuvable</h2>
+          <p>
+            Le rendez-vous demandé n'existe pas ou
+            n'est plus disponible.
+          </p>
+        </div>
+
+        <div className="form-actions">
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={()=>navigate("/appointments")}
+          >
+            Retour aux rendez-vous
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return(
     <div className="appointment-form-card">
+
       <div className="appointment-form-header">
-        <h2>Nouveau rendez-vous</h2>
-        <p>Planifier un rendez-vous pour un patient</p>
-        <span className="required-info">* Champs obligatoires</span>
+
+        <h2>
+          {isEditMode
+            ? "Modifier le rendez-vous"
+            : "Nouveau rendez-vous"}
+        </h2>
+
+        <p>
+          {isEditMode
+            ? "Modifier les informations du rendez-vous"
+            : "Planifier un rendez-vous pour un patient"}
+        </p>
+
+        <span className="required-info">
+          * Champs obligatoires
+        </span>
+
       </div>
 
       <form
         className="appointment-form"
         onSubmit={handleSubmit}
       >
+
         <div className="form-section">
+
           <h3>Informations du rendez-vous</h3>
 
           <div className="form-group">
+
             <label htmlFor="patientId">
               Patient *
             </label>
+
             <PatientSearchSelect
-                value={formData.patientId}
-                onChange={(patientId) =>
-                 setFormData((prev) => ({
-                    ...prev,
-                    patientId,
+              value={formData.patientId}
+              onChange={(patientId)=>
+                setFormData((prev)=>({
+                  ...prev,
+                  patientId,
                 }))
-                }
-                error={errors.patientId}
-             />
+              }
+              error={errors.patientId}
+            />
+
           </div>
 
           <div className="form-row">
+
             <div className="form-group">
+
               <label htmlFor="date">
                 Date *
               </label>
@@ -114,9 +213,11 @@ function AppointmentForm(){
                   {errors.date}
                 </span>
               )}
+
             </div>
 
             <div className="form-group">
+
               <label htmlFor="time">
                 Heure *
               </label>
@@ -134,10 +235,13 @@ function AppointmentForm(){
                   {errors.time}
                 </span>
               )}
+
             </div>
+
           </div>
 
           <div className="form-group">
+
             <label htmlFor="reason">
               Motif
             </label>
@@ -150,10 +254,13 @@ function AppointmentForm(){
               onChange={handleChange}
               placeholder="Motif du rendez-vous"
             />
+
           </div>
+
         </div>
 
         <div className="form-actions">
+
           <button
             type="button"
             className="cancel-btn"
@@ -166,10 +273,15 @@ function AppointmentForm(){
             type="submit"
             className="save-btn"
           >
-            Enregistrer le rendez-vous
+            {isEditMode
+              ? "Enregistrer les modifications"
+              : "Enregistrer le rendez-vous"}
           </button>
+
         </div>
+
       </form>
+
     </div>
   );
 }

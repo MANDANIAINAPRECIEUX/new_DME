@@ -6,6 +6,7 @@ import PatientFormPage from "../pages/Patients/PatientFormPage";
 import Appointments from "../pages/Appointments/Appointments";
 import AppointmentFormPage from "../pages/Appointments/AppointmentFormPage";
 import PatientRecordPage from "../pages/Patients/PatientRecordPage";
+import ConsultationPage from "../pages/Consultations/ConsultationPage";
 
 const router=createBrowserRouter([
   {
@@ -37,8 +38,16 @@ const router=createBrowserRouter([
         element: <AppointmentFormPage />
       },
       {
+        path:"/appointments/:id/edit",
+        element:<AppointmentFormPage />,
+      },
+      {
         path:"/patients/:id",
         element: <PatientRecordPage />
+      },
+      {
+        path: "/consultations/:appointmentId",
+        element: <ConsultationPage />,
       }
     ]
   }

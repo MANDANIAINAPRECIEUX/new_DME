@@ -110,6 +110,133 @@
   margin-top:5px;
 }
 
+.record-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-bottom:30px;
+}
+
+.summary-card{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:18px 20px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+}
+
+.summary-card > svg{
+  width:42px;
+  height:42px;
+  padding:12px;
+  box-sizing:border-box;
+  border-radius:11px;
+  background:#f0f8f9;
+  color:#2fa8b8;
+}
+
+.summary-card div{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.summary-card span{
+  color:#95a5a6;
+  font-size:12px;
+}
+
+.summary-card strong{
+  color:#2c3e50;
+  font-size:20px;
+}
+
+.record-section{
+  margin-top:30px;
+}
+
+.appointment-history{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.history-item{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:18px 20px;
+  background:#fff;
+  border-radius:15px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+  transition:.3s;
+}
+
+.history-item:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 18px rgba(0,0,0,.06);
+}
+
+.history-date{
+  width:115px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  flex-shrink:0;
+}
+
+.history-date strong{
+  color:#2c3e50;
+  font-size:13px;
+  text-transform:capitalize;
+}
+
+.history-date span{
+  color:#95a5a6;
+  font-size:12px;
+}
+
+.history-content{
+  flex:1;
+}
+
+.history-content h3{
+  margin:0 0 4px;
+  color:#2c3e50;
+  font-size:14px;
+}
+
+.history-content p{
+  margin:0;
+  color:#95a5a6;
+  font-size:12px;
+}
+
+.history-status{
+  padding:6px 11px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+.history-status.completed{
+  background:#e8f7f0;
+  color:#27ae60;
+}
+
+.history-status.pending{
+  background:#fff7e6;
+  color:#f39c12;
+}
+
+.history-status.cancelled{
+  background:#fdecec;
+  color:#e74c3c;
+}
+
 .section-heading{
   margin-bottom:16px;
 }
@@ -258,12 +385,18 @@
 }
 
 @media(max-width:1000px){
+
   .medical-grid{
+    grid-template-columns:1fr;
+  }
+
+  .record-summary{
     grid-template-columns:1fr;
   }
 }
 
 @media(max-width:700px){
+
   .patient-record-page{
     padding:20px;
   }
@@ -283,12 +416,22 @@
     min-width:calc(100% - 100px);
   }
 
-  .patient-hero-action{
-    width:100%;
-  }
-
   .edit-patient-btn{
     width:100%;
     justify-content:center;
+  }
+
+  .history-item{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .history-date{
+    width:auto;
+  }
+
+  .history-status{
+    align-self:flex-start;
   }
 }

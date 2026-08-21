@@ -1,12 +1,17 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaEdit, FaNotesMedical, FaTooth, FaFileMedical } from "react-icons/fa";
 import { usePatients } from "../../context/PatientContext";
+import { useAppointments } from "../../context/AppointmentContext";
+import { useConsultations } from "../../context/ConsultationContext";
 import "./PatientRecordPage.css";
 
 function PatientRecordPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const { patients } = usePatients();
+  const { appointments }=useAppointments();
+  const { consultations }=useConsultations();
 
   const patient = patients.find(
     (patient) => patient.id.toString() === id
@@ -26,6 +31,26 @@ function PatientRecordPage() {
       </div>
     );
   }
+
+  const patientAppointments=appointments
+    .filter(
+      (appointment)=>
+        appointment.patientId.toString()===id
+    )
+    .sort(
+      (a,b)=>
+        new Date(`${b.date}T${b.time}`)-
+        new Date(`${a.date}T${a.time}`)
+    );
+
+  const completedAppointments=patientAppointments.filter(
+    (appointment)=>appointment.status==="completed"
+  );
+
+  const patientConsultations = consultations.filter(
+  (consultation) =>
+    consultation.patientId.toString() === id
+  );
 
   const fullName = `${patient.firstName} ${patient.lastName}`;
 
@@ -77,10 +102,16 @@ function PatientRecordPage() {
 
             <div>
               <h3>Consultations</h3>
-              <p>Aucune consultation enregistrée</p>
+              <p>
+                {completedAppointments.length === 0
+                ? "Aucune consultation enregistrée"
+                : "Consultations enregistrées"}
+              </p>
             </div>
 
-            <span className="medical-count">0</span>
+            <span className="medical-count">
+              {patientConsultations.length}
+            </span>
           </div>
 
           <div className="medical-card">
@@ -111,14 +142,110 @@ function PatientRecordPage() {
         </div>
       </div>
 
-      <div className="record-empty-state">
-        <FaNotesMedical />
-        <h3>Aucun historique médical</h3>
-        <p>
-          Les consultations, soins et traitements du patient
-          apparaîtront ici.
-        </p>
-      </div>
+      <section className="record-section">
+
+  <div className="section-heading">
+    <span>HISTORIQUE</span>
+    <h2>Rendez-vous du patient</h2>
+  </div>
+
+  {patientAppointments.length === 0 ? (
+
+    <div className="record-empty-state">
+      <FaNotesMedical />
+
+      <h3>Aucun rendez-vous</h3>
+
+      <p>
+        Les rendez-vous de ce patient apparaîtront
+        automatiquement dans son dossier.
+      </p>
+    </div>
+
+  ) : (
+
+    <div className="appointment-history">
+
+      {patientAppointments.map((appointment) => (
+
+        <div
+          className="history-item"
+          key={appointment.id}
+        >
+
+          <div className="history-date">
+
+            <strong>
+              {new Date(
+                `${appointment.date}T00:00:00`
+              ).toLocaleDateString(
+                "fr-FR",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric"
+                }
+              )}
+            </strong>
+
+            <span>
+              {appointment.time}
+            </span>
+
+          </div>
+
+          <div className="history-content">
+
+            <h3>Rendez-vous</h3>
+
+            <p>
+              {appointment.reason ||
+                "Motif non renseigné"}
+            </p>
+
+          </div>
+
+          <span
+            className={`history-status ${appointment.status}`}
+          >
+            {appointment.status === "completed"
+              ? "Terminé"
+              : appointment.status === "cancelled"
+              ? "Annulé"
+              : "En attente"}
+          </span>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
+
+      </section>
+
+      <section className="record-section">
+
+  <div className="section-heading">
+    <span>HISTORIQUE MÉDICAL</span>
+    <h2>Actes et soins réalisés</h2>
+  </div>
+
+  <div className="record-empty-state">
+
+    <FaTooth />
+
+    <h3>Aucun soin enregistré</h3>
+
+    <p>
+      Les actes réalisés, les dents traitées et les
+      traitements seront affichés ici après les consultations.
+    </p>
+
+  </div>
+
+      </section>
     </div>
   );
 }

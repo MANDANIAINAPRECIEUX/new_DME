@@ -1,0 +1,282 @@
+.consultation-page{
+  padding:25px 35px 40px;
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.consultation-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.consultation-topbar > span{
+  color:#95a5a6;
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+
+.back-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:none;
+  background:none;
+  padding:0;
+  color:#2fa8b8;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.back-link:hover{
+  color:#2f80ed;
+  transform:translateX(-2px);
+}
+
+.consultation-header{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:25px 30px;
+  margin-bottom:25px;
+  background:linear-gradient(135deg,#2fa8b8,#2697a7);
+  color:#fff;
+  border-radius:20px;
+  box-shadow:0 8px 24px rgba(47,168,184,.18);
+}
+
+.consultation-icon{
+  width:58px;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border-radius:15px;
+  background:rgba(255,255,255,.18);
+  font-size:24px;
+}
+
+.consultation-header span{
+  display:block;
+  margin-bottom:4px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  opacity:.8;
+}
+
+.consultation-header h1{
+  margin:0 0 5px;
+  font-size:26px;
+  font-weight:700;
+}
+
+.consultation-header p{
+  margin:0;
+  font-size:13px;
+  opacity:.9;
+}
+
+.consultation-form{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.consultation-section{
+  padding:25px 28px;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+}
+
+.section-title{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.section-title > span{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  flex-shrink:0;
+  border-radius:9px;
+  background:#f0f8f9;
+  color:#2fa8b8;
+  font-size:11px;
+  font-weight:700;
+}
+
+.section-title h2{
+  margin:0 0 4px;
+  color:#2c3e50;
+  font-size:17px;
+}
+
+.section-title p{
+  margin:0;
+  color:#95a5a6;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.form-group label{
+  color:#34495e;
+  font-size:13px;
+  font-weight:600;
+}
+
+.form-group textarea{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px 14px;
+  border:1px solid #dce5e8;
+  border-radius:10px;
+  background:#fafcfd;
+  color:#2c3e50;
+  font-family:inherit;
+  font-size:13px;
+  line-height:1.5;
+  resize:vertical;
+  outline:none;
+  transition:.3s;
+}
+
+.form-group textarea:focus{
+  border-color:#2fa8b8;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+.form-group textarea::placeholder{
+  color:#b0b9ba;
+}
+
+.consultation-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:12px;
+  padding-top:5px;
+}
+
+.cancel-btn{
+  border:1px solid #dce5e8;
+  background:#fff;
+  color:#7f8c8d;
+  padding:11px 18px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.cancel-btn:hover{
+  background:#f6f8fc;
+  color:#2c3e50;
+}
+
+.save-consultation-btn{
+  border:none;
+  background:#2fa8b8;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.save-consultation-btn:hover{
+  background:#2f80ed;
+  transform:translateY(-1px);
+}
+
+.consultation-not-found{
+  padding:50px;
+  background:#fff;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+.consultation-not-found h2{
+  margin:0 0 8px;
+  color:#2c3e50;
+}
+
+.consultation-not-found p{
+  margin:0 0 20px;
+  color:#95a5a6;
+  font-size:14px;
+}
+
+.consultation-not-found .back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:none;
+  padding:11px 18px;
+  border-radius:10px;
+  background:#2fa8b8;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.consultation-not-found .back-btn:hover{
+  background:#2f80ed;
+}
+
+@media(max-width:700px){
+
+  .consultation-page{
+    padding:20px;
+  }
+
+  .consultation-topbar{
+    align-items:flex-start;
+  }
+
+  .consultation-header{
+    align-items:flex-start;
+    padding:22px;
+  }
+
+  .consultation-header h1{
+    font-size:22px;
+  }
+
+  .consultation-section{
+    padding:20px;
+  }
+
+  .consultation-actions{
+    flex-direction:column-reverse;
+    align-items:stretch;
+  }
+
+  .cancel-btn,
+  .save-consultation-btn{
+    width:100%;
+  }
+}

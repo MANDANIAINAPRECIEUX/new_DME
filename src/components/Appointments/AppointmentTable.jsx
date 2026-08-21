@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
 import "./AppointmentTable.css";
 
 function AppointmentTable(){
+  const navigate=useNavigate();
   const { appointments }=useAppointments();
   const { patients }=usePatients();
 
@@ -75,9 +77,28 @@ function AppointmentTable(){
                   </td>
 
                   <td>
-                    <button className="details-btn">
-                      Voir
+                  <div className="appointment-actions">
+
+                    <button className="edit-appointment-btn"
+                      onClick={() =>
+                      navigate(`/appointments/${appointment.id}/edit`)
+                      }
+                    >
+                    Modifier
                     </button>
+
+                    <button className={`start-consultation-btn ${
+                      appointment.status !== "pending" ? "disabled" : ""
+                    }`}
+                      disabled={appointment.status !== "pending"}
+                      onClick={() =>
+                        navigate(`/consultations/${appointment.id}`)
+                      }
+                    >
+                    Démarrer
+                    </button>
+
+                  </div>
                   </td>
                 </tr>
               );
