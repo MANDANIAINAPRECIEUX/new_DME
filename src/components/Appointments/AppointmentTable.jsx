@@ -3,11 +3,11 @@ import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
 import "./AppointmentTable.css";
 
-function AppointmentTable(){
+function AppointmentTable({ appointments}){
   const navigate=useNavigate();
-  const { appointments }=useAppointments();
+  const { updateAppointment }=useAppointments();
   const { patients }=usePatients();
-
+  
   const patientsMap=Object.fromEntries(
     patients.map((patient)=>[patient.id,patient])
   );
@@ -23,6 +23,20 @@ function AppointmentTable(){
       default:
         return status;
     }
+  };
+
+  const handleCancel = (appointmentId) => {
+    const confirmed = window.confirm(
+      "Voulez-vous vraiment annuler ce rendez-vous ?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    updateAppointment(appointmentId, {
+      status: "cancelled",
+    });
   };
 
   return(
@@ -97,6 +111,14 @@ function AppointmentTable(){
                     >
                     Démarrer
                     </button>
+
+                    <button className="cancel-appointment-btn"
+                      disabled={appointment.status !== "pending"}
+                      onClick={() => handleCancel(appointment.id)}
+                    >
+                    Annuler
+                    </button>
+
 
                   </div>
                   </td>

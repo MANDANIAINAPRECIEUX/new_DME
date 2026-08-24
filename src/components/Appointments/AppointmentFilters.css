@@ -1,0 +1,37 @@
+.appointment-filters{
+  display:flex;
+  gap:12px;
+}
+
+.appointment-filters select{
+  min-width:170px;
+  padding:10px 14px;
+  border:1px solid #e4e9ed;
+  border-radius:9px;
+  background:#fff;
+  color:#2c3e50;
+  font-size:13px;
+  cursor:pointer;
+  outline:none;
+  transition:.3s;
+}
+
+.appointment-filters select:hover{
+  border-color:#2fa8b8;
+}
+
+.appointment-filters select:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+@media(max-width:700px){
+  .appointment-filters{
+    width:100%;
+    flex-direction:column;
+  }
+
+  .appointment-filters select{
+    width:100%;
+  }
+}

@@ -49,3 +49,100 @@ export const hasAppointmentConflict = (
     );
   });
 };
+
+export function filterAppointmentsByPatient(
+  appointments,
+  patients,
+  searchTerm
+) {
+  const search = searchTerm.toLowerCase().trim();
+
+  if (!search) {
+    return appointments;
+  }
+
+  return appointments.filter((appointment) => {
+    const patient = patients.find(
+      (patient) => patient.id === appointment.patientId
+    );
+
+    if (!patient) {
+      return false;
+    }
+
+    const fullName =
+      `${patient.firstName} ${patient.lastName}`.toLowerCase();
+
+    return fullName.includes(search);
+  });
+}
+
+export function filterAppointmentsByStatus(
+  appointments,
+  status
+) {
+  if (status === "all") {
+    return appointments;
+  }
+
+  return appointments.filter(
+    (appointment) => appointment.status === status
+  );
+}
+
+export function filterAppointmentsByDate(
+  appointments,
+  dateFilter
+) {
+  if (dateFilter === "all") {
+    return appointments;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const startOfWeek = new Date(today);
+  const day = startOfWeek.getDay();
+  const difference = day === 0 ? 6 : day - 1;
+
+  startOfWeek.setDate(
+    startOfWeek.getDate() - difference
+  );
+
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(
+    startOfWeek.getDate() + 7
+  );
+
+  return appointments.filter((appointment) => {
+    const appointmentDate = new Date(
+      `${appointment.date}T00:00:00`
+    );
+
+    switch (dateFilter) {
+      case "today":
+        return appointmentDate.getTime() === today.getTime();
+
+      case "tomorrow":
+        return appointmentDate.getTime() === tomorrow.getTime();
+
+      case "week":
+        return (
+          appointmentDate >= startOfWeek &&
+          appointmentDate < endOfWeek
+        );
+
+      case "upcoming":
+        return appointmentDate >= today;
+
+      case "past":
+        return appointmentDate < today;
+
+      default:
+        return true;
+    }
+  });
+}
