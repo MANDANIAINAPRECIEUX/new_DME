@@ -20,11 +20,23 @@
 .date-card {
   width: 180px;
   display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.date-icon {
+  flex-shrink: 0;
+  color: #2fa8b8;
+  font-size: 22px;
+}
+
+.date-info {
+  display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .date-card h1 {
+  margin: 0;
   font-size: 24px;
   font-weight: 700;
   text-transform: capitalize;
@@ -108,3 +120,4 @@
   background: #2fa8b8;
   color: white;
 }
+

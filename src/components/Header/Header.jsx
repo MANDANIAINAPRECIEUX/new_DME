@@ -1,4 +1,4 @@
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaCalendarAlt } from "react-icons/fa";
 import { useAppointments } from "../../context/AppointmentContext";
 import { doctor } from "../../mock/doctor";
 import { getTodayAppointments } from "../../utils/appointmentUtils";
@@ -6,6 +6,7 @@ import welcomeImage from "../../assets/Welcome.jpg";
 import "./Header.css";
 
 function Header() {
+
   const { appointments }=useAppointments();
   const today = new Date();
 
@@ -30,13 +31,19 @@ function Header() {
       appointment.status === "completed" ||
       appointment.status === "in-progress"
   ).length;
-
-  return (
+    
+    return (
     <header className="header">
-
+      
       <div className="header-card date-card">
-        <h1>{weekday}</h1>
-        <p>{fullDate}</p>
+
+        <FaCalendarAlt className="date-icon" />
+
+        <div className="date-info">
+          <h1>{weekday}</h1>
+          <p>{fullDate}</p>
+        </div>
+
       </div>
 
       <div className="header-card welcome-card">
