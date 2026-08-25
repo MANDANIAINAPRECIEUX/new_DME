@@ -43,13 +43,22 @@ function PatientRecordPage() {
         new Date(`${a.date}T${a.time}`)
     );
 
-  const completedAppointments=patientAppointments.filter(
-    (appointment)=>appointment.status==="completed"
-  );
-
   const patientConsultations = consultations.filter(
   (consultation) =>
     consultation.patientId.toString() === id
+  );
+
+  const patientActs = patientConsultations.flatMap(
+  (consultation) =>
+    (consultation.acts || []).map((act) => ({
+      ...act,
+      consultationId: consultation.id,
+      date: consultation.createdAt,
+    }))
+  );
+
+  const patientTreatments = patientActs.filter(
+  (act) => act.treatment && act.treatment.trim() !== ""
   );
 
   const fullName = `${patient.firstName} ${patient.lastName}`;
@@ -63,7 +72,7 @@ function PatientRecordPage() {
         </Link>
 
         <span className="record-label">
-          Dossier médical électronique
+          DOSSIER MEDICAL ELECTRONIQUE
         </span>
       </div>
 
@@ -74,9 +83,8 @@ function PatientRecordPage() {
         </div>
 
         <div className="patient-hero-info">
-          <span className="patient-tag">PATIENT</span>
           <h1>{fullName}</h1>
-          <p>Dossier médical du patient</p>
+          <p>Suivi et historique du patient</p>
         </div>
 
         <button
@@ -90,8 +98,8 @@ function PatientRecordPage() {
 
       <div className="medical-section">
         <div className="section-heading">
-          <span>DOSSIER MÉDICAL</span>
-          <h2>Suivi du patient</h2>
+          <span>DME</span>
+          <h2>Résumé du dossier</h2>
         </div>
 
         <div className="medical-grid">
@@ -103,7 +111,7 @@ function PatientRecordPage() {
             <div>
               <h3>Consultations</h3>
               <p>
-                {completedAppointments.length === 0
+                {patientConsultations.length === 0
                 ? "Aucune consultation enregistrée"
                 : "Consultations enregistrées"}
               </p>
@@ -121,10 +129,16 @@ function PatientRecordPage() {
 
             <div>
               <h3>Traitements</h3>
-              <p>Aucun traitement enregistré</p>
+              <p>
+              {patientTreatments.length === 0
+              ? "Aucun traitement enregistré"
+              : "Traitements enregistrés"}
+              </p>
             </div>
 
-            <span className="medical-count">0</span>
+              <span className="medical-count">
+             {patientTreatments.length}
+              </span>
           </div>
 
           <div className="medical-card">
@@ -137,7 +151,7 @@ function PatientRecordPage() {
               <p>Aucun soin enregistré</p>
             </div>
 
-            <span className="medical-count">0</span>
+            <span className="medical-count">{patientActs.length}</span>
           </div>
         </div>
       </div>
@@ -145,8 +159,8 @@ function PatientRecordPage() {
       <section className="record-section">
 
   <div className="section-heading">
-    <span>HISTORIQUE</span>
-    <h2>Rendez-vous du patient</h2>
+    <span>RENDEZ-VOUS</span>
+    <h2>Historique des rendez-vous</h2>
   </div>
 
   {patientAppointments.length === 0 ? (
@@ -229,23 +243,137 @@ function PatientRecordPage() {
 
   <div className="section-heading">
     <span>HISTORIQUE MÉDICAL</span>
-    <h2>Actes et soins réalisés</h2>
+    <h2>Actes et Traitements</h2>
   </div>
 
-  <div className="record-empty-state">
+  {patientActs.length === 0 ? (
 
-    <FaTooth />
+    <div className="record-empty-state">
+      <FaTooth />
 
-    <h3>Aucun soin enregistré</h3>
+      <h3>Aucun acte enregistré</h3>
 
-    <p>
-      Les actes réalisés, les dents traitées et les
-      traitements seront affichés ici après les consultations.
-    </p>
+      <p>
+        Les actes réalisés, les dents traitées et les traitements
+        apparaîtront ici après les consultations.
+      </p>
+    </div>
 
-  </div>
+  ) : (
 
-      </section>
+    <div className="medical-history-list">
+
+  {patientConsultations.map((consultation) => {
+
+    const consultationActs = consultation.acts || [];
+
+    if (consultationActs.length === 0) {
+      return null;
+    }
+
+    const appointment = patientAppointments.find(
+      (appointment) =>
+        appointment.id === consultation.appointmentId
+    );
+
+    return (
+      <div
+        className="medical-history-card"
+        key={consultation.id}
+      >
+
+        <div className="medical-history-header">
+
+          <div className="history-main-info">
+
+            <div className="history-icon">
+              <FaNotesMedical />
+            </div>
+
+            <div>
+              <span>CONSULTATION</span>
+
+              <h3>
+                {consultation.reason || "Consultation"}
+              </h3>
+
+              {appointment && (
+                <p>
+                  {new Date(
+                    `${appointment.date}T00:00:00`
+                  ).toLocaleDateString(
+                    "fr-FR",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric"
+                    }
+                  )}
+                  {" · "}
+                  {appointment.time}
+                </p>
+              )}
+
+            </div>
+
+          </div>
+
+          <span className="acts-count">
+            {consultationActs.length}
+            {" "}
+            {consultationActs.length > 1 ? "actes" : "acte"}
+          </span>
+
+        </div>
+
+
+        <div className="medical-history-body">
+
+          <h4>Actes réalisés</h4>
+
+          <div className="acts-history-table">
+
+            <div className="acts-history-header">
+              <span>Dent</span>
+              <span>Acte / soin</span>
+              <span>Traitement</span>
+            </div>
+
+            {consultationActs.map((act, index) => (
+
+              <div
+                className="acts-history-row"
+                key={index}
+              >
+
+                <span className="tooth-number">
+                  {act.tooth || "—"}
+                </span>
+
+                <span>
+                  {act.act || "Acte non renseigné"}
+                </span>
+
+                <span className="treatment-value">
+                  {act.treatment || "—"}
+                </span>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  })}
+
+</div>
+  )}
+
+          </section>
     </div>
   );
 }

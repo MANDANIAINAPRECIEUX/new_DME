@@ -1,9 +1,12 @@
 import { createContext,useContext,useState } from "react";
+import { consultations as initialConsultations } from "../mock/consultations";
 
 const ConsultationContext=createContext();
 
 export function ConsultationProvider({ children }){
-  const [consultations,setConsultations]=useState([]);
+  const [consultations, setConsultations] = useState(
+  initialConsultations
+  );
 
   const addConsultation=(consultationData)=>{
     const newConsultation={
@@ -20,11 +23,26 @@ export function ConsultationProvider({ children }){
     return newConsultation;
   };
 
+  const updateConsultation = (id, consultationData) => {
+
+    setConsultations((prevConsultations) =>
+      prevConsultations.map((consultation) =>
+        consultation.id === id
+          ? {
+              ...consultation,
+              ...consultationData,
+            }
+          : consultation
+      )
+    );
+  };
+
   return(
     <ConsultationContext.Provider
       value={{
         consultations,
         addConsultation,
+        updateConsultation,
       }}
     >
       {children}

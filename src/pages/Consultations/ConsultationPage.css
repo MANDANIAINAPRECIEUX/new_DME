@@ -142,6 +142,30 @@
   font-weight:600;
 }
 
+.form-group input{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px 14px;
+  border:1px solid #dce5e8;
+  border-radius:10px;
+  background:#fafcfd;
+  color:#2c3e50;
+  font-family:inherit;
+  font-size:13px;
+  outline:none;
+  transition:.3s;
+}
+
+.form-group input:focus{
+  border-color:#2fa8b8;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+.form-group input::placeholder{
+  color:#b0b9ba;
+}
+
 .form-group textarea{
   width:100%;
   box-sizing:border-box;
@@ -279,4 +303,206 @@
   .save-consultation-btn{
     width:100%;
   }
+}
+
+/* ---------- Actes et dents traitées ---------- */
+
+.acts-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.acts-header h3{
+  margin:0;
+  color:#2c3e50;
+  font-size:15px;
+  font-weight:600;
+}
+
+.add-act-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  border:none;
+  padding:9px 14px;
+  border-radius:9px;
+
+  background:#eef8fa;
+  color:#2fa8b8;
+
+  font-size:12px;
+  font-weight:600;
+
+  cursor:pointer;
+  transition:.3s;
+}
+
+.add-act-btn svg{
+  font-size:11px;
+}
+
+.add-act-btn:hover{
+  background:#2fa8b8;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+
+/* ---------- Aucun acte ---------- */
+
+.acts-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  min-height:120px;
+  padding:20px;
+
+  background:#fafcfd;
+  border:1px dashed #dce5e8;
+  border-radius:12px;
+
+  text-align:center;
+}
+
+.acts-empty svg{
+  margin-bottom:10px;
+  color:#2fa8b8;
+  font-size:25px;
+}
+
+.acts-empty p{
+  margin:0;
+  color:#95a5a6;
+  font-size:12px;
+}
+
+
+/* ---------- Liste des actes ---------- */
+
+.acts-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.act-row{
+  display:grid;
+  grid-template-columns:100px 1fr 1fr 36px;
+  align-items:end;
+  gap:12px;
+
+  padding:16px;
+
+  background:#fafcfd;
+  border:1px solid #edf2f3;
+  border-radius:12px;
+}
+
+.act-row .form-group{
+  gap:6px;
+}
+
+.act-row .form-group label{
+  font-size:11px;
+  color:#7f8c8d;
+}
+
+.act-row .form-group input{
+  width:100%;
+  box-sizing:border-box;
+
+  padding:10px 12px;
+
+  border:1px solid #dce5e8;
+  border-radius:8px;
+
+  background:#fff;
+  color:#2c3e50;
+
+  font-family:inherit;
+  font-size:12px;
+
+  outline:none;
+  transition:.3s;
+}
+
+.act-row .form-group input:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+.act-row .form-group input::placeholder{
+  color:#b0b9ba;
+}
+
+
+/* ---------- Suppression ---------- */
+
+.remove-act-btn{
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  border-radius:8px;
+
+  background:#fdeaea;
+  color:#c0392b;
+
+  cursor:pointer;
+  transition:.3s;
+}
+
+.remove-act-btn:hover{
+  background:#c0392b;
+  color:#fff;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:800px){
+
+  .act-row{
+    grid-template-columns:1fr 1fr;
+    align-items:end;
+  }
+
+  .act-row .remove-act-btn{
+    grid-column:2;
+    justify-self:end;
+  }
+
+}
+
+@media(max-width:550px){
+
+  .acts-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .add-act-btn{
+    width:100%;
+  }
+
+  .act-row{
+    grid-template-columns:1fr;
+  }
+
+  .act-row .remove-act-btn{
+    grid-column:auto;
+    justify-self:end;
+  }
+
 }

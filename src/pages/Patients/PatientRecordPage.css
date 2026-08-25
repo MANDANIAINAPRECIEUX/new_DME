@@ -435,3 +435,293 @@
     align-self:flex-start;
   }
 }
+
+.medical-history-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.medical-history-card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 4px 14px rgba(0,0,0,.04);
+  overflow:hidden;
+  transition:.3s;
+}
+
+.medical-history-card:hover{
+  box-shadow:0 7px 20px rgba(0,0,0,.06);
+}
+
+
+/* ---------- Header consultation ---------- */
+
+.medical-history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:20px 22px;
+
+  border-bottom:1px solid #eef2f4;
+}
+
+.history-main-info{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.history-icon{
+  width:42px;
+  height:42px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:11px;
+
+  background:#f0f8f9;
+  color:#2fa8b8;
+
+  font-size:17px;
+}
+
+.history-main-info span{
+  display:block;
+  margin-bottom:3px;
+
+  color:#2fa8b8;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.8px;
+}
+
+.history-main-info h3{
+  margin:0 0 3px;
+
+  color:#2c3e50;
+  font-size:15px;
+  font-weight:600;
+}
+
+.history-main-info p{
+  margin:0;
+
+  color:#95a5a6;
+  font-size:12px;
+}
+
+.acts-count{
+  padding:6px 10px;
+
+  border-radius:8px;
+
+  background:#f5f8fa;
+  color:#7f8c8d;
+
+  font-size:11px;
+  font-weight:600;
+}
+
+
+/* ---------- Corps ---------- */
+
+.medical-history-body{
+  padding:18px 22px 22px;
+}
+
+.medical-history-body h4{
+  margin:0 0 12px;
+
+  color:#34495e;
+  font-size:13px;
+  font-weight:600;
+}
+
+
+/* ---------- Tableau des actes ---------- */
+
+.acts-history-table{
+  border:1px solid #edf1f3;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.acts-history-header,
+.acts-history-row{
+  display:grid;
+  grid-template-columns:120px 1fr 1fr;
+  align-items:center;
+}
+
+.acts-history-header{
+  padding:10px 14px;
+
+  background:#f8fafb;
+
+  color:#95a5a6;
+  font-size:11px;
+  font-weight:600;
+}
+
+.acts-history-row{
+  padding:12px 14px;
+
+  color:#34495e;
+  font-size:12px;
+
+  border-top:1px solid #edf1f3;
+}
+
+.tooth-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  width:32px;
+  height:26px;
+
+  border-radius:7px;
+
+  background:#f0f8f9;
+  color:#2fa8b8;
+
+  font-weight:700;
+}
+
+.treatment-value{
+  color:#2fa8b8;
+  font-weight:600;
+}
+
+/* ---------- Dent ---------- */
+
+.history-tooth{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.history-tooth svg{
+  width:40px;
+  height:40px;
+
+  padding:9px;
+  box-sizing:border-box;
+
+  border-radius:11px;
+
+  background:#f0f8f9;
+  color:#2fa8b8;
+
+  font-size:17px;
+}
+
+.history-tooth span{
+  color:#2c3e50;
+  font-size:13px;
+  font-weight:700;
+}
+
+
+/* ---------- Acte ---------- */
+
+.history-act-content{
+  min-width:0;
+}
+
+.history-act-content h3{
+  margin:0 0 4px;
+
+  color:#2c3e50;
+  font-size:15px;
+  font-weight:600;
+}
+
+.history-act-content p{
+  margin:0;
+
+  color:#95a5a6;
+  font-size:12px;
+}
+
+
+/* ---------- Traitement ---------- */
+
+.history-treatment{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+
+  margin-top:10px;
+  padding:5px 9px;
+
+  border-radius:7px;
+
+  background:#f6f8fc;
+}
+
+.history-treatment span{
+  color:#95a5a6;
+  font-size:10px;
+  font-weight:600;
+}
+
+.history-treatment strong{
+  color:#2fa8b8;
+  font-size:11px;
+  font-weight:600;
+}
+
+
+/* ---------- Date consultation ---------- */
+
+.history-consultation-date{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  text-align:right;
+}
+
+.history-consultation-date span{
+  margin-bottom:3px;
+
+  color:#95a5a6;
+  font-size:10px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.history-consultation-date strong{
+  color:#2c3e50;
+  font-size:12px;
+  font-weight:600;
+}
+
+.history-consultation-date small{
+  margin-top:3px;
+
+  color:#95a5a6;
+  font-size:11px;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:850px){
+
+  .medical-history-card{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .history-consultation-date{
+    align-items:flex-start;
+    text-align:left;
+  }
+
+}

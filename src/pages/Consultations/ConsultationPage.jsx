@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaArrowLeft, FaNotesMedical } from "react-icons/fa";
+import { FaArrowLeft, FaNotesMedical, FaTooth, FaPlus, FaTrash } from "react-icons/fa";
 import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
 import { useConsultations } from "../../context/ConsultationContext";
@@ -32,6 +32,7 @@ function ConsultationPage() {
     observations: "",
     diagnosis: "",
     notes: "",
+    acts: [],
   });
 
   if (!appointment || !patient) {
@@ -62,6 +63,41 @@ function ConsultationPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const addAct = () => {
+    setFormData((prev) => ({
+      ...prev,
+      acts: [
+        ...prev.acts,
+        {
+          tooth: "",
+          act: "",
+          treatment: "",
+        },
+      ],
+    }));
+  };
+
+  const updateAct = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      acts: prev.acts.map((act, i) =>
+        i === index
+          ? {
+              ...act,
+              [field]: value,
+            }
+          : act
+      ),
+    }));
+  };
+
+  const removeAct = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      acts: prev.acts.filter((_, i) => i !== index),
     }));
   };
 
@@ -253,6 +289,130 @@ function ConsultationPage() {
           </div>
 
         </section>
+
+        <section className="consultation-section">
+
+          <div className="section-title">
+            <span>05</span>
+
+            <div>
+              <h2>Actes et dents traitées</h2>
+
+              <p>Enregistrer les soins réalisés sur les dents pendant cette consultation.</p>
+            </div>
+
+          </div>
+
+          <div className="acts-header">
+            <h3>Actes réalisés</h3>
+
+            <button type="button" className="add-act-btn"
+              onClick={addAct}
+            >
+              <FaPlus />
+              Ajouter un acte
+            </button>
+          
+          </div>
+
+        {formData.acts.length === 0 ? (
+
+          <div className="acts-empty">
+            <FaTooth />
+            <p> Aucun acte ajouté à cette consultation.</p>
+          </div>
+
+        ) : (
+
+          <div className="acts-list">
+
+        {formData.acts.map((act, index) => (
+
+          <div className="act-row"
+          key={index}
+          >
+
+          <div className="form-group">
+
+            <label>
+              Dent
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ex : 16"
+              value={act.tooth}
+              onChange={(e) =>
+                updateAct(
+                  index,
+                  "tooth",
+                  e.target.value
+                )
+              }
+            />
+
+          </div>
+
+          <div className="form-group">
+
+            <label>
+              Acte / soin
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ex : Détartrage"
+              value={act.act}
+              onChange={(e) =>
+                updateAct(
+                  index,
+                  "act",
+                  e.target.value
+                )
+              }
+            />
+
+          </div>
+
+          <div className="form-group">
+
+            <label>
+              Traitement
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ex : Prévention"
+              value={act.treatment}
+              onChange={(e) =>
+                updateAct(
+                  index,
+                  "treatment",
+                  e.target.value
+                )
+              }
+            />
+
+          </div>
+
+          <button
+            type="button"
+            className="remove-act-btn"
+            onClick={() => removeAct(index)}
+            title="Supprimer l'acte"
+          >
+            <FaTrash />
+          </button>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
+
+          </section>
 
         <div className="consultation-actions">
 
