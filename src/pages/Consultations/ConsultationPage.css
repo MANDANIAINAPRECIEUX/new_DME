@@ -4,6 +4,8 @@
   margin:0 auto;
 }
 
+/* ---------- Barre supérieure ---------- */
+
 .consultation-topbar{
   display:flex;
   justify-content:space-between;
@@ -37,6 +39,9 @@
   color:#2f80ed;
   transform:translateX(-2px);
 }
+
+
+/* ---------- Header consultation ---------- */
 
 .consultation-header{
   display:flex;
@@ -83,6 +88,9 @@
   opacity:.9;
 }
 
+
+/* ---------- Formulaire ---------- */
+
 .consultation-form{
   display:flex;
   flex-direction:column;
@@ -100,7 +108,7 @@
   display:flex;
   align-items:flex-start;
   gap:14px;
-  margin-bottom:20px;
+  margin-bottom:22px;
 }
 
 .section-title > span{
@@ -130,6 +138,9 @@
   line-height:1.5;
 }
 
+
+/* ---------- Champs ---------- */
+
 .form-group{
   display:flex;
   flex-direction:column;
@@ -142,55 +153,346 @@
   font-weight:600;
 }
 
-.form-group input{
-  width:100%;
-  box-sizing:border-box;
-  padding:12px 14px;
-  border:1px solid #dce5e8;
-  border-radius:10px;
-  background:#fafcfd;
-  color:#2c3e50;
-  font-family:inherit;
-  font-size:13px;
-  outline:none;
-  transition:.3s;
-}
-
-.form-group input:focus{
-  border-color:#2fa8b8;
-  background:#fff;
-  box-shadow:0 0 0 3px rgba(47,168,184,.08);
-}
-
-.form-group input::placeholder{
-  color:#b0b9ba;
-}
-
+.form-group input,
+.form-group select,
 .form-group textarea{
   width:100%;
   box-sizing:border-box;
-  padding:12px 14px;
   border:1px solid #dce5e8;
   border-radius:10px;
   background:#fafcfd;
   color:#2c3e50;
   font-family:inherit;
   font-size:13px;
-  line-height:1.5;
-  resize:vertical;
   outline:none;
   transition:.3s;
 }
 
+.form-group input,
+.form-group select{
+  height:44px;
+  padding:0 14px;
+}
+
+.form-group textarea{
+  padding:12px 14px;
+  line-height:1.5;
+  resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus{
   border-color:#2fa8b8;
   background:#fff;
   box-shadow:0 0 0 3px rgba(47,168,184,.08);
 }
 
+.form-group input::placeholder,
 .form-group textarea::placeholder{
   color:#b0b9ba;
 }
+
+
+/* ---------- Select traitement ---------- */
+
+.form-group select{
+  appearance:auto;
+  cursor:pointer;
+}
+
+.form-group select option{
+  color:#2c3e50;
+  background:#fff;
+}
+
+.form-help{
+  margin-top:2px;
+  color:#95a5a6;
+  font-size:11px;
+  line-height:1.5;
+}
+
+
+/* ---------- Checkbox traitement ---------- */
+
+.checkbox-inline{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:15px;
+  padding:11px 13px;
+  border:1px solid #e4edef;
+  border-radius:10px;
+  background:#f8fbfc;
+  color:#34495e;
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.checkbox-inline:hover{
+  border-color:#cfe4e7;
+  background:#f3fafb;
+}
+
+.checkbox-inline input[type="checkbox"]{
+  width:16px;
+  height:16px;
+  margin:0;
+  accent-color:#2fa8b8;
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   SOINS RÉALISÉS
+   ========================================================= */
+
+.soins-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.soins-header h3{
+  margin:0;
+  color:#34495e;
+  font-size:14px;
+  font-weight:600;
+}
+
+
+/* ---------- Bouton ajouter un soin ---------- */
+
+.add-soin-btn,
+.add-act-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  border:1px solid #d5edef;
+  padding:9px 14px;
+
+  border-radius:9px;
+
+  background:#eef8fa;
+  color:#2fa8b8;
+
+  font-family:inherit;
+  font-size:12px;
+  font-weight:600;
+
+  cursor:pointer;
+  transition:.3s;
+}
+
+.add-soin-btn svg,
+.add-act-btn svg{
+  font-size:11px;
+}
+
+.add-soin-btn:hover,
+.add-act-btn:hover{
+  background:#2fa8b8;
+  border-color:#2fa8b8;
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(47,168,184,.15);
+}
+
+
+/* ---------- Aucun soin ---------- */
+
+.soins-empty,
+.acts-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  min-height:120px;
+  padding:20px;
+
+  background:#fafcfd;
+
+  border:1px dashed #dce5e8;
+  border-radius:12px;
+
+  text-align:center;
+}
+
+.soins-empty svg,
+.acts-empty svg{
+  margin-bottom:10px;
+  color:#2fa8b8;
+  font-size:25px;
+}
+
+.soins-empty p,
+.acts-empty p{
+  margin:0;
+  color:#95a5a6;
+  font-size:12px;
+}
+
+
+/* ---------- Liste des soins ---------- */
+
+.soins-list,
+.acts-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+
+/* ---------- Ligne d'un soin ---------- */
+
+.soin-row,
+.act-row{
+  display:grid;
+  grid-template-columns:1fr 1.5fr 36px;
+  align-items:end;
+  gap:14px;
+
+  padding:16px;
+
+  background:#fafcfd;
+  border:1px solid #edf2f3;
+  border-radius:12px;
+
+  transition:.3s;
+}
+
+.soin-row:hover,
+.act-row:hover{
+  border-color:#dcebed;
+  background:#f9fcfd;
+}
+
+
+/* ---------- Champs d'un soin ---------- */
+
+.soin-row .form-group,
+.act-row .form-group{
+  gap:6px;
+}
+
+.soin-row .form-group label,
+.act-row .form-group label{
+  font-size:11px;
+  color:#7f8c8d;
+}
+
+.soin-row .form-group input,
+.act-row .form-group input{
+  height:40px;
+  padding:0 12px;
+
+  border:1px solid #dce5e8;
+  border-radius:8px;
+
+  background:#fff;
+  color:#2c3e50;
+
+  font-family:inherit;
+  font-size:12px;
+
+  outline:none;
+  transition:.3s;
+}
+
+.soin-row .form-group input:focus,
+.act-row .form-group input:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+.soin-row .form-group input::placeholder,
+.act-row .form-group input::placeholder{
+  color:#b0b9ba;
+}
+
+
+/* ---------- Champ dents ---------- */
+
+.dents-input{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.dents-input label{
+  font-size:11px;
+  color:#7f8c8d;
+  font-weight:600;
+}
+
+.dents-input input{
+  width:100%;
+  box-sizing:border-box;
+  height:40px;
+  padding:0 12px;
+
+  border:1px solid #dce5e8;
+  border-radius:8px;
+
+  background:#fff;
+  color:#2c3e50;
+
+  font-family:inherit;
+  font-size:12px;
+
+  outline:none;
+  transition:.3s;
+}
+
+.dents-input input:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
+
+.dents-input input::placeholder{
+  color:#b0b9ba;
+}
+
+
+/* ---------- Bouton supprimer ---------- */
+
+.remove-soin-btn,
+.remove-act-btn{
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  border-radius:8px;
+
+  background:#fdeaea;
+  color:#c0392b;
+
+  cursor:pointer;
+  transition:.3s;
+}
+
+.remove-soin-btn:hover,
+.remove-act-btn:hover{
+  background:#c0392b;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
 
 .consultation-actions{
   display:flex;
@@ -206,6 +508,7 @@
   color:#7f8c8d;
   padding:11px 18px;
   border-radius:10px;
+  font-family:inherit;
   font-size:13px;
   font-weight:600;
   cursor:pointer;
@@ -223,6 +526,7 @@
   color:#fff;
   padding:12px 20px;
   border-radius:10px;
+  font-family:inherit;
   font-size:13px;
   font-weight:600;
   cursor:pointer;
@@ -232,7 +536,13 @@
 .save-consultation-btn:hover{
   background:#2f80ed;
   transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(47,128,237,.15);
 }
+
+
+/* =========================================================
+   RENDEZ-VOUS INTROUVABLE
+   ========================================================= */
 
 .consultation-not-found{
   padding:50px;
@@ -262,6 +572,7 @@
   border-radius:10px;
   background:#2fa8b8;
   color:#fff;
+  font-family:inherit;
   font-size:13px;
   font-weight:600;
   cursor:pointer;
@@ -269,6 +580,25 @@
 
 .consultation-not-found .back-btn:hover{
   background:#2f80ed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:800px){
+
+  .soin-row,
+  .act-row{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .soin-row .remove-soin-btn,
+  .act-row .remove-act-btn{
+    grid-column:2;
+    justify-self:end;
+  }
 }
 
 @media(max-width:700px){
@@ -303,206 +633,37 @@
   .save-consultation-btn{
     width:100%;
   }
-}
 
-/* ---------- Actes et dents traitées ---------- */
-
-.acts-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.acts-header h3{
-  margin:0;
-  color:#2c3e50;
-  font-size:15px;
-  font-weight:600;
-}
-
-.add-act-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-
-  border:none;
-  padding:9px 14px;
-  border-radius:9px;
-
-  background:#eef8fa;
-  color:#2fa8b8;
-
-  font-size:12px;
-  font-weight:600;
-
-  cursor:pointer;
-  transition:.3s;
-}
-
-.add-act-btn svg{
-  font-size:11px;
-}
-
-.add-act-btn:hover{
-  background:#2fa8b8;
-  color:#fff;
-  transform:translateY(-1px);
-}
-
-
-/* ---------- Aucun acte ---------- */
-
-.acts-empty{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-  min-height:120px;
-  padding:20px;
-
-  background:#fafcfd;
-  border:1px dashed #dce5e8;
-  border-radius:12px;
-
-  text-align:center;
-}
-
-.acts-empty svg{
-  margin-bottom:10px;
-  color:#2fa8b8;
-  font-size:25px;
-}
-
-.acts-empty p{
-  margin:0;
-  color:#95a5a6;
-  font-size:12px;
-}
-
-
-/* ---------- Liste des actes ---------- */
-
-.acts-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.act-row{
-  display:grid;
-  grid-template-columns:100px 1fr 1fr 36px;
-  align-items:end;
-  gap:12px;
-
-  padding:16px;
-
-  background:#fafcfd;
-  border:1px solid #edf2f3;
-  border-radius:12px;
-}
-
-.act-row .form-group{
-  gap:6px;
-}
-
-.act-row .form-group label{
-  font-size:11px;
-  color:#7f8c8d;
-}
-
-.act-row .form-group input{
-  width:100%;
-  box-sizing:border-box;
-
-  padding:10px 12px;
-
-  border:1px solid #dce5e8;
-  border-radius:8px;
-
-  background:#fff;
-  color:#2c3e50;
-
-  font-family:inherit;
-  font-size:12px;
-
-  outline:none;
-  transition:.3s;
-}
-
-.act-row .form-group input:focus{
-  border-color:#2fa8b8;
-  box-shadow:0 0 0 3px rgba(47,168,184,.08);
-}
-
-.act-row .form-group input::placeholder{
-  color:#b0b9ba;
-}
-
-
-/* ---------- Suppression ---------- */
-
-.remove-act-btn{
-  width:34px;
-  height:34px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border:none;
-  border-radius:8px;
-
-  background:#fdeaea;
-  color:#c0392b;
-
-  cursor:pointer;
-  transition:.3s;
-}
-
-.remove-act-btn:hover{
-  background:#c0392b;
-  color:#fff;
-}
-
-
-/* ---------- Responsive ---------- */
-
-@media(max-width:800px){
-
-  .act-row{
-    grid-template-columns:1fr 1fr;
-    align-items:end;
+  .soins-header{
+    align-items:flex-start;
+    gap:12px;
   }
-
-  .act-row .remove-act-btn{
-    grid-column:2;
-    justify-self:end;
-  }
-
 }
 
 @media(max-width:550px){
 
-  .acts-header{
+  .soins-header{
     flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
+    align-items:stretch;
   }
 
+  .add-soin-btn,
   .add-act-btn{
     width:100%;
   }
 
+  .soin-row,
   .act-row{
     grid-template-columns:1fr;
   }
 
+  .soin-row .remove-soin-btn,
   .act-row .remove-act-btn{
     grid-column:auto;
     justify-self:end;
   }
 
+  .checkbox-inline{
+    align-items:flex-start;
+  }
 }

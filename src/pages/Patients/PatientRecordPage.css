@@ -1,727 +1,1370 @@
-.patient-record-page{
-  padding:25px 35px 40px;
-  max-width:1400px;
-  margin:0 auto;
+.patient-record-page {
+  padding: 28px 35px 45px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.record-topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.record-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
 }
 
-.back-link{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:#2fa8b8;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
-  transition:.3s;
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #2fa8b8;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.25s;
 }
 
-.back-link:hover{
-  color:#2f80ed;
-  transform:translateX(-2px);
+.back-link:hover {
+  color: #2f80ed;
+  transform: translateX(-2px);
 }
 
-.record-label{
-  color:#95a5a6;
-  font-size:12px;
-  font-weight:600;
-  text-transform:uppercase;
-  letter-spacing:.8px;
+.record-label {
+  color: #95a5a6;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.patient-hero{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:26px 30px;
-  margin-bottom:30px;
-  background:linear-gradient(135deg,#2fa8b8,#2697a7);
-  color:#fff;
-  border-radius:20px;
-  box-shadow:0 8px 24px rgba(47,168,184,.18);
+/* =========================================================
+   PATIENT HEADER
+   ========================================================= */
+
+.patient-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 26px 30px;
+  margin-bottom: 34px;
+
+  background: linear-gradient(135deg, #2fa8b8, #2697a7);
+  color: #fff;
+
+  border-radius: 20px;
+
+  box-shadow: 0 8px 24px rgba(47, 168, 184, 0.18);
 }
 
-.patient-avatar{
-  width:72px;
-  height:72px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  border:3px solid rgba(255,255,255,.7);
-  border-radius:50%;
-  background:rgba(255,255,255,.18);
-  font-size:22px;
-  font-weight:700;
+.patient-avatar {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  font-size: 22px;
+  font-weight: 700;
 }
 
-.patient-hero-info{
-  flex:1;
+.patient-hero-info {
+  flex: 1;
+  min-width: 0;
 }
 
-.patient-tag{
-  display:block;
-  margin-bottom:4px;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:1.2px;
-  opacity:.8;
+.patient-hero-info h1 {
+  margin: 0 0 7px;
+
+  font-size: 27px;
+  font-weight: 700;
 }
 
-.patient-hero-info h1{
-  margin:0 0 5px;
-  font-size:27px;
-  font-weight:700;
+.patient-hero-info p {
+  margin: 0;
+
+  font-size: 14px;
+  opacity: 0.9;
 }
 
-.patient-hero-info p{
-  margin:0;
-  font-size:14px;
-  opacity:.9;
+.edit-patient-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background: #fff;
+  color: #2fa8b8;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s;
 }
 
-.edit-patient-btn{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  border:none;
-  padding:11px 18px;
-  border-radius:10px;
-  background:#fff;
-  color:#2fa8b8;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:.3s;
+.edit-patient-btn:hover {
+  background: #f6f8fc;
+  transform: translateY(-1px);
 }
 
-.edit-patient-btn:hover{
-  background:#f6f8fc;
-  transform:translateY(-1px);
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.medical-section {
+  margin-top: 5px;
 }
 
-.medical-section{
-  margin-top:5px;
+.record-section {
+  margin-top: 38px;
 }
 
-.record-summary{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-bottom:30px;
+.section-heading {
+  margin-bottom: 20px;
 }
 
-.summary-card{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:18px 20px;
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
+.section-heading span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #2fa8b8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1.1px;
 }
 
-.summary-card > svg{
-  width:42px;
-  height:42px;
-  padding:12px;
-  box-sizing:border-box;
-  border-radius:11px;
-  background:#f0f8f9;
-  color:#2fa8b8;
+.section-heading h2 {
+  margin: 0;
+
+  color: #2c3e50;
+
+  font-size: 22px;
+  line-height: 1.3;
 }
 
-.summary-card div{
-  display:flex;
-  flex-direction:column;
-  gap:3px;
+/* =========================================================
+   SUMMARY CARDS
+   ========================================================= */
+
+.medical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 
-.summary-card span{
-  color:#95a5a6;
-  font-size:12px;
+.medical-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 82px;
+
+  padding: 20px;
+
+  background: #fff;
+
+  border: 1px solid #edf2f4;
+  border-radius: 16px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+
+  transition: 0.25s;
 }
 
-.summary-card strong{
-  color:#2c3e50;
-  font-size:20px;
+.medical-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #dcebed;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
 }
 
-.record-section{
-  margin-top:30px;
+.medical-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  background: #f0f8f9;
+  color: #2fa8b8;
+
+  font-size: 18px;
 }
 
-.appointment-history{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.medical-card > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
 }
 
-.history-item{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:18px 20px;
-  background:#fff;
-  border-radius:15px;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
-  transition:.3s;
+.medical-card h3 {
+  margin: 0 0 5px;
+
+  color: #2c3e50;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.history-item:hover{
-  transform:translateY(-2px);
-  box-shadow:0 7px 18px rgba(0,0,0,.06);
+.medical-card p {
+  margin: 0;
+
+  color: #95a5a6;
+
+  font-size: 11px;
+  line-height: 1.4;
 }
 
-.history-date{
-  width:115px;
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  flex-shrink:0;
+.medical-count {
+  min-width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f0f8f9;
+  color: #2fa8b8;
+
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.history-date strong{
-  color:#2c3e50;
-  font-size:13px;
-  text-transform:capitalize;
+/* =========================================================
+   APPOINTMENT HISTORY
+   ========================================================= */
+
+.appointment-history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.history-date span{
-  color:#95a5a6;
-  font-size:12px;
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 18px 20px;
+
+  background: #fff;
+
+  border: 1px solid #edf2f4;
+  border-radius: 15px;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+
+  transition: 0.25s;
 }
 
-.history-content{
-  flex:1;
+.history-item:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.06);
 }
 
-.history-content h3{
-  margin:0 0 4px;
-  color:#2c3e50;
-  font-size:14px;
+.history-date {
+  width: 120px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  flex-shrink: 0;
 }
 
-.history-content p{
-  margin:0;
-  color:#95a5a6;
-  font-size:12px;
+.history-date strong {
+  color: #2c3e50;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-transform: capitalize;
 }
 
-.history-status{
-  padding:6px 11px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:600;
-  white-space:nowrap;
+.history-date span {
+  color: #95a5a6;
+  font-size: 12px;
 }
 
-.history-status.completed{
-  background:#e8f7f0;
-  color:#27ae60;
+.history-content {
+  flex: 1;
+  min-width: 0;
 }
 
-.history-status.pending{
-  background:#fff7e6;
-  color:#f39c12;
+.history-content h3 {
+  margin: 0 0 5px;
+
+  color: #2c3e50;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.history-status.cancelled{
-  background:#fdecec;
-  color:#e74c3c;
+.history-content p {
+  margin: 0;
+
+  color: #7f8c8d;
+
+  font-size: 12px;
 }
 
-.section-heading{
-  margin-bottom:16px;
+.history-status {
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  white-space: nowrap;
 }
 
-.section-heading span{
-  color:#2fa8b8;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:1px;
+.history-status.completed {
+  background: #e8f7f0;
+  color: #27ae60;
 }
 
-.section-heading h2{
-  margin:4px 0 0;
-  color:#2c3e50;
-  font-size:21px;
+.history-status.pending {
+  background: #fff7e6;
+  color: #f39c12;
 }
 
-.medical-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+.history-status.cancelled {
+  background: #fdecec;
+  color: #e74c3c;
 }
 
-.medical-card{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:20px;
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
-  transition:.3s;
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.record-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 180px;
+
+  margin-top: 20px;
+  padding: 30px;
+
+  background: #fff;
+
+  border: 1px dashed #dce5e8;
+  border-radius: 18px;
+
+  text-align: center;
 }
 
-.medical-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 20px rgba(0,0,0,.07);
+.record-empty-state svg {
+  margin-bottom: 13px;
+
+  color: #2fa8b8;
+
+  font-size: 28px;
 }
 
-.medical-icon{
-  width:44px;
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  border-radius:11px;
-  background:#f0f8f9;
-  color:#2fa8b8;
-  font-size:17px;
+.record-empty-state h3 {
+  margin: 0 0 7px;
+
+  color: #2c3e50;
+
+  font-size: 16px;
 }
 
-.medical-card > div:nth-child(2){
-  flex:1;
+.record-empty-state p {
+  max-width: 500px;
+
+  margin: 0;
+
+  color: #95a5a6;
+
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.medical-card h3{
-  margin:0 0 4px;
-  color:#2c3e50;
-  font-size:14px;
+/* =========================================================
+   GROUPES DE PARCOURS
+   ========================================================= */
+
+.treatment-group {
+  margin-bottom: 26px;
+
+  background: #fff;
+
+  border: 1px solid #e8eef0;
+  border-radius: 18px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+
+  overflow: hidden;
+
+  transition: 0.25s;
 }
 
-.medical-card p{
-  margin:0;
-  color:#95a5a6;
-  font-size:11px;
+.treatment-group:hover {
+  border-color: #dce8ea;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.05);
 }
 
-.medical-count{
-  min-width:28px;
-  height:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:#f6f8fc;
-  color:#7f8c8d;
-  font-size:12px;
-  font-weight:700;
+/* =========================================================
+   HEADER DU PARCOURS
+   ========================================================= */
+
+.treatment-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 25px;
+
+  padding: 22px 24px;
+
+  background: #fff;
+
+  border-bottom: 1px solid #eef2f4;
 }
 
-.record-empty-state{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  min-height:220px;
-  margin-top:25px;
-  padding:30px;
-  background:#fff;
-  border:1px dashed #dce5e8;
-  border-radius:18px;
-  text-align:center;
+.treatment-title {
+  min-width: 0;
 }
 
-.record-empty-state svg{
-  margin-bottom:12px;
-  color:#2fa8b8;
-  font-size:28px;
+.treatment-label-tag {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #2fa8b8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1.1px;
 }
 
-.record-empty-state h3{
-  margin:0 0 6px;
-  color:#2c3e50;
-  font-size:16px;
+.treatment-group-header h3 {
+  margin: 0 0 9px;
+
+  color: #2c3e50;
+
+  font-size: 17px;
+  line-height: 1.35;
+
+  font-weight: 600;
 }
 
-.record-empty-state p{
-  max-width:450px;
-  margin:0;
-  color:#95a5a6;
-  font-size:13px;
-  line-height:1.6;
+/* =========================================================
+   STATUT DU PARCOURS
+   ========================================================= */
+
+.treatment-status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  white-space: nowrap;
 }
 
-.patient-not-found{
-  padding:50px;
-  background:#fff;
-  border-radius:18px;
-  text-align:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.05);
+.treatment-status.ongoing {
+  background: #fff7e6;
+  color: #f39c12;
 }
 
-.patient-not-found h2{
-  margin:0 0 8px;
-  color:#2c3e50;
+.treatment-status.completed {
+  background: #e8f7f0;
+  color: #27ae60;
 }
 
-.patient-not-found p{
-  margin:0 0 20px;
-  color:#95a5a6;
-  font-size:14px;
+.treatment-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
 }
 
-.back-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:11px 18px;
-  border-radius:10px;
-  background:#2fa8b8;
-  color:#fff;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:600;
+.complete-treatment-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dce5e8;
+
+  padding: 8px 14px;
+
+  border-radius: 9px;
+
+  background: #fff;
+  color: #7f8c8d;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s;
 }
 
-@media(max-width:1000px){
+.complete-treatment-btn:hover {
+  background: #f6f8fc;
 
-  .medical-grid{
-    grid-template-columns:1fr;
+  color: #2c3e50;
+
+  border-color: #2fa8b8;
+}
+
+/* =========================================================
+   MESSAGE VIDE
+   ========================================================= */
+
+.treatment-empty {
+  margin: 0;
+
+  padding: 22px 24px;
+
+  color: #95a5a6;
+
+  background: #fafcfd;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   LISTE DES SÉANCES
+   ========================================================= */
+
+.medical-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 18px 20px;
+}
+
+/* =========================================================
+   CARTE D'UNE SÉANCE
+   ========================================================= */
+
+.medical-history-card {
+  background: #fff;
+
+  border: 1px solid #e7eef0;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+
+  transition: 0.25s;
+}
+
+.medical-history-card:hover {
+  border-color: #cfe3e6;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================================================
+   HEADER D'UNE SÉANCE
+   ========================================================= */
+
+.medical-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  background: #fff;
+}
+
+.history-main-info {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  min-width: 0;
+}
+
+.history-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: #f0f8f9;
+  color: #2fa8b8;
+
+  font-size: 16px;
+}
+
+.history-main-info > div {
+  min-width: 0;
+}
+
+.history-main-info span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #2fa8b8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.history-main-info h3 {
+  margin: 0 0 6px;
+
+  color: #2c3e50;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  line-height: 1.35;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-main-info p {
+  margin: 0;
+
+  color: #8a999e;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ACTIONS DE LA SÉANCE
+   ========================================================= */
+
+.consultation-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   NOMBRE DE SOINS
+   ========================================================= */
+
+.acts-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+
+  padding: 5px 10px;
+
+  border: 1px solid #e5edef;
+  border-radius: 8px;
+
+  background: #f7fafb;
+
+  color: #7f8c8d;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   BOUTON DÉTAILS
+   Correspond au JSX : .details-btn
+   ========================================================= */
+
+.details-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 34px;
+
+  padding: 7px 13px;
+
+  border: 1px solid #d7eaed;
+  border-radius: 9px;
+
+  background: #f0f8f9;
+
+  color: #2fa8b8;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    transform 0.2s;
+}
+
+.details-btn:hover {
+  background: #e3f4f6;
+
+  border-color: #2fa8b8;
+
+  color: #238b9b;
+
+  transform: translateY(-1px);
+}
+
+.details-btn svg {
+  font-size: 10px;
+
+  transition: transform 0.25s;
+}
+
+/* =========================================================
+   CORPS DES DÉTAILS
+   ========================================================= */
+
+.medical-history-body {
+  padding: 22px 24px 24px;
+
+  background: #f9fbfc;
+
+  border-top: 1px solid #edf2f4;
+
+  animation: detailsAppear 0.2s ease;
+}
+
+@keyframes detailsAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 
-  .record-summary{
-    grid-template-columns:1fr;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media(max-width:700px){
+/* =========================================================
+   DÉTAILS COMPTE-RENDU / OBSERVATION
+   ========================================================= */
 
-  .patient-record-page{
-    padding:20px;
-  }
-
-  .record-topbar{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
-
-  .patient-hero{
-    align-items:flex-start;
-    flex-wrap:wrap;
-  }
-
-  .patient-hero-info{
-    min-width:calc(100% - 100px);
-  }
-
-  .edit-patient-btn{
-    width:100%;
-    justify-content:center;
-  }
-
-  .history-item{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:12px;
-  }
-
-  .history-date{
-    width:auto;
-  }
-
-  .history-status{
-    align-self:flex-start;
-  }
+.consultation-detail {
+  margin-bottom: 22px;
 }
 
-.medical-history-list{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
+.consultation-detail:last-child {
+  margin-bottom: 0;
 }
 
-.medical-history-card{
-  background:#fff;
-  border-radius:18px;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
-  overflow:hidden;
-  transition:.3s;
+.consultation-detail h4 {
+  display: flex;
+  align-items: center;
+
+  margin: 0 0 9px;
+
+  color: #34495e;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  line-height: 1.4;
 }
 
-.medical-history-card:hover{
-  box-shadow:0 7px 20px rgba(0,0,0,.06);
+.consultation-detail h4::before {
+  content: "";
+
+  width: 4px;
+  height: 17px;
+
+  margin-right: 9px;
+
+  border-radius: 4px;
+
+  background: #2fa8b8;
 }
 
+.consultation-detail p {
+  margin: 0;
 
-/* ---------- Header consultation ---------- */
+  padding: 15px 17px;
 
-.medical-history-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  background: #fff;
 
-  padding:20px 22px;
+  border: 1px solid #e5edef;
+  border-radius: 11px;
 
-  border-bottom:1px solid #eef2f4;
+  color: #52646c;
+
+  font-size: 13px;
+  line-height: 1.75;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
-.history-main-info{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
+/* =========================================================
+   SOINS RÉALISÉS
+   ========================================================= */
 
-.history-icon{
-  width:42px;
-  height:42px;
+.acts-history-table {
+  border: 1px solid #e2ebed;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  border-radius: 11px;
 
-  border-radius:11px;
+  overflow: hidden;
 
-  background:#f0f8f9;
-  color:#2fa8b8;
-
-  font-size:17px;
-}
-
-.history-main-info span{
-  display:block;
-  margin-bottom:3px;
-
-  color:#2fa8b8;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.8px;
-}
-
-.history-main-info h3{
-  margin:0 0 3px;
-
-  color:#2c3e50;
-  font-size:15px;
-  font-weight:600;
-}
-
-.history-main-info p{
-  margin:0;
-
-  color:#95a5a6;
-  font-size:12px;
-}
-
-.acts-count{
-  padding:6px 10px;
-
-  border-radius:8px;
-
-  background:#f5f8fa;
-  color:#7f8c8d;
-
-  font-size:11px;
-  font-weight:600;
-}
-
-
-/* ---------- Corps ---------- */
-
-.medical-history-body{
-  padding:18px 22px 22px;
-}
-
-.medical-history-body h4{
-  margin:0 0 12px;
-
-  color:#34495e;
-  font-size:13px;
-  font-weight:600;
-}
-
-
-/* ---------- Tableau des actes ---------- */
-
-.acts-history-table{
-  border:1px solid #edf1f3;
-  border-radius:10px;
-  overflow:hidden;
+  background: #fff;
 }
 
 .acts-history-header,
-.acts-history-row{
-  display:grid;
-  grid-template-columns:120px 1fr 1fr;
-  align-items:center;
+.acts-history-row {
+  display: grid;
+
+  grid-template-columns: 150px 1fr;
+
+  align-items: center;
 }
 
-.acts-history-header{
-  padding:10px 14px;
+.acts-history-header {
+  padding: 12px 15px;
 
-  background:#f8fafb;
+  background: #f4f8f9;
 
-  color:#95a5a6;
-  font-size:11px;
-  font-weight:600;
+  color: #7f8c8d;
+
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.acts-history-row{
-  padding:12px 14px;
+.acts-history-row {
+  padding: 14px 15px;
 
-  color:#34495e;
-  font-size:12px;
+  color: #34495e;
 
-  border-top:1px solid #edf1f3;
+  font-size: 13px;
+
+  border-top: 1px solid #edf1f3;
 }
 
-.tooth-number{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
-  width:32px;
-  height:26px;
-
-  border-radius:7px;
-
-  background:#f0f8f9;
-  color:#2fa8b8;
-
-  font-weight:700;
+.acts-history-row:hover {
+  background: #fbfdfd;
 }
 
-.treatment-value{
-  color:#2fa8b8;
-  font-weight:600;
+.tooth-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  min-width: 38px;
+  min-height: 28px;
+
+  padding: 0 9px;
+
+  border-radius: 8px;
+
+  background: #eef8f9;
+
+  color: #2fa8b8;
+
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* ---------- Dent ---------- */
-
-.history-tooth{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.treatment-value {
+  color: #2fa8b8;
+  font-weight: 600;
 }
 
-.history-tooth svg{
-  width:40px;
-  height:40px;
+/* =========================================================
+   BOUTON VOIR LES SÉANCES
+   Correspond au JSX : .show-sessions-btn
+   ========================================================= */
 
-  padding:9px;
-  box-sizing:border-box;
+.show-sessions-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  border-radius:11px;
+  gap: 9px;
 
-  background:#f0f8f9;
-  color:#2fa8b8;
+  width: calc(100% - 40px);
 
-  font-size:17px;
+  margin: 0 20px 18px;
+
+  padding: 12px 16px;
+
+  border: 1px solid #d5e9ec;
+
+  border-radius: 10px;
+
+  background: #f7fbfc;
+
+  color: #2fa8b8;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s,
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
-.history-tooth span{
-  color:#2c3e50;
-  font-size:13px;
-  font-weight:700;
+.show-sessions-btn:hover {
+  background: #eef8f9;
+
+  border-color: #2fa8b8;
+
+  color: #238b9b;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 4px 10px rgba(47, 168, 184, 0.1);
 }
 
-
-/* ---------- Acte ---------- */
-
-.history-act-content{
-  min-width:0;
+.show-sessions-btn:active {
+  transform: translateY(0);
 }
 
-.history-act-content h3{
-  margin:0 0 4px;
+.show-sessions-btn svg {
+  font-size: 11px;
 
-  color:#2c3e50;
-  font-size:15px;
-  font-weight:600;
+  transition: transform 0.25s;
 }
 
-.history-act-content p{
-  margin:0;
+/* =========================================================
+   CONSULTATIONS NON RATTACHÉES
+   ========================================================= */
 
-  color:#95a5a6;
-  font-size:12px;
+.unclassified-group {
+  margin-top: 12px;
 }
 
-
-/* ---------- Traitement ---------- */
-
-.history-treatment{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-
-  margin-top:10px;
-  padding:5px 9px;
-
-  border-radius:7px;
-
-  background:#f6f8fc;
+.unclassified-group .treatment-group-header {
+  background: #fafcfd;
 }
 
-.history-treatment span{
-  color:#95a5a6;
-  font-size:10px;
-  font-weight:600;
+/* =========================================================
+   PATIENT INTROUVABLE
+   ========================================================= */
+
+.patient-not-found {
+  padding: 50px;
+
+  background: #fff;
+
+  border: 1px solid #edf2f4;
+  border-radius: 18px;
+
+  text-align: center;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
-.history-treatment strong{
-  color:#2fa8b8;
-  font-size:11px;
-  font-weight:600;
+.patient-not-found h2 {
+  margin: 0 0 8px;
+
+  color: #2c3e50;
+
+  font-size: 21px;
 }
 
+.patient-not-found p {
+  margin: 0 0 20px;
 
-/* ---------- Date consultation ---------- */
+  color: #95a5a6;
 
-.history-consultation-date{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  text-align:right;
+  font-size: 14px;
 }
 
-.history-consultation-date span{
-  margin-bottom:3px;
+.back-btn {
+  display: inline-flex;
+  align-items: center;
 
-  color:#95a5a6;
-  font-size:10px;
-  font-weight:600;
-  text-transform:uppercase;
-  letter-spacing:.5px;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background: #2fa8b8;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.25s;
 }
 
-.history-consultation-date strong{
-  color:#2c3e50;
-  font-size:12px;
-  font-weight:600;
+.back-btn:hover {
+  background: #2f80ed;
+  transform: translateY(-1px);
 }
 
-.history-consultation-date small{
-  margin-top:3px;
+/* =========================================================
+   RESPONSIVE — TABLETTE
+   ========================================================= */
 
-  color:#95a5a6;
-  font-size:11px;
-}
+@media (max-width: 1000px) {
 
-
-/* ---------- Responsive ---------- */
-
-@media(max-width:850px){
-
-  .medical-history-card{
-    grid-template-columns:1fr;
-    gap:14px;
+  .medical-grid {
+    grid-template-columns: 1fr;
   }
 
-  .history-consultation-date{
-    align-items:flex-start;
-    text-align:left;
+}
+
+/* =========================================================
+   RESPONSIVE — PETIT ÉCRAN
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .treatment-group-header {
+    align-items: flex-start;
+  }
+
+  .treatment-header-actions {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .medical-history-header {
+    align-items: flex-start;
+  }
+
+  .consultation-card-actions {
+    flex-wrap: wrap;
+  }
+
+  .acts-history-header,
+  .acts-history-row {
+    grid-template-columns: 110px 1fr;
+  }
+
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .patient-record-page {
+    padding: 20px;
+  }
+
+  /* ---------- Topbar ---------- */
+
+  .record-topbar {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  /* ---------- Patient ---------- */
+
+  .patient-hero {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+    padding: 22px;
+  }
+
+  .patient-avatar {
+    width: 60px;
+    height: 60px;
+
+    font-size: 19px;
+  }
+
+  .patient-hero-info {
+    min-width: calc(100% - 85px);
+  }
+
+  .patient-hero-info h1 {
+    font-size: 23px;
+  }
+
+  .edit-patient-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  /* ---------- Rendez-vous ---------- */
+
+  .history-item {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .history-date {
+    width: auto;
+  }
+
+  .history-status {
+    align-self: flex-start;
+  }
+
+  /* ---------- Groupe ---------- */
+
+  .treatment-group-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 18px;
+  }
+
+  .treatment-header-actions {
+    width: 100%;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+  }
+
+  /* ---------- Séance ---------- */
+
+  .medical-history-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    padding: 16px;
+  }
+
+  .consultation-card-actions {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+  .acts-count {
+    align-self: center;
+  }
+
+  .details-btn {
+    margin-left: auto;
+  }
+
+  /* ---------- Détails ---------- */
+
+  .medical-history-body {
+    padding: 18px;
+  }
+
+  .consultation-detail p {
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  /* ---------- Tableau ---------- */
+
+  .acts-history-table {
+    overflow-x: auto;
+  }
+
+  .acts-history-header,
+  .acts-history-row {
+    min-width: 400px;
+  }
+
+  /* ---------- Boutons ---------- */
+
+  .complete-treatment-btn {
+    font-size: 11px;
+
+    padding: 7px 10px;
+  }
+
+  .show-sessions-btn {
+    width: calc(100% - 28px);
+
+    margin-left: 14px;
+    margin-right: 14px;
+
+    font-size: 12px;
+  }
+
+}
+
+/* =========================================================
+   TRÈS PETIT ÉCRAN
+   ========================================================= */
+
+@media (max-width: 500px) {
+
+  .patient-record-page {
+    padding: 15px;
+  }
+
+  .patient-hero {
+    padding: 18px;
+  }
+
+  .medical-grid {
+    gap: 12px;
+  }
+
+  .medical-card {
+    padding: 15px;
+  }
+
+  .record-section {
+    margin-top: 30px;
+  }
+
+  .section-heading {
+    margin-bottom: 16px;
+  }
+
+  .section-heading h2 {
+    font-size: 19px;
+  }
+
+  .treatment-group-header {
+    padding: 16px;
+  }
+
+  .medical-history-list {
+    padding: 10px;
+  }
+
+  .medical-history-header {
+    padding: 14px;
+  }
+
+  .history-main-info {
+    gap: 11px;
+  }
+
+  .history-main-info h3 {
+    font-size: 14px;
+  }
+
+  .history-main-info p {
+    font-size: 11px;
+  }
+
+  .consultation-card-actions {
+    width: 100%;
+  }
+
+  .details-btn {
+    margin-left: auto;
+  }
+
+  .medical-history-body {
+    padding: 16px;
+  }
+
+  .consultation-detail {
+    margin-bottom: 19px;
+  }
+
+  .consultation-detail h4 {
+    font-size: 13px;
+  }
+
+  .consultation-detail p {
+    padding: 13px 14px;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+  }
+
+  .show-sessions-btn {
+    width: calc(100% - 20px);
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding: 11px;
+
+    font-size: 12px;
   }
 
 }

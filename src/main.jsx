@@ -4,15 +4,18 @@ import App from "./App";
 import { PatientProvider } from "./context/PatientContext";
 import { AppointmentProvider } from "./context/AppointmentContext";
 import { ConsultationProvider } from "./context/ConsultationContext";
+import { TreatmentProvider } from "./context/TreatmentContext";
 import "./styles/global.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <PatientProvider>
             <AppointmentProvider>
-                <ConsultationProvider>
-                    <App />
-                </ConsultationProvider>
+                <TreatmentProvider>
+                    <ConsultationProvider>
+                        <App />
+                    </ConsultationProvider>
+                </TreatmentProvider>
             </AppointmentProvider>
         </PatientProvider>
     </React.StrictMode>
