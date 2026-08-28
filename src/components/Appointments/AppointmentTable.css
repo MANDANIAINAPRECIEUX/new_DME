@@ -83,6 +83,22 @@
   color:#fff;
 }
 
+.edit-appointment-btn.disabled,
+.edit-appointment-btn:disabled {
+  background: #f1f3f5;
+  color: #b0b9ba;
+  border-color: #e1e6e8;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.edit-appointment-btn.disabled:hover,
+.edit-appointment-btn:disabled:hover {
+  background: #f1f3f5;
+  color: #b0b9ba;
+  transform: none;
+}
+
 .start-consultation-btn{
   background:#2fa8b8;
   color:#fff;

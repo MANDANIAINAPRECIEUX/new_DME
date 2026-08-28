@@ -93,9 +93,12 @@ function AppointmentTable({ appointments}){
                   <td>
                   <div className="appointment-actions">
 
-                    <button className="edit-appointment-btn"
+                    <button className={`edit-appointment-btn ${
+                      appointment.status !== "pending" ? "disabled" : ""
+                    }`}
+                      disabled={appointment.status !== "pending"}
                       onClick={() =>
-                      navigate(`/appointments/${appointment.id}/edit`)
+                        navigate(`/appointments/${appointment.id}/edit`)
                       }
                     >
                     Modifier
