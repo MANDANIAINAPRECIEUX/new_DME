@@ -61,4 +61,32 @@ export const appointments = [
     status: "completed",
     reason: "Traitement carie molaire",
   },
+
+  {
+    id: 8,
+    patientId: 5,
+    date: "2026-08-31",
+    time: "15:30",
+    status: "pending",
+    reason: "Douleur dentaire",
+  },
+
+  {
+    id: 9,
+    patientId: 6,
+    date: "2026-09-01",
+    time: "09:30",
+    status: "pending",
+    reason: "Douleur dentaire",
+  },
+
+  {
+    id: 10,
+    patientId: 2,
+    date: "2026-09-02",
+    time: "10:30",
+    status: "pending",
+    reason: "Douleur dentaire",
+  }
+
 ];

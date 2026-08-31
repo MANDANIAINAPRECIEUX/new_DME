@@ -39,9 +39,9 @@ function PatientTable({ patients }) {
                 <td>
                   <Link
                     to={`/patients/${patient.id}`}
-                    className="details-btn"
+                    className="patient-record-btn"
                   >
-                    Ouvrir le dossier
+                    Voir le dossier
                   </Link>
                 </td>
               </tr>
