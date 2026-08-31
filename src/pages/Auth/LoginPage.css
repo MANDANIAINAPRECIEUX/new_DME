@@ -1,0 +1,121 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef8fa, #f6f8fc);
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 36px;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.login-logo {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2fa8b8, #2697a7);
+  color: #fff;
+  font-size: 24px;
+}
+
+.login-card h1 {
+  margin: 0 0 6px;
+  color: #2c3e50;
+  font-size: 22px;
+}
+
+.login-card > p {
+  margin: 0 0 28px;
+  color: #95a5a6;
+  font-size: 13px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #34495e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #dce5e8;
+  border-radius: 10px;
+  background: #fafcfd;
+  transition: 0.3s;
+}
+
+.input-with-icon:focus-within {
+  border-color: #2fa8b8;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(47, 168, 184, 0.08);
+}
+
+.input-with-icon svg {
+  color: #95a5a6;
+  font-size: 14px;
+}
+
+.input-with-icon input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: #2c3e50;
+}
+
+.login-error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fdecec;
+  color: #e74c3c;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.login-submit-btn {
+  border: none;
+  padding: 13px;
+  border-radius: 10px;
+  background: #2fa8b8;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-submit-btn:hover:not(:disabled) {
+  background: #2f80ed;
+  transform: translateY(-1px);
+}
+
+.login-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

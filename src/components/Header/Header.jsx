@@ -1,11 +1,12 @@
 import { FaBell, FaCalendarAlt } from "react-icons/fa";
 import { useAppointments } from "../../context/AppointmentContext";
-import { doctor } from "../../mock/doctor";
+import { useAuth } from "../../context/AuthContext";
 import { getTodayAppointments } from "../../utils/appointmentUtils";
 import welcomeImage from "../../assets/Welcome.jpg";
 import "./Header.css";
 
 function Header() {
+  const { user } = useAuth();
 
   const { appointments }=useAppointments();
   const today = new Date();
@@ -51,7 +52,7 @@ function Header() {
         <div className="welcome-text">
 
           <h2>
-            Bonjour, Dr. {doctor.firstName} 👋
+            Bonjour, Dr. {user?.firstName} 👋
           </h2>
 
           <p>

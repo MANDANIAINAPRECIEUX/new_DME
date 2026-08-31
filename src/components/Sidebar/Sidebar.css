@@ -71,3 +71,13 @@
 .logout{
   margin-top:auto;
 }
+
+.logout-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+}
