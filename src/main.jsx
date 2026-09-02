@@ -6,6 +6,7 @@ import { PatientProvider } from "./context/PatientContext";
 import { AppointmentProvider } from "./context/AppointmentContext";
 import { ConsultationProvider } from "./context/ConsultationContext";
 import { TreatmentProvider } from "./context/TreatmentContext";
+import { TypeSoinProvider } from "./context/TypeSoinContext";
 import "./styles/global.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <AppointmentProvider>
                     <TreatmentProvider>
                         <ConsultationProvider>
-                            <App />
+                            <TypeSoinProvider>
+                                <App />
+                            </TypeSoinProvider>
                         </ConsultationProvider>
                     </TreatmentProvider>
                 </AppointmentProvider>

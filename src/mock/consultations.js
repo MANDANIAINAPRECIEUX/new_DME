@@ -13,7 +13,7 @@ export const consultations = [
     soins: [
       {
         id: 1,
-        typeSoin: "Détartrage",
+        typeSoinId: 1,
         dents: ["16", "17"],
       },
     ],
@@ -34,7 +34,7 @@ export const consultations = [
     soins: [
       {
         id: 2,
-        typeSoin: "Ajustement orthodontique",
+        typeSoinId: 2,
         dents: ["11", "21"],
       },
     ],
@@ -55,7 +55,7 @@ export const consultations = [
     soins: [
       {
         id: 3,
-        typeSoin: "Obturation",
+        typeSoinId: 3,
         dents: ["26"],
       },
     ],
@@ -76,7 +76,7 @@ export const consultations = [
     soins: [
       {
         id: 4,
-        typeSoin: "Détartrage",
+        typeSoinId: 4,
         dents: ["14", "15", "24", "25"],
       },
     ],

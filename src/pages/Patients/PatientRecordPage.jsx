@@ -5,6 +5,7 @@ import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
+import { useTypesSoins } from "../../context/TypeSoinContext";
 import "./PatientRecordPage.css";
 
 function formatDate(dateStr, options = { day: "2-digit", month: "long", year: "numeric" }) {
@@ -343,6 +344,9 @@ function ConsultationCard({
 }) {
   const [showDetails, setShowDetails] = useState(false);
 
+  const { typesSoins } = useTypesSoins();
+  const typesSoinsMap = Object.fromEntries(typesSoins.map((t) => [t.id, t.label]));
+
   const soins = consultation.soins || [];
 
   const hasDetails =
@@ -475,7 +479,7 @@ function ConsultationCard({
                     </span>
 
                     <span>
-                      {soin.typeSoin ||
+                      {typesSoinsMap[soin.typeSoinId] ||
                         "Soin non renseigné"}
                     </span>
 

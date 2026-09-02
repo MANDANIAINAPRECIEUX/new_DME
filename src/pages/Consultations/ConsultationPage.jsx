@@ -5,6 +5,7 @@ import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
+import { useTypesSoins } from "../../context/TypeSoinContext";
 import "./ConsultationPage.css";
 
 function ConsultationPage() {
@@ -15,6 +16,7 @@ function ConsultationPage() {
   const { patients } = usePatients();
   const { addConsultation } = useConsultations();
   const { treatments, addTreatment, updateTreatment } = useTreatments();
+  const { typesSoins } = useTypesSoins(); 
 
   const appointment = appointments.find((a) => a.id.toString() === appointmentId);
 
@@ -279,26 +281,35 @@ function ConsultationPage() {
             <div className="acts-empty">
               <FaTooth />
               <p>Aucun soin ajouté à cette consultation.</p>
-            </div>
+             </div>
           ) : (
             <div className="acts-list">
               {formData.soins.map((soin, index) => (
                 <div className="act-row" key={soin.id}>
                   <div className="form-group">
                     <label>Type de soin</label>
-                    <input type="text" placeholder="Ex : Détartrage" value={soin.typeSoin}
-                      onChange={(e) => updateSoin(index, "typeSoin", e.target.value)} />
+                      <select
+                        value={soin.typeSoinId}
+                        onChange={(e) => updateSoin(index, "typeSoinId", e.target.value)}
+                      >
+                        <option value="">Sélectionner un type</option>
+                        {typesSoins.map((type) => (
+                        <option key={type.id} value={type.id}>{type.label}</option>
+                        ))}
+                      </select>
                   </div>
+
                   <div className="form-group">
                     <label>Dents concernées</label>
-                    <input type="text" placeholder="Ex : 16, 17" value={soin.dents.join(", ")}
+                      <input type="text" placeholder="Ex : 16, 17" value={soin.dents.join(", ")}
                       onChange={(e) => updateSoinDents(index, e.target.value)} />
-                    <span className="form-help">Séparer les numéros de dents par une virgule.</span>
+                      <span className="form-help">Séparer les numéros de dents par une virgule.</span>
                   </div>
+
                   <button type="button" className="remove-act-btn" onClick={() => removeSoin(index)}
-                    title="Supprimer le soin">
+                  title="Supprimer le soin">
                     <FaTrash />
-                  </button>
+                    </button>
                 </div>
               ))}
             </div>

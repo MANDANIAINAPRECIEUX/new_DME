@@ -1,0 +1,21 @@
+.settings-page {
+  padding: 25px 35px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  margin-bottom: 24px;
+}
+
+.settings-header h1 {
+  margin: 0 0 4px;
+  color: #2c3e50;
+  font-size: 24px;
+}
+
+.settings-header p {
+  margin: 0;
+  color: #95a5a6;
+  font-size: 13px;
+}
