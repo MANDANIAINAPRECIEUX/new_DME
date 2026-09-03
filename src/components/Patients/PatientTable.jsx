@@ -1,0 +1,56 @@
+import "./PatientTable.css";
+import { Link } from "react-router-dom";
+
+function PatientTable({ patients }) {
+  return (
+    <div className="patient-table-card">
+      <table className="patient-table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Sexe</th>
+            <th>Date de naissance</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>DME</th>
+          </tr>
+        </thead>
+        <tbody>
+          {patients.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="empty-message">
+                Aucun patient trouvé.
+              </td>
+            </tr>
+          ) : (
+            patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>
+                  {patient.firstName} {patient.lastName}
+                </td>
+                <td>
+                  {patient.gender === "M" ? "Homme" : "Femme"}
+                </td>
+                <td>
+                  {new Date(patient.birthDate).toLocaleDateString("fr-FR")}
+                </td>
+                <td>{patient.phone}</td>
+                <td>{patient.address || "—"}</td>
+                <td>
+                  <Link
+                    to={`/patients/${patient.id}`}
+                    className="patient-record-btn"
+                  >
+                    Voir le dossier
+                  </Link>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default PatientTable;

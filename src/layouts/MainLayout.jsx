@@ -1,23 +1,27 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 
 function MainLayout() {
-    return (
-        <div className="layout">
-            <Sidebar />
+  const location = useLocation();
 
-            <div className="main-content">
-            <Header />
-            <main>
+  const isDashboard = location.pathname === "/";
 
-                <Outlet />
+  return (
+    <div className="layout">
+      <Sidebar />
 
-            </main>
-            </div>
+      <div className="main-content">
 
-        </div>
-    );
+        {isDashboard && <Header />}
+
+        <main>
+          <Outlet />
+        </main>
+
+      </div>
+    </div>
+  );
 }
 
 export default MainLayout;

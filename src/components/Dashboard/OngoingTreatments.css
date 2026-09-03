@@ -1,0 +1,97 @@
+.ongoing-treatments-card {
+  padding: 22px 24px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.ongoing-treatments-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ongoing-treatments-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.ongoing-count {
+  min-width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f0f8f9;
+  color: #2fa8b8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ongoing-empty {
+  margin: 0;
+  padding: 14px 0;
+  color: #95a5a6;
+  font-size: 13px;
+}
+
+.ongoing-treatments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ongoing-treatment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fafcfd;
+  border: 1px solid #edf2f3;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.ongoing-treatment-item:hover {
+  background: #f0f8f9;
+  border-color: #2fa8b8;
+}
+
+.ongoing-treatment-item h3 {
+  margin: 0 0 3px;
+  color: #2c3e50;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ongoing-treatment-item p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 12px;
+}
+
+.ongoing-treatment-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.seance-count {
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #eef8fa;
+  color: #2fa8b8;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.last-seance-date {
+  color: #95a5a6;
+  font-size: 11px;
+}

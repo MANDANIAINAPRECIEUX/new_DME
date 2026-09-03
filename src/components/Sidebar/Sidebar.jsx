@@ -1,24 +1,29 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import menuItems, { logoutItem } from "./menuItems";
-import { doctor } from "../../mock/doctor";
+import { useAuth } from "../../context/AuthContext";
 import "./Sidebar.css";
 
 function Sidebar() {
   const LogoutIcon = logoutItem.icon;
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <aside className="sidebar">
-      {/* TODO: Replace mock doctor data with API response when backend is available. */}
-
       <div className="doctor-profile">
         <img
-          src={doctor.photo}
-          alt={doctor.name}
+          src={user?.photo}
+          alt={user?.name || user?.firstName}
           className="doctor-image"
         />
 
-        <h3>{doctor.name}</h3>
-        <p>{doctor.speciality}</p>
+        <h3>{user?.name || `Dr. ${user?.firstName ?? ""}`}</h3>
+        <p>{user?.speciality}</p>
       </div>
 
       <nav className="sidebar-menu">
@@ -41,10 +46,10 @@ function Sidebar() {
       </nav>
 
       <div className="logout">
-        <NavLink to={logoutItem.path} className="menu-item">
+        <button type="button" className="menu-item logout-btn" onClick={handleLogout}>
           <LogoutIcon />
           <span>{logoutItem.title}</span>
-        </NavLink>
+        </button>
       </div>
     </aside>
   );

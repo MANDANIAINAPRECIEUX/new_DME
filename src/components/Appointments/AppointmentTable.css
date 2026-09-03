@@ -1,0 +1,145 @@
+.appointment-table-card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+  overflow-x:auto;
+}
+
+.appointment-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.appointment-table th{
+  padding:14px 12px;
+  text-align:left;
+  font-size:13px;
+  font-weight:600;
+  color:#7f8c8d;
+  border-bottom:1px solid #eef1f4;
+}
+
+.appointment-table td{
+  padding:16px 12px;
+  font-size:14px;
+  color:#2c3e50;
+  border-bottom:1px solid #f1f3f5;
+}
+
+.appointment-table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.status.pending{
+  background:#fff4d6;
+  color:#b7791f;
+}
+
+.status.completed{
+  background:#e6f7ef;
+  color:#21865b;
+}
+
+.status.cancelled{
+  background:#fdeaea;
+  color:#c0392b;
+}
+
+.appointment-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  white-space:nowrap;
+}
+
+.edit-appointment-btn,
+.start-consultation-btn,
+.cancel-appointment-btn{
+  border:none;
+  padding:7px 11px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.edit-appointment-btn{
+  background:#eef8fa;
+  color:#2fa8b8;
+}
+
+.edit-appointment-btn:hover{
+  background:#2fa8b8;
+  color:#fff;
+}
+
+.edit-appointment-btn.disabled,
+.edit-appointment-btn:disabled {
+  background: #f1f3f5;
+  color: #b0b9ba;
+  border-color: #e1e6e8;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.edit-appointment-btn.disabled:hover,
+.edit-appointment-btn:disabled:hover {
+  background: #f1f3f5;
+  color: #b0b9ba;
+  transform: none;
+}
+
+.start-consultation-btn{
+  background:#2fa8b8;
+  color:#fff;
+}
+
+.start-consultation-btn:hover:not(:disabled){
+  background:#2f80ed;
+  transform:translateY(-1px);
+}
+
+.cancel-appointment-btn{
+  background:#fff0f0;
+  color:#c0392b;
+}
+
+.cancel-appointment-btn:hover:not(:disabled){
+  background:#fdeaea;
+}
+
+.start-consultation-btn:disabled,
+.cancel-appointment-btn:disabled{
+  background:#f5f5f5;
+  color:#b8b8b8;
+  cursor:not-allowed;
+}
+
+.empty-message{
+  text-align:center !important;
+  padding:30px !important;
+  color:#95a5a6 !important;
+}
+
+@media(max-width:900px){
+  .appointment-actions{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .edit-appointment-btn,
+  .start-consultation-btn,
+  .cancel-appointment-btn{
+    width:100%;
+  }
+}

@@ -1,9 +1,14 @@
-import { FaBell } from "react-icons/fa";
-import { todayAppointments } from "../../mock/appointments";
-import welcomeImage from "../../assets/Welcome.jpg"
+import { FaBell, FaCalendarAlt } from "react-icons/fa";
+import { useAppointments } from "../../context/AppointmentContext";
+import { useAuth } from "../../context/AuthContext";
+import { getTodayAppointments } from "../../utils/appointmentUtils";
+import welcomeImage from "../../assets/Welcome.jpg";
 import "./Header.css";
 
 function Header() {
+  const { user } = useAuth();
+
+  const { appointments }=useAppointments();
   const today = new Date();
 
   const weekday = today.toLocaleDateString("fr-FR", {
@@ -16,54 +21,70 @@ function Header() {
     year: "numeric",
   });
 
+  const todayAppointments = getTodayAppointments(appointments);
+
   const remainingAppointments = todayAppointments.filter(
-    (appointment) =>
-      appointment.status !== "completed"
+    (appointment) => appointment.status !== "completed"
   ).length;
 
   const patientsToday = todayAppointments.filter(
-    (appointment) => 
+    (appointment) =>
       appointment.status === "completed" ||
       appointment.status === "in-progress"
   ).length;
-
-  return (
+    
+    return (
     <header className="header">
-
+      
       <div className="header-card date-card">
-        <h1>{weekday}</h1>
-        <p>{fullDate}</p>
+
+        <FaCalendarAlt className="date-icon" />
+
+        <div className="date-info">
+          <h1>{weekday}</h1>
+          <p>{fullDate}</p>
+        </div>
+
       </div>
 
       <div className="header-card welcome-card">
+
         <div className="welcome-text">
-          <h2>Bonjour, Docteur 👋</h2>
+
+          <h2>
+            Bonjour, Dr. {user?.firstName} 👋
+          </h2>
+
           <p>
             Vous avez <strong>{remainingAppointments}</strong> rendez-vous aujourd'hui
           </p>
+
         </div>
+
         <img
           src={welcomeImage}
           alt="Bienvenue"
           className="welcome-image"
         />
+
       </div>
 
       <div className="header-card patient-card">
 
         <div className="patient-info">
-          
+
           <p className="patient-title">
             Patients reçus aujourd'hui
           </p>
 
           <h3>{patientsToday}</h3>
-          
+
         </div>
 
         <button className="notification-btn">
           <FaBell />
         </button>
+
       </div>
 
     </header>
