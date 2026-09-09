@@ -74,7 +74,7 @@ export const appointments = [
   {
     id: 9,
     patientId: 6,
-    date: "2026-09-01",
+    date: "2026-09-09",
     time: "09:30",
     status: "pending",
     reason: "Douleur dentaire",
@@ -83,7 +83,7 @@ export const appointments = [
   {
     id: 10,
     patientId: 2,
-    date: "2026-09-02",
+    date: "2026-09-12",
     time: "10:30",
     status: "pending",
     reason: "Douleur dentaire",

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { FaArrowLeft, FaEdit, FaNotesMedical, FaTooth, FaFileMedical, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { FaArrowLeft, FaEdit, FaNotesMedical, FaTooth, FaFileMedical, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import { useConsultations } from "../../context/ConsultationContext";
@@ -16,6 +16,18 @@ function formatDate(dateStr, options = { day: "2-digit", month: "long", year: "n
 function PatientRecordPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const location = useLocation();
+const suggestNextAppointment = location.state?.suggestNextAppointment;
+
+const handlePlanNextAppointment = () => {
+  navigate("/appointments/new", {
+    state: {
+      patientId: suggestNextAppointment.patientId,
+      reason: suggestNextAppointment.reason,
+    },
+  });
+};
 
   const { patients } = usePatients();
   const { appointments } = useAppointments();
@@ -66,6 +78,7 @@ function PatientRecordPage() {
   const totalSoins = patientConsultations.reduce((total, c) => total + (c.soins?.length || 0), 0);
 
   const fullName = `${patient.firstName} ${patient.lastName}`;
+  
 
   return (
     <div className="patient-record-page">
@@ -181,6 +194,8 @@ function PatientRecordPage() {
                 treatment={treatment}
                 patientAppointments={patientAppointments}
                 updateTreatment={updateTreatment}
+                suggestNextAppointment={suggestNextAppointment}
+                onPlanNextAppointment={handlePlanNextAppointment}
               />
             ))}
 
@@ -222,117 +237,88 @@ function TreatmentGroup({
   treatment,
   patientAppointments,
   updateTreatment,
+  suggestNextAppointment,
+  onPlanNextAppointment,
 }) {
   const [showAll, setShowAll] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+
+  const showBanner =
+    suggestNextAppointment?.treatmentId === treatment.id && !bannerDismissed;
 
   const consultations = treatment.consultations || [];
-
-  // Par défaut, on affiche uniquement la dernière séance
-  const displayedConsultations = showAll
-    ? consultations
-    : consultations.slice(-1);
+  const displayedConsultations = showAll ? consultations : consultations.slice(-1);
 
   return (
     <div className="treatment-group">
-
       <div className="treatment-group-header">
-
         <div className="treatment-title">
-
-          <span className="treatment-label-tag">
-            PARCOURS
+          <span className="treatment-label-tag">PARCOURS</span>
+          <h3>{treatment.label || "Sans intitulé"}</h3>
+          <span className={`treatment-status ${treatment.status || "ongoing"}`}>
+            {treatment.status === "completed" ? "Terminé" : "En cours"}
           </span>
-
-          <h3>
-            {treatment.label || "Sans intitulé"}
-          </h3>
-
-          <span
-            className={`treatment-status ${
-              treatment.status || "ongoing"
-            }`}
-          >
-            {treatment.status === "completed"
-              ? "Terminé"
-              : "En cours"}
-          </span>
-
         </div>
 
         <div className="treatment-header-actions">
-
           {treatment.status !== "completed" && (
             <button
               type="button"
               className="complete-treatment-btn"
-              onClick={() =>
-                updateTreatment(
-                  treatment.id,
-                  { status: "completed" }
-                )
-              }
+              onClick={() => updateTreatment(treatment.id, { status: "completed" })}
             >
               Terminer
             </button>
           )}
-
         </div>
-
       </div>
 
+      {showBanner && (
+        <div className="next-appointment-banner">
+          <div>
+            <strong>Planifier la prochaine séance ?</strong>
+            <p>Ce traitement est toujours en cours — vous pouvez programmer le prochain rendez-vous maintenant.</p>
+          </div>
+          <div className="next-appointment-banner-actions">
+            <button className="plan-next-btn" onClick={onPlanNextAppointment}>
+              Planifier
+            </button>
+            <button
+              className="dismiss-banner-btn"
+              onClick={() => setBannerDismissed(true)}
+              title="Ignorer"
+            >
+              <FaTimes />
+            </button>
+          </div>
+        </div>
+      )}
+
       {consultations.length === 0 ? (
-        <p className="treatment-empty">
-          Aucune séance enregistrée.
-        </p>
+        <p className="treatment-empty">Aucune séance enregistrée.</p>
       ) : (
         <>
           <div className="medical-history-list">
-
             {displayedConsultations.map((consultation) => {
-
-              const originalIndex =
-                consultations.indexOf(consultation);
-
+              const originalIndex = consultations.indexOf(consultation);
               return (
                 <ConsultationCard
                   key={consultation.id}
                   consultation={consultation}
-                  appointment={patientAppointments.find(
-                    (a) =>
-                      a.id === consultation.appointmentId
-                  )}
+                  appointment={patientAppointments.find((a) => a.id === consultation.appointmentId)}
                   seanceNumber={originalIndex + 1}
                 />
               );
             })}
-
           </div>
 
           {consultations.length > 1 && (
-            <button
-              type="button"
-              className="show-sessions-btn"
-              onClick={() =>
-                setShowAll((prev) => !prev)
-              }
-            >
-              {showAll ? (
-                <>
-                  <FaChevronUp />
-                  Réduire les séances
-                </>
-              ) : (
-                <>
-                  <FaChevronDown />
-                  Voir les {consultations.length} séances
-                </>
-              )}
+            <button type="button" className="show-sessions-btn" onClick={() => setShowAll((prev) => !prev)}>
+              {showAll ? (<><FaChevronUp />Réduire les séances</>) : (<><FaChevronDown />Voir les {consultations.length} séances</>)}
             </button>
           )}
-
         </>
       )}
-
     </div>
   );
 }

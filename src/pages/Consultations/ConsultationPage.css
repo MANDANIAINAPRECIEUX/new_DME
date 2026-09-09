@@ -355,9 +355,9 @@
 .soin-row,
 .act-row{
   display:grid;
-  grid-template-columns:1fr 1.5fr 36px;
-  align-items:end;
-  gap:14px;
+  grid-template-columns: 1fr 1.5fr 36px;
+  align-items:start;
+  gap:16px;
 
   padding:16px;
 
@@ -389,8 +389,13 @@
 }
 
 .soin-row .form-group input,
-.act-row .form-group input{
+.soin-row .form-group select,
+.act-row .form-group input,
+.act-row .form-group select{
+  width:100%;
   height:40px;
+  box-sizing:border-box;
+
   padding:0 12px;
 
   border:1px solid #dce5e8;
@@ -417,7 +422,13 @@
   color:#b0b9ba;
 }
 
-
+.soin-row .form-group select:focus,
+.act-row .form-group select:focus,
+.soin-row .form-group input:focus,
+.act-row .form-group input:focus{
+  border-color:#2fa8b8;
+  box-shadow:0 0 0 3px rgba(47,168,184,.08);
+}
 /* ---------- Champ dents ---------- */
 
 .dents-input{

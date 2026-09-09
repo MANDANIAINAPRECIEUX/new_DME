@@ -1,29 +1,26 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom"; // ← useLocation ajouté
 import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import PatientSearchSelect from "../Patients/PatientSearchSelect";
 import { hasAppointmentConflict } from "../../utils/appointmentUtils";
 import "./AppointmentForm.css";
 
-function AppointmentForm(){
-  const navigate=useNavigate();
-  const { id }=useParams();
+function AppointmentForm() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const location = useLocation(); // ← nouveau
 
-  const { patients }=usePatients();
-  const {
-    appointments,
-    addAppointment,
-    updateAppointment
-  }=useAppointments();
+  const { patients } = usePatients();
+  const { appointments, addAppointment, updateAppointment } = useAppointments();
 
-  const isEditMode=Boolean(id);
+  const isEditMode = Boolean(id);
 
-  const [formData,setFormData]=useState({
-    patientId:"",
-    date:"",
-    time:"",
-    reason:"",
+  const [formData, setFormData] = useState({
+    patientId: location.state?.patientId || "",
+    date: "",
+    time: "",
+    reason: location.state?.reason || "",
   });
 
   const [errors,setErrors]=useState({});

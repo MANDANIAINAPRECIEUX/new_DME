@@ -76,7 +76,7 @@ function ConsultationPage() {
   const addSoin = () => {
     setFormData((prev) => ({
       ...prev,
-      soins: [...prev.soins, { id: Date.now(), typeSoin: "", dents: [] }],
+      soins: [...prev.soins, { id: Date.now(), typeSoinId: "", dents: [] }],
     }));
   };
 
@@ -100,38 +100,56 @@ function ConsultationPage() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
+  let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
+  let treatmentLabel = null;
 
-    // Création du traitement à la volée si le dentiste en a démarré un nouveau
-    if (formData.isNewTreatment && formData.newTreatmentLabel.trim()) {
-      const newTreatment = addTreatment({
-        patientId: patient.id,
-        label: formData.newTreatmentLabel.trim(),
-      });
-      treatmentId = newTreatment.id;
-    }
-
-    addConsultation({
-      appointmentId: appointment.id,
-      treatmentId,
+  if (formData.isNewTreatment && formData.newTreatmentLabel.trim()) {
+    const newTreatment = addTreatment({
       patientId: patient.id,
-      doctorId: appointment.doctorId || null,
-      reason: formData.reason,
-      compteRendu: formData.compteRendu,
-      observation: formData.observation,
-      soins: formData.soins,
+      label: formData.newTreatmentLabel.trim(),
     });
+    treatmentId = newTreatment.id;
+    treatmentLabel = newTreatment.label;
+  } else if (treatmentId) {
+    treatmentLabel = patientTreatments.find((t) => t.id === treatmentId)?.label;
+  }
 
-    // Clôture du traitement si le dentiste l'a indiqué
-    if (treatmentId && formData.markTreatmentCompleted) {
-      updateTreatment(treatmentId, { status: "completed" });
-    }
+  addConsultation({
+    appointmentId: appointment.id,
+    treatmentId,
+    patientId: patient.id,
+    doctorId: appointment.doctorId || null,
+    reason: formData.reason,
+    compteRendu: formData.compteRendu,
+    observation: formData.observation,
+    soins: formData.soins.map((soin) => ({
+      ...soin,
+      typeSoinId: soin.typeSoinId ? Number(soin.typeSoinId) : null,
+    })),
+  });
 
-    updateAppointment(appointment.id, { status: "completed" });
-    navigate(`/patients/${patient.id}`);
-  };
+  if (treatmentId && formData.markTreatmentCompleted) {
+    updateTreatment(treatmentId, { status: "completed" });
+  }
+
+  updateAppointment(appointment.id, { status: "completed" });
+
+  const shouldSuggestNextAppointment = treatmentId && !formData.markTreatmentCompleted;
+
+  navigate(`/patients/${patient.id}`, {
+    state: shouldSuggestNextAppointment
+      ? {
+          suggestNextAppointment: {
+            patientId: patient.id,
+            treatmentId,
+            reason: `Suite : ${treatmentLabel || "traitement"}`,
+          },
+        }
+      : undefined,
+  });
+};
 
   const hasTreatmentSelected = formData.treatmentId || formData.isNewTreatment;
 
