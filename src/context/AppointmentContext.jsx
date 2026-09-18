@@ -10,6 +10,7 @@ export function AppointmentProvider({ children }){
     const newAppointment={
       id:Date.now(),
       ...appointmentData,
+      status: "pending",
     };
 
     setAppointments((prevAppointments)=>[

@@ -1,10 +1,13 @@
+import { doctors } from "../../mock/doctors";
 import "./AppointmentFilters.css";
 
 function AppointmentFilters({
   statusFilter,
   dateFilter,
+  doctorFilter,
   onStatusChange,
   onDateChange,
+  onDoctorChange,
 }) {
   return (
     <div className="appointment-filters">
@@ -30,6 +33,20 @@ function AppointmentFilters({
         <option value="upcoming">À venir</option>
         <option value="past">Passés</option>
       </select>
+
+      {doctors.length > 1 && (
+        <select
+          value={doctorFilter}
+          onChange={(e) => onDoctorChange(e.target.value)}
+        >
+          <option value="all">Tous les docteurs</option>
+          {doctors.map((doctor) => (
+            <option key={doctor.id} value={doctor.id}>
+              Dr. {doctor.firstName}
+            </option>
+          ))}
+        </select>
+      )}
 
     </div>
   );

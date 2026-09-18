@@ -6,6 +6,7 @@ import { usePatients } from "../../context/PatientContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
+import { useAuth } from "../../context/AuthContext";
 import "./ConsultationPage.css";
 
 function ConsultationPage() {
@@ -17,6 +18,7 @@ function ConsultationPage() {
   const { addConsultation } = useConsultations();
   const { treatments, addTreatment, updateTreatment } = useTreatments();
   const { typesSoins } = useTypesSoins(); 
+  const { user } = useAuth();
 
   const appointment = appointments.find((a) => a.id.toString() === appointmentId);
 
@@ -120,7 +122,7 @@ function ConsultationPage() {
     appointmentId: appointment.id,
     treatmentId,
     patientId: patient.id,
-    doctorId: appointment.doctorId || null,
+    doctorId: user?.id ?? null,
     reason: formData.reason,
     compteRendu: formData.compteRendu,
     observation: formData.observation,

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
+import { doctors } from "../../mock/doctors";
 import "./AppointmentTable.css";
 
 function AppointmentTable({ appointments}){
@@ -11,6 +12,7 @@ function AppointmentTable({ appointments}){
   const patientsMap=Object.fromEntries(
     patients.map((patient)=>[patient.id,patient])
   );
+  const doctorsMap = Object.fromEntries(doctors.map((d) => [d.id, d]));
 
   const getStatusLabel=(status)=>{
     switch(status){
@@ -47,6 +49,7 @@ function AppointmentTable({ appointments}){
             <th>Date</th>
             <th>Heure</th>
             <th>Patient</th>
+            <th>Docteur</th>
             <th>Motif</th>
             <th>Statut</th>
             <th>Actions</th>
@@ -56,13 +59,14 @@ function AppointmentTable({ appointments}){
         <tbody>
           {appointments.length===0 ? (
             <tr>
-              <td colSpan="6" className="empty-message">
+              <td colSpan="7" className="empty-message">
                 Aucun rendez-vous trouvé.
               </td>
             </tr>
           ) : (
             appointments.map((appointment)=>{
               const patient=patientsMap[appointment.patientId];
+              const doctor = doctorsMap[appointment.doctorId];
 
               return(
                 <tr key={appointment.id}>
@@ -79,6 +83,8 @@ function AppointmentTable({ appointments}){
                       ? `${patient.firstName} ${patient.lastName}`
                       : "Patient inconnu"}
                   </td>
+
+                  <td>{doctor ? `Dr. ${doctor.firstName}` : "—"}</td>
 
                   <td>
                     {appointment.reason||"—"}

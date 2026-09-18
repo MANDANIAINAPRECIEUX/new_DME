@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
+import { doctors } from "../../mock/doctors";
 import PatientSearch from "../../components/Patients/PatientSearch";
 import AppointmentFilters from "../../components/Appointments/AppointmentFilters";
 import AppointmentTable from "../../components/Appointments/AppointmentTable";
 import Pagination from "../../components/common/Pagination";
 import {
   filterAppointmentsByPatient,
+  filterAppointmentsByDoctor,
   filterAppointmentsByStatus,
   filterAppointmentsByDate,
 } from "../../utils/appointmentUtils";
@@ -22,16 +24,18 @@ function Appointments() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
+  const [doctorFilter, setDoctorFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredByPatient = filterAppointmentsByPatient(appointments, patients, searchTerm);
   const filteredByStatus = filterAppointmentsByStatus(filteredByPatient, statusFilter);
-  const filteredAppointments = filterAppointmentsByDate(filteredByStatus, dateFilter);
+  const filteredByDate = filterAppointmentsByDate(filteredByStatus, dateFilter);
+  const filteredAppointments = filterAppointmentsByDoctor(filteredByDate, doctorFilter);
 
   // Revenir à la page 1 si n'importe quel filtre change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, statusFilter, dateFilter]);
+  }, [searchTerm, statusFilter, dateFilter, doctorFilter]);
 
   const totalPages = Math.ceil(filteredAppointments.length / ITEMS_PER_PAGE);
 
@@ -58,8 +62,10 @@ function Appointments() {
         <AppointmentFilters
           statusFilter={statusFilter}
           dateFilter={dateFilter}
+          doctorFilter={doctorFilter}
           onStatusChange={setStatusFilter}
           onDateChange={setDateFilter}
+          onDoctorChange={setDoctorFilter}
         />
       </div>
 

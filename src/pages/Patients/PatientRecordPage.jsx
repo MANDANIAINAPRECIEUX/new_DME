@@ -6,6 +6,7 @@ import { useAppointments } from "../../context/AppointmentContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
+import { doctors } from "../../mock/doctors";
 import "./PatientRecordPage.css";
 
 function formatDate(dateStr, options = { day: "2-digit", month: "long", year: "numeric" }) {
@@ -333,12 +334,11 @@ function ConsultationCard({
   const { typesSoins } = useTypesSoins();
   const typesSoinsMap = Object.fromEntries(typesSoins.map((t) => [t.id, t.label]));
 
-  const soins = consultation.soins || [];
+   const doctorsMap = Object.fromEntries(doctors.map((d) => [d.id, d]));
+  const consultationDoctor = doctorsMap[consultation.doctorId];
 
-  const hasDetails =
-    consultation.compteRendu ||
-    consultation.observation ||
-    soins.length > 0;
+  const soins = consultation.soins || [];
+  const hasDetails = consultation.compteRendu || consultation.observation || soins.length > 0;
 
   return (
     <div className="medical-history-card">
@@ -370,6 +370,7 @@ function ConsultationCard({
                 )}
                 {" · "}
                 {appointment.time}
+                {consultationDoctor && ` · Dr. ${consultationDoctor.firstName}`}
               </p>
             )}
 
