@@ -1,0 +1,17 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Prisma est un ORM qui permet au backend de manipuler PostgreSQL depuis JavaScript.
+// Ce fichier décrit les modèles de données, leurs champs et leurs relations.
+// Prisma génère un client pour interroger la base et fournit des migrations pour faire évoluer sa structure.
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
