@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
+  flex-wrap: nowrap;
   gap: 18px;
   margin: 20px 35px;
 }
@@ -14,6 +15,39 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* ---------- Recette du jour ---------- */
+
+.recette-card {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.recette-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #f5fafa;
+  color: #2fa8b8;
+  font-size: 18px;
+}
+
+.recette-title {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.recette-info h3 {
+  font-size: 22px;
+  color: #2fa8b8;
+  line-height: 1;
+}
 
 /* ---------- Date ---------- */
 
@@ -53,20 +87,20 @@
 /* ---------- Welcome ---------- */
 
 .welcome-card {
-  width: 500px;
+  width: 320px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .welcome-text h2 {
-  font-size: 20px;
+  font-size: 17px;
   color: #2c3e50;
   margin-bottom: 8px;
 }
 
 .welcome-text p {
-  font-size: 14px;
+  font-size: 13px;
   color: #777;
 }
 
@@ -75,7 +109,7 @@
 }
 
 .welcome-image {
-  width: 90px;
+  width: 70px;
   height: auto;
 }
 
@@ -83,7 +117,7 @@
 /* ---------- Patients ---------- */
 
 .patient-card {
-  width: 210px;
+  width: 200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -121,3 +155,157 @@
   color: white;
 }
 
+@media (max-width: 1100px) {
+  .header {
+    gap: 12px;
+    margin: 20px 25px;
+  }
+
+  .header-card {
+    padding: 14px 16px;
+  }
+
+  .recette-card {
+    width: 165px;
+  }
+
+  .date-card {
+    width: 165px;
+  }
+
+  .welcome-card {
+    width: 280px;
+  }
+
+  .patient-card {
+    width: 175px;
+  }
+
+  .date-card h1 {
+    font-size: 21px;
+  }
+
+  .welcome-text h2 {
+    font-size: 15px;
+  }
+
+  .welcome-text p {
+    font-size: 12px;
+  }
+
+  .welcome-image {
+    width: 60px;
+  }
+
+  .patient-info h3 {
+    font-size: 27px;
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-card {
+    height: 85px;
+  }
+
+  .welcome-card {
+    width: 300px;
+  }
+
+  .recette-card,
+  .date-card,
+  .patient-card {
+    width: 170px;
+  }
+}
+
+@media (max-width: 700px) {
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 15px 20px;
+  }
+
+  .header-card {
+    width: 100%;
+    height: 82px;
+    padding: 14px;
+    box-sizing: border-box;
+  }
+
+  .welcome-card {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .notification-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .date-card h1 {
+    font-size: 20px;
+  }
+
+  .date-card p {
+    font-size: 12px;
+  }
+
+  .recette-title,
+  .patient-title {
+    font-size: 12px;
+  }
+
+  .recette-info h3 {
+    font-size: 19px;
+  }
+
+  .patient-info h3 {
+    font-size: 25px;
+  }
+
+  .welcome-text h2 {
+    font-size: 15px;
+  }
+
+  .welcome-text p {
+    font-size: 12px;
+  }
+
+  .welcome-image {
+    width: 55px;
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    grid-template-columns: 1fr;
+    margin: 12px 15px;
+  }
+
+  .header-card {
+    height: 78px;
+  }
+
+  .welcome-card {
+    grid-column: auto;
+  }
+
+  .date-card,
+  .recette-card,
+  .patient-card,
+  .welcome-card {
+    width: 100%;
+  }
+
+  .patient-title {
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+}
