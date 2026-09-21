@@ -593,6 +593,42 @@
   background:#2f80ed;
 }
 
+.billing-summary {
+  display: flex;
+  gap: 20px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  background: #fafcfd;
+  border: 1px solid #edf2f3;
+  border-radius: 12px;
+}
+
+.billing-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.billing-summary-item span:first-child {
+  color: #95a5a6;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.billing-summary-item span:last-child {
+  color: #2c3e50;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.solde-positive { color: #e67e22; }
+.solde-zero { color: #27ae60; }
+
+.add-act-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 /* =========================================================
    RESPONSIVE

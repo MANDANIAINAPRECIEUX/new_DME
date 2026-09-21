@@ -159,3 +159,26 @@
   background: #dce5e8;
   color: #2c3e50;
 }
+
+.type-soin-add-form input[type="number"] {
+  width: 140px;
+  flex: none;
+}
+
+.type-soin-tarif {
+  min-width: 100px;
+  text-align: right;
+  color: #2fa8b8;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.delete-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.delete-btn:disabled:hover {
+  background: #fdecec;
+  color: #e74c3c;
+}
