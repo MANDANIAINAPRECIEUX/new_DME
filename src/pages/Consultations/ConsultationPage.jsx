@@ -7,7 +7,7 @@ import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
 import { useAuth } from "../../context/AuthContext";
-import { getTotalDu, getTotalPaye, formatMontant } from "../../utils/billingUtils";
+import { getTotalDu, getTotalPaye, getSolde, formatMontant } from "../../utils/billingUtils";
 import "./ConsultationPage.css";
 
 function ConsultationPage() {
@@ -16,7 +16,7 @@ function ConsultationPage() {
 
   const { appointments, updateAppointment } = useAppointments();
   const { patients } = usePatients();
-  const { addConsultation } = useConsultations();
+  const { consultations, addConsultation } = useConsultations();
   const { treatments, addTreatment, updateTreatment } = useTreatments();
   const { typesSoins } = useTypesSoins();
   const { user } = useAuth();
@@ -118,6 +118,17 @@ function ConsultationPage() {
   const totalPaye = getTotalPaye(formData.paiements);
   const solde = totalDu - totalPaye;
 
+  const selectedTreatmentId =
+  !formData.isNewTreatment && formData.treatmentId ? Number(formData.treatmentId) : null;
+
+  const soldeAutresConsultations = selectedTreatmentId
+  ? consultations
+      .filter((c) => c.treatmentId === selectedTreatmentId)
+      .reduce((total, c) => total + getSolde(c.soins, c.paiements, typesSoins), 0)
+  : 0;
+
+  const soldeTotalTraitement = soldeAutresConsultations + solde;
+
   const addPaiement = () => {
     setFormData((prev) => ({
       ...prev,
@@ -160,16 +171,23 @@ function ConsultationPage() {
   // --- Submit ---
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const hasInvalidPaiement = formData.paiements.some(
-      (p, i) => !p.amount || getPaiementError(i)
+  if (formData.markTreatmentCompleted && soldeTotalTraitement > 0) {
+    alert(
+      `Impossible de marquer ce traitement comme terminé : il reste un solde de ${formatMontant(soldeTotalTraitement)}.`
     );
+    return;
+  }
 
-    if (hasInvalidPaiement) {
-      alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
-      return;
-    }
+  const hasInvalidPaiement = formData.paiements.some(
+    (p, i) => !p.amount || getPaiementError(i)
+  );
+
+  if (hasInvalidPaiement) {
+    alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
+    return;
+  }
 
     let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
     let treatmentLabel = null;
@@ -310,11 +328,25 @@ function ConsultationPage() {
           )}
 
           {hasTreatmentSelected && (
-            <label className="checkbox-inline">
-              <input type="checkbox" checked={formData.markTreatmentCompleted}
-                onChange={(e) => setFormData((prev) => ({ ...prev, markTreatmentCompleted: e.target.checked }))} />
-              Marquer ce traitement comme terminé après cette séance
-            </label>
+            <>
+              <label className="checkbox-inline">
+                <input
+                  type="checkbox"
+                  checked={formData.markTreatmentCompleted}
+                  disabled={soldeTotalTraitement > 0}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, markTreatmentCompleted: e.target.checked }))
+                  }
+                />
+                Marquer ce traitement comme terminé après cette séance
+              </label>
+
+             {soldeTotalTraitement > 0 && (
+              <span className="form-help">
+                Impossible tant qu'il reste un solde de {formatMontant(soldeTotalTraitement)} sur ce traitement.
+              </span>
+              )}
+            </>
           )}
         </section>
 

@@ -11,6 +11,17 @@
   flex-shrink:0;
 }
 
+.sidebar-brand {
+  padding: 0 8px 20px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sidebar-brand svg {
+  font-size: 18px;
+}
+
 .doctor-profile {
   text-align: center;
 }

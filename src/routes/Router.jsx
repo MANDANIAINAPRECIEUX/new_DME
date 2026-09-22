@@ -10,6 +10,8 @@ import AppointmentFormPage from "../pages/Appointments/AppointmentFormPage";
 import PatientRecordPage from "../pages/Patients/PatientRecordPage";
 import ConsultationPage from "../pages/Consultations/ConsultationPage";
 import Settings from "../pages/Settings/Settings";
+import Treatments from "../pages/Treatments/Treatments";
+import Help from "../pages/Help/Help";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
       { path: "patients/:id", element: <PatientRecordPage /> },
       { path: "consultations/:appointmentId", element: <ConsultationPage /> },
       { path: "settings", element: <Settings /> },
+      { path: "treatments", element: <Treatments /> },
+      { path: "help", element: <Help /> },
     ],
   },
 ]);

@@ -28,10 +28,6 @@ function OngoingTreatments() {
 
   return (
     <div className="ongoing-treatments-card">
-      <div className="ongoing-treatments-header">
-        <h2>Traitements en cours</h2>
-        <span className="ongoing-count">{ongoingTreatments.length}</span>
-      </div>
 
       {ongoingTreatments.length === 0 ? (
         <p className="ongoing-empty">Aucun traitement en cours actuellement.</p>

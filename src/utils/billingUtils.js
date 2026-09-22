@@ -21,3 +21,15 @@ export function getRecetteJour(consultations, dateStr) {
     return total + getTotalPaye(paiementsDuJour);
   }, 0);
 }
+
+export function getUnpaidConsultations(consultations, typesSoins) {
+  return consultations
+    .map((c) => ({
+      consultationId: c.id,
+      patientId: c.patientId,
+      date: c.createdAt,
+      solde: getSolde(c.soins, c.paiements, typesSoins),
+    }))
+    .filter((c) => c.solde > 0)
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+}

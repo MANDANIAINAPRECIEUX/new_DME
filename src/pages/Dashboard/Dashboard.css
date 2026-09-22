@@ -4,6 +4,60 @@
   align-items: start;
   gap: 20px;
   padding: 0 35px 30px;
+  box-sizing: border-box;
+}
+
+.dashboard-section {
+  min-width: 0;
+}
+
+.dashboard-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dashboard-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #dce8eb;
+}
+
+.dashboard-section-title > span:first-child {
+  color: #63777d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dashboard-section-title a {
+  color: #2fa8b8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dashboard-section-title a:hover {
+  text-decoration: underline;
+}
+
+.section-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 12px;
+  background: #eef8f9;
+  color: #2fa8b8;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 @media (max-width: 1000px) {

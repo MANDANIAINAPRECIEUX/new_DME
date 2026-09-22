@@ -3,7 +3,13 @@
   min-height:100vh;
 }
 
-.main-content{
-  flex:1;
-  background:#F6F8FC;
+.main-content {
+  flex: 1;
+  min-width: 0;
+  background: #F6F8FC;
+}
+
+.main-content main {
+  width: 100%;
+  min-width: 0;
 }
