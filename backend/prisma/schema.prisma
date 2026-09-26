@@ -16,7 +16,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum Gender {
   M
   F
@@ -25,7 +24,7 @@ enum Gender {
 // Informations générales du patient.
 // L'âge sera calculé depuis birthDate, sans être enregistré.
 model Patient {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
   gender    Gender
@@ -34,4 +33,38 @@ model Patient {
   address   String?
 
   @@index([lastName, firstName])
+}
+
+
+enum AppointmentStatus {
+  pending
+  completed
+  cancelled
+}
+
+// Chaque rendez-vous appartient à un patient et à un docteur.
+// Un créneau dure une heure et commence à une heure entière.
+model Appointment {
+  id        Int               @id @default(autoincrement())
+  patientId Int
+  doctorId  Int
+  date      DateTime          @db.Date
+  time      String            @db.VarChar(5)
+  status    AppointmentStatus @default(pending)
+  reason    String?
+
+  patient Patient @relation(
+    fields: [patientId],
+    references: [id],
+    onDelete: Restrict
+  )
+
+  doctor Doctor @relation(
+    fields: [doctorId],
+    references: [id],
+    onDelete: Restrict
+  )
+
+  @@index([patientId, date])
+  @@index([doctorId, date, time])
 }
