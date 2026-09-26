@@ -15,3 +15,23 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+enum Gender {
+  M
+  F
+}
+
+// Informations générales du patient.
+// L'âge sera calculé depuis birthDate, sans être enregistré.
+model Patient {
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  gender    Gender
+  birthDate DateTime @db.Date
+  phone     String
+  address   String?
+
+  @@index([lastName, firstName])
+}
