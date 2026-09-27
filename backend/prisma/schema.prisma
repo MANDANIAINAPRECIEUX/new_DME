@@ -164,3 +164,19 @@ model SoinDent {
   @@id([soinId, dentId])
   @@index([dentId])
 }
+
+// Une consultation peut recevoir plusieurs paiements.
+// Le patient est retrouvé via le rendez-vous de la consultation.
+model Payment {
+  id             Int      @id @default(autoincrement())
+  consultationId Int
+  paymentDate    DateTime @db.Date
+  amount         Decimal  @db.Decimal(10, 2)
+  remark         String?
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Restrict)
+
+  @@index([consultationId])
+  @@index([paymentDate])
+}
