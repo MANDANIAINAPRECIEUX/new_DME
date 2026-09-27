@@ -113,7 +113,7 @@ model Consultation {
 
   @@index([treatmentId, consultationDate])
   @@index([doctorId, consultationDate])
-
+payments Payment[]
   soins Soin[]
 }
 
