@@ -116,3 +116,51 @@ model Consultation {
 
   soins Soin[]
 }
+
+
+// Catalogue des soins proposés par le cabinet.
+// Le tarif est fixe et stocké en décimal pour éviter les erreurs d'arrondi.
+model TypeSoin {
+  id    Int     @id @default(autoincrement())
+  label String
+  tarif Decimal @db.Decimal(10, 2)
+
+  soins Soin[]
+}
+
+// Acte effectué pendant une consultation.
+// Le tarif est obtenu depuis le type de soin.
+model Soin {
+  id             Int     @id @default(autoincrement())
+  consultationId Int
+  typeSoinId     Int
+  observation    String?
+
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Restrict)
+  typeSoin     TypeSoin     @relation(fields: [typeSoinId], references: [id], onDelete: Restrict)
+  dents        SoinDent[]
+
+  @@index([consultationId])
+  @@index([typeSoinId])
+}
+
+// Référentiel des numéros de dents, commun à tous les patients.
+// L'état d'une dent d'un patient n'est pas enregistré ici.
+model Dent {
+  id     Int    @id @default(autoincrement())
+  number String @unique @db.VarChar(2)
+
+  soins SoinDent[]
+}
+
+// Association entre un soin réalisé et les dents concernées.
+model SoinDent {
+  soinId Int
+  dentId Int
+
+  soin Soin @relation(fields: [soinId], references: [id], onDelete: Restrict)
+  dent Dent @relation(fields: [dentId], references: [id], onDelete: Restrict)
+
+  @@id([soinId, dentId])
+  @@index([dentId])
+}
