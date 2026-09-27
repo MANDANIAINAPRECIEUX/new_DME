@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 // Prisma est un ORM qui permet au backend de manipuler PostgreSQL depuis JavaScript.
 // Ce fichier décrit les modèles de données, leurs champs et leurs relations.
 // Prisma génère un client pour interroger la base et fournit des migrations pour faire évoluer sa structure.
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
   provider = "prisma-client-js"
@@ -21,8 +16,19 @@ enum Gender {
   F
 }
 
+enum AppointmentStatus {
+  pending
+  completed
+  cancelled
+}
+
+enum TreatmentStatus {
+  ongoing
+  completed
+}
+
 // Informations générales du patient.
-// L'âge sera calculé depuis birthDate, sans être enregistré.
+// L'âge est calculé depuis birthDate.
 model Patient {
   id        Int      @id @default(autoincrement())
   firstName String
@@ -32,13 +38,13 @@ model Patient {
   phone     String
   address   String?
 
-  @@index([lastName, firstName])
-
   appointments Appointment[]
+  treatments   Treatment[]
+
+  @@index([lastName, firstName])
 }
 
-
-// Le docteur utilise son email pour se connecter.
+// Le docteur se connecte avec son email.
 // Seul le hash du mot de passe est enregistré.
 model Doctor {
   id           Int     @id @default(autoincrement())
@@ -48,18 +54,13 @@ model Doctor {
   passwordHash String
   photo        String?
   speciality   String
-}
 
-
-
-enum AppointmentStatus {
-  pending
-  completed
-  cancelled
+  appointments  Appointment[]
+  consultations Consultation[]
 }
 
 // Chaque rendez-vous appartient à un patient et à un docteur.
-// Un créneau dure une heure et commence à une heure entière.
+// Le backend impose un créneau d'une heure à une heure entière.
 model Appointment {
   id        Int               @id @default(autoincrement())
   patientId Int
@@ -69,25 +70,12 @@ model Appointment {
   status    AppointmentStatus @default(pending)
   reason    String?
 
-  patient Patient @relation(
-    fields: [patientId],
-    references: [id],
-    onDelete: Restrict
-  )
-
-  doctor Doctor @relation(
-    fields: [doctorId],
-    references: [id],
-    onDelete: Restrict
-  )
+  patient      Patient       @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  doctor       Doctor        @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  consultation Consultation?
 
   @@index([patientId, date])
   @@index([doctorId, date, time])
-}
-
-enum TreatmentStatus {
-  ongoing
-  completed
 }
 
 // Un traitement appartient à un seul patient.
@@ -101,9 +89,30 @@ model Treatment {
   endDate     DateTime?       @db.Date
   observation String?
 
-  patient Patient @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  patient       Patient        @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  consultations Consultation[]
 
   @@index([patientId, status])
 }
 
+// Une consultation provient d'un seul rendez-vous.
+// Son patient est retrouvé via ce rendez-vous.
+// Le rattachement à un traitement est facultatif.
+model Consultation {
+  id               Int      @id @default(autoincrement())
+  appointmentId    Int      @unique
+  treatmentId      Int?
+  doctorId         Int
+  consultationDate DateTime @db.Date
+  compteRendu      String?
+  createdAt        DateTime @default(now()) @db.Timestamptz(3)
 
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Restrict)
+  treatment   Treatment?  @relation(fields: [treatmentId], references: [id], onDelete: Restrict)
+  doctor      Doctor      @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+
+  @@index([treatmentId, consultationDate])
+  @@index([doctorId, consultationDate])
+
+  soins Soin[]
+}
