@@ -68,3 +68,26 @@ model Appointment {
   @@index([patientId, date])
   @@index([doctorId, date, time])
 }
+
+enum TreatmentStatus {
+  ongoing
+  completed
+}
+
+// Un traitement appartient à un seul patient.
+// Il peut être créé avant sa première consultation.
+model Treatment {
+  id          Int             @id @default(autoincrement())
+  patientId   Int
+  label       String
+  status      TreatmentStatus @default(ongoing)
+  startDate   DateTime        @db.Date
+  endDate     DateTime?       @db.Date
+  observation String?
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Restrict)
+
+  @@index([patientId, status])
+}
+
+
