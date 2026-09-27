@@ -33,7 +33,23 @@ model Patient {
   address   String?
 
   @@index([lastName, firstName])
+
+  appointments Appointment[]
 }
+
+
+// Le docteur utilise son email pour se connecter.
+// Seul le hash du mot de passe est enregistré.
+model Doctor {
+  id           Int     @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String  @unique
+  passwordHash String
+  photo        String?
+  speciality   String
+}
+
 
 
 enum AppointmentStatus {
