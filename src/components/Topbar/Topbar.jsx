@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaBell, FaCog, FaQuestionCircle } from "react-icons/fa";
+import { FaBell, FaCog, FaUserPlus } from "react-icons/fa";
 import { useConsultations } from "../../context/ConsultationContext";
 import { usePatients } from "../../context/PatientContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
@@ -84,8 +84,10 @@ function Topbar() {
           )}
         </div>
 
-        <button className="topbar-icon-btn" onClick={() => navigate("/help")} title="Aide">
-          <FaQuestionCircle />
+        <button className="topbar-icon-btn" onClick={() => navigate("/patients/new", { state: { quickCreate: true } })}
+          title="Nouveau patient"
+        >
+          <FaUserPlus />
         </button>
 
         <button className="topbar-icon-btn" onClick={() => navigate("/settings")} title="Paramètres">
