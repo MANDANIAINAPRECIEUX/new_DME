@@ -193,3 +193,40 @@ ALTER TABLE "SoinDent" ADD CONSTRAINT "SoinDent_dentId_fkey" FOREIGN KEY ("dentI
 
 -- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_consultationId_fkey" FOREIGN KEY ("consultationId") REFERENCES "Consultation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+-- Les rendez-vous commencent à une heure entière : 00:00 à 23:00.
+ALTER TABLE "Appointment"
+ADD CONSTRAINT "Appointment_time_whole_hour_check"
+CHECK ("time" ~ '^([01][0-9]|2[0-3]):00$');
+
+-- Un docteur ne peut pas avoir deux rendez-vous non annulés
+-- à la même date et à la même heure.
+CREATE UNIQUE INDEX "Appointment_doctor_active_slot_key"
+ON "Appointment" ("doctorId", "date", "time")
+WHERE "status" <> 'cancelled';
+
+-- Un paiement doit être strictement positif.
+ALTER TABLE "Payment"
+ADD CONSTRAINT "Payment_amount_positive_check"
+CHECK ("amount" > 0);
+
+-- Un tarif peut être nul, mais jamais négatif.
+ALTER TABLE "TypeSoin"
+ADD CONSTRAINT "TypeSoin_tarif_nonnegative_check"
+CHECK ("tarif" >= 0);
+
+-- La fin d'un traitement ne peut pas précéder son début.
+ALTER TABLE "Treatment"
+ADD CONSTRAINT "Treatment_dates_check"
+CHECK ("endDate" IS NULL OR "endDate" >= "startDate");
+
+-- Un traitement en cours n'a pas de date de fin.
+-- Un traitement terminé doit avoir une date de fin.
+ALTER TABLE "Treatment"
+ADD CONSTRAINT "Treatment_status_end_date_check"
+CHECK (
+  ("status" = 'ongoing' AND "endDate" IS NULL)
+  OR
+  ("status" = 'completed' AND "endDate" IS NOT NULL)
+);
