@@ -44,14 +44,16 @@ model Patient {
   @@index([lastName, firstName])
 }
 
-// Le docteur se connecte avec son email.
-// Seul le hash du mot de passe est enregistré.
+// Clerk gère la connexion et les mots de passe.
+// Seuls les comptes explicitement liés à un docteur sont autorisés.
 model Doctor {
   id           Int     @id @default(autoincrement())
+  clerkUserId  String? @unique
   firstName    String
   lastName     String
   email        String  @unique
-  passwordHash String
+  // Ancien champ conservé pendant la transition, inutilisé par Clerk.
+  passwordHash String?
   photo        String?
   speciality   String
 
