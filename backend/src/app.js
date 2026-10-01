@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
+import requireDoctor from "./middlewares/requireDoctor.js";
 
 const app = express();
 
@@ -42,6 +43,11 @@ app.get("/api/auth/me", (req, res) => {
   return res.status(200).json({
     clerkUserId: userId,
   });
+});
+
+// Profil métier : une session Clerk ne suffit pas sans docteur associé.
+app.get("/api/doctors/me", requireDoctor, (req, res) => {
+  res.status(200).json({ doctor: req.doctor });
 });
 
 // Répondre aux routes inexistantes.
