@@ -3,10 +3,12 @@
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
 }
 
 .patient-table {
   width: 100%;
+  min-width: 850px;
   border-collapse: collapse;
 }
 
@@ -64,4 +66,17 @@
   background: #2fa8b8;
   border-color: #2fa8b8;
   color: #fff;
+}
+
+@media (max-width: 700px) {
+  .patient-table-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .patient-table th,
+  .patient-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
 }

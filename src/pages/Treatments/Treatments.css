@@ -1,0 +1,54 @@
+.treatments-page { padding: 25px 35px 40px; }
+
+.treatments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.treatments-header h1 { margin: 0 0 4px; color: #2c3e50; font-size: 24px; }
+.treatments-header p { margin: 0; color: #95a5a6; font-size: 13px; }
+
+.treatments-header select {
+  padding: 10px 14px;
+  border: 1px solid #dce5e8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+}
+
+.treatments-table-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.treatments-table { width: 100%; border-collapse: collapse; }
+.treatments-table th {
+  padding: 14px 18px;
+  text-align: left;
+  color: #95a5a6;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 1px solid #eef2f4;
+}
+.treatments-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f5f8fa;
+  color: #34495e;
+  font-size: 13px;
+}
+
+.treatment-status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.treatment-status-badge.ongoing { background: #fff7e6; color: #f39c12; }
+.treatment-status-badge.completed { background: #e8f7f0; color: #27ae60; }
+
+.empty-message { text-align: center; color: #95a5a6; padding: 30px; }

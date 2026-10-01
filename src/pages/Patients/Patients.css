@@ -16,7 +16,7 @@
 }
 
 .patients-header p{
-  font-size:10px;
+  font-size:14px;
   color:#7f8c8d;
 }
 
@@ -37,4 +37,50 @@
 
 .add-patient-btn:hover{
   background:#2F80ED;
+}
+
+@media (max-width: 850px) {
+  .patients-page {
+    padding: 10px 25px 20px;
+  }
+
+  .patients-header {
+    gap: 20px;
+  }
+
+  .patients-header h1 {
+    font-size: 25px;
+  }
+
+  .add-patient-btn {
+    padding: 11px 15px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 700px) {
+  .patients-page {
+    padding: 20px;
+  }
+
+  .patients-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .patients-header h1 {
+    font-size: 23px;
+  }
+
+  .patients-header p {
+    font-size: 13px;
+  }
+
+  .add-patient-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

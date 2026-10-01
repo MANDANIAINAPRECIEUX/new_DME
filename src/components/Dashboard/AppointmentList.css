@@ -1,5 +1,6 @@
 .appointment-card {
-  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
   background: #fff;
   border-radius: 18px;
   padding: 22px 24px;

@@ -103,3 +103,26 @@
 .change-patient-btn:hover{
   text-decoration:underline;
 }
+
+@media (max-width: 700px) {
+  .patient-search-box {
+    height: 44px;
+    padding: 0 12px;
+  }
+
+  .patient-search-box input {
+    font-size: 13px;
+  }
+
+  .patient-result {
+    padding: 11px 12px;
+  }
+
+  .patient-result strong {
+    font-size: 13px;
+  }
+
+  .patient-result span {
+    font-size: 11px;
+  }
+}

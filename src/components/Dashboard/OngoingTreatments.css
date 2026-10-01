@@ -1,4 +1,6 @@
 .ongoing-treatments-card {
+  min-width: 0;
+  box-sizing: border-box;
   padding: 22px 24px;
   background: #fff;
   border-radius: 18px;

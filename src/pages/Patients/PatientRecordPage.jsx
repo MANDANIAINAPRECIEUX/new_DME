@@ -1,21 +1,29 @@
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { FaArrowLeft, FaEdit, FaNotesMedical, FaTooth, FaFileMedical, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { FaArrowLeft, FaEdit, FaNotesMedical, FaTooth, FaFileMedical } from "react-icons/fa";
 import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
-import { useTypesSoins } from "../../context/TypeSoinContext";
+import TreatmentGroup from "../../components/Patients/TreatmentGroup";
+import ConsultationCard from "../../components/Patients/ConsultationCard";
+import { formatDate } from "../../utils/dateUtils";
 import "./PatientRecordPage.css";
-
-function formatDate(dateStr, options = { day: "2-digit", month: "long", year: "numeric" }) {
-  if (!dateStr) return "";
-  return new Date(dateStr).toLocaleDateString("fr-FR", options);
-}
 
 function PatientRecordPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const suggestNextAppointment = location.state?.suggestNextAppointment;
+
+  const handlePlanNextAppointment = () => {
+    navigate("/appointments/new", {
+      state: {
+        patientId: suggestNextAppointment.patientId,
+        reason: suggestNextAppointment.reason,
+      },
+    });
+  };
 
   const { patients } = usePatients();
   const { appointments } = useAppointments();
@@ -66,6 +74,7 @@ function PatientRecordPage() {
   const totalSoins = patientConsultations.reduce((total, c) => total + (c.soins?.length || 0), 0);
 
   const fullName = `${patient.firstName} ${patient.lastName}`;
+  
 
   return (
     <div className="patient-record-page">
@@ -181,6 +190,8 @@ function PatientRecordPage() {
                 treatment={treatment}
                 patientAppointments={patientAppointments}
                 updateTreatment={updateTreatment}
+                suggestNextAppointment={suggestNextAppointment}
+                onPlanNextAppointment={handlePlanNextAppointment}
               />
             ))}
 
@@ -214,286 +225,6 @@ function PatientRecordPage() {
           </>
         )}
       </section>
-    </div>
-  );
-}
-
-function TreatmentGroup({
-  treatment,
-  patientAppointments,
-  updateTreatment,
-}) {
-  const [showAll, setShowAll] = useState(false);
-
-  const consultations = treatment.consultations || [];
-
-  // Par défaut, on affiche uniquement la dernière séance
-  const displayedConsultations = showAll
-    ? consultations
-    : consultations.slice(-1);
-
-  return (
-    <div className="treatment-group">
-
-      <div className="treatment-group-header">
-
-        <div className="treatment-title">
-
-          <span className="treatment-label-tag">
-            PARCOURS
-          </span>
-
-          <h3>
-            {treatment.label || "Sans intitulé"}
-          </h3>
-
-          <span
-            className={`treatment-status ${
-              treatment.status || "ongoing"
-            }`}
-          >
-            {treatment.status === "completed"
-              ? "Terminé"
-              : "En cours"}
-          </span>
-
-        </div>
-
-        <div className="treatment-header-actions">
-
-          {treatment.status !== "completed" && (
-            <button
-              type="button"
-              className="complete-treatment-btn"
-              onClick={() =>
-                updateTreatment(
-                  treatment.id,
-                  { status: "completed" }
-                )
-              }
-            >
-              Terminer
-            </button>
-          )}
-
-        </div>
-
-      </div>
-
-      {consultations.length === 0 ? (
-        <p className="treatment-empty">
-          Aucune séance enregistrée.
-        </p>
-      ) : (
-        <>
-          <div className="medical-history-list">
-
-            {displayedConsultations.map((consultation) => {
-
-              const originalIndex =
-                consultations.indexOf(consultation);
-
-              return (
-                <ConsultationCard
-                  key={consultation.id}
-                  consultation={consultation}
-                  appointment={patientAppointments.find(
-                    (a) =>
-                      a.id === consultation.appointmentId
-                  )}
-                  seanceNumber={originalIndex + 1}
-                />
-              );
-            })}
-
-          </div>
-
-          {consultations.length > 1 && (
-            <button
-              type="button"
-              className="show-sessions-btn"
-              onClick={() =>
-                setShowAll((prev) => !prev)
-              }
-            >
-              {showAll ? (
-                <>
-                  <FaChevronUp />
-                  Réduire les séances
-                </>
-              ) : (
-                <>
-                  <FaChevronDown />
-                  Voir les {consultations.length} séances
-                </>
-              )}
-            </button>
-          )}
-
-        </>
-      )}
-
-    </div>
-  );
-}
-
-function ConsultationCard({
-  consultation,
-  appointment,
-  seanceNumber,
-}) {
-  const [showDetails, setShowDetails] = useState(false);
-
-  const { typesSoins } = useTypesSoins();
-  const typesSoinsMap = Object.fromEntries(typesSoins.map((t) => [t.id, t.label]));
-
-  const soins = consultation.soins || [];
-
-  const hasDetails =
-    consultation.compteRendu ||
-    consultation.observation ||
-    soins.length > 0;
-
-  return (
-    <div className="medical-history-card">
-
-      <div className="medical-history-header">
-
-        <div className="history-main-info">
-
-          <div className="history-icon">
-            <FaNotesMedical />
-          </div>
-
-          <div>
-
-            <span>
-              {seanceNumber
-                ? `SÉANCE ${seanceNumber}`
-                : "CONSULTATION"}
-            </span>
-
-            <h3>
-              {consultation.reason || "Consultation"}
-            </h3>
-
-            {appointment && (
-              <p>
-                {formatDate(
-                  `${appointment.date}T00:00:00`
-                )}
-                {" · "}
-                {appointment.time}
-              </p>
-            )}
-
-          </div>
-
-        </div>
-
-        <div className="consultation-card-actions">
-
-          {soins.length > 0 && (
-            <span className="acts-count">
-              {soins.length}{" "}
-              {soins.length > 1
-                ? "soins"
-                : "soin"}
-            </span>
-          )}
-
-          {hasDetails && (
-            <button
-              type="button"
-              className="details-btn"
-              onClick={() =>
-                setShowDetails((prev) => !prev)
-              }
-            >
-              {showDetails
-                ? "Masquer"
-                : "Détails"}
-
-              {showDetails ? (
-                <FaChevronUp />
-              ) : (
-                <FaChevronDown />
-              )}
-            </button>
-          )}
-
-        </div>
-
-      </div>
-
-      {showDetails && (
-        <div className="medical-history-body">
-
-          {consultation.compteRendu && (
-            <div className="consultation-detail">
-
-              <h4>Compte-rendu</h4>
-
-              <p>
-                {consultation.compteRendu}
-              </p>
-
-            </div>
-          )}
-
-          {consultation.observation && (
-            <div className="consultation-detail">
-
-              <h4>Observation</h4>
-
-              <p>
-                {consultation.observation}
-              </p>
-
-            </div>
-          )}
-
-          {soins.length > 0 && (
-            <div className="consultation-detail">
-
-              <h4>Soins réalisés</h4>
-
-              <div className="acts-history-table">
-
-                <div className="acts-history-header">
-                  <span>Dent(s)</span>
-                  <span>Type de soin</span>
-                </div>
-
-                {soins.map((soin) => (
-                  <div
-                    className="acts-history-row"
-                    key={soin.id}
-                  >
-
-                    <span className="tooth-number">
-                      {soin.dents &&
-                      soin.dents.length > 0
-                        ? soin.dents.join(", ")
-                        : "—"}
-                    </span>
-
-                    <span>
-                      {typesSoinsMap[soin.typeSoinId] ||
-                        "Soin non renseigné"}
-                    </span>
-
-                  </div>
-                ))}
-
-              </div>
-
-            </div>
-          )}
-
-        </div>
-      )}
-
     </div>
   );
 }

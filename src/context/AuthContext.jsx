@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { doctor } from "../mock/doctor";
+import { doctors } from "../mock/doctors";
 
 const AuthContext = createContext();
 
@@ -24,8 +24,12 @@ export function AuthProvider({ children }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 600));
 
-      if (email === doctor.email && password === doctor.password) {
-        const { password: _password, ...connectedUser } = doctor;
+      const matchedDoctor = doctors.find(
+        (d) => d.email === email && d.password === password
+      );
+
+      if (matchedDoctor) {
+        const { password: _password, ...connectedUser } = matchedDoctor;
         setUser(connectedUser);
         localStorage.setItem("dme_user", JSON.stringify(connectedUser));
         setLoading(false);

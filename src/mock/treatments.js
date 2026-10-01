@@ -9,17 +9,19 @@ export const treatments = [
 
   {
     id: 2,
-    patientId: 1,
-    label: "Traitement carie molaire",
+    patientId: 5,
+    label: "Soins dentaires",
     status: "completed",
-    startDate: "2026-03-15",
+    startDate: "2026-08-19",
+    dateFin: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 102)
   },
 
   {
     id: 3,
-    patientId: 2,
-    label: "Détartrage et suivi parodontal",
-    status: "ongoing",
-    startDate: "2026-07-10",
+    patientId: 4,
+    label: "Consultation dentaire",
+    status: "completed",
+    startDate: "2026-08-19",
+    dateFin: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 103)
   },
 ];

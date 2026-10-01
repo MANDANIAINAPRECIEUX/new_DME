@@ -56,12 +56,6 @@ function AppointmentList() {
 
   return (
     <div className="appointment-card">
-      <div className="appointment-header">
-        <h2>Rendez-vous du jour</h2>
-        <button className="view-all" onClick={() => navigate("/appointments")}>
-          Voir tout
-        </button>
-      </div>
 
       {todayAppointments.length === 0 ? (
         <p className="week-empty">Aucun rendez-vous aujourd'hui.</p>

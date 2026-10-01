@@ -6,12 +6,17 @@ const TypeSoinContext = createContext();
 export function TypeSoinProvider({ children }) {
   const [typesSoins, setTypesSoins] = useState(initialTypesSoins);
 
-  const addTypeSoin = (label) => {
-    const newType = { id: Date.now(), label: label.trim() };
+  const addTypeSoin = (label, tarif) => {
+    const newType = {
+      id: Date.now(),
+      label: label.trim(),
+      tarif: Number(tarif) >= 0 ? Number(tarif) : 0,
+    };
     setTypesSoins((prev) => [...prev, newType]);
     return newType;
   };
 
+  // RG10/RG13 : le tarif ne peut jamais être modifié après création, seul le libellé l'est
   const updateTypeSoin = (id, label) => {
     setTypesSoins((prev) =>
       prev.map((t) => (t.id === id ? { ...t, label: label.trim() } : t))

@@ -15,6 +15,9 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
+      {/*<div className="sidebar-brand">
+        <span>Cabinet Dentaire</span>
+      </div>*/}
       <div className="doctor-profile">
         <img
           src={user?.photo}

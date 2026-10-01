@@ -121,3 +121,38 @@
 .save-btn:hover{
   background:#2F80ED;
 }
+
+@media (max-width: 700px) {
+  .patient-form-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .patient-form-header h2 {
+    font-size: 20px;
+  }
+
+  .patient-form-header p {
+    font-size: 13px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+}
