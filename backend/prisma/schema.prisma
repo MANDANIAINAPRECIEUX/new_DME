@@ -45,6 +45,7 @@ model Patient {
 }
 
 // Clerk gère la connexion et les mots de passe.
+// clerkUserId relie le docteur à son compte Clerk.
 // Seuls les comptes explicitement liés à un docteur sont autorisés.
 model Doctor {
   id           Int     @id @default(autoincrement())
@@ -52,6 +53,7 @@ model Doctor {
   firstName    String
   lastName     String
   email        String  @unique
+
   // Ancien champ conservé pendant la transition, inutilisé par Clerk.
   passwordHash String?
   photo        String?
@@ -60,6 +62,7 @@ model Doctor {
   appointments  Appointment[]
   consultations Consultation[]
 }
+
 
 // Chaque rendez-vous appartient à un patient et à un docteur.
 // Le backend impose un créneau d'une heure à une heure entière.
