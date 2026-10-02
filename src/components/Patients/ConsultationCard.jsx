@@ -5,30 +5,30 @@ import { useConsultations } from "../../context/ConsultationContext";
 import { doctors } from "../../mock/doctors";
 import { getTotalDu, getTotalPaye, formatMontant } from "../../utils/billingUtils";
 import { formatDate } from "../../utils/dateUtils";
+import "./ConsultationCard.css";
 
 function ConsultationCard({ consultation, appointment, seanceNumber }) {
   const [showDetails, setShowDetails] = useState(false);
   const [showAddPayment, setShowAddPayment] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState("");
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split("T")[0]);
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentRemark, setPaymentRemark] = useState("");
   const [paymentError, setPaymentError] = useState("");
 
   const { typesSoins } = useTypesSoins();
   const { updateConsultation } = useConsultations();
   const typesSoinsMap = Object.fromEntries(typesSoins.map((t) => [t.id, t.label]));
-
   const doctorsMap = Object.fromEntries(doctors.map((d) => [d.id, d]));
-  const consultationDoctor = doctorsMap[consultation.doctorId];
 
   const soins = consultation.soins || [];
   const paiements = consultation.paiements || [];
+  const consultationDoctor = doctorsMap[consultation.doctorId];
 
   const totalDu = getTotalDu(soins, typesSoins);
   const totalPaye = getTotalPaye(paiements);
   const solde = totalDu - totalPaye;
 
-  const hasDetails = consultation.compteRendu || consultation.observation || soins.length > 0;
+  const hasDetails = consultation.compteRendu || soins.length > 0;
 
   const handleAddPayment = (e) => {
     e.preventDefault();
@@ -44,11 +44,11 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
     }
 
     updateConsultation(consultation.id, {
-      paiements: [...paiements, { id: Date.now(), amount, date: paymentDate, method: paymentMethod }],
+      paiements: [...paiements, { id: Date.now(), amount, paymentDate, remark: paymentRemark }],
     });
 
     setPaymentAmount("");
-    setPaymentMethod("");
+    setPaymentRemark("");
     setPaymentError("");
     setShowAddPayment(false);
   };
@@ -63,7 +63,7 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
 
           <div>
             <span>{seanceNumber ? `SÉANCE ${seanceNumber}` : "CONSULTATION"}</span>
-            <h3>{consultation.reason || "Consultation"}</h3>
+            <h3>{appointment?.reason || "Consultation"}</h3>
 
             {appointment && (
               <p>
@@ -84,11 +84,7 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
           )}
 
           {hasDetails && (
-            <button
-              type="button"
-              className="details-btn"
-              onClick={() => setShowDetails((prev) => !prev)}
-            >
+            <button type="button" className="details-btn" onClick={() => setShowDetails((prev) => !prev)}>
               {showDetails ? "Masquer" : "Détails"}
               {showDetails ? <FaChevronUp /> : <FaChevronDown />}
             </button>
@@ -105,29 +101,24 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
             </div>
           )}
 
-          {consultation.observation && (
-            <div className="consultation-detail">
-              <h4>Observation</h4>
-              <p>{consultation.observation}</p>
-            </div>
-          )}
-
           {soins.length > 0 && (
             <div className="consultation-detail">
               <h4>Soins réalisés</h4>
 
               <div className="acts-history-table">
-                <div className="acts-history-header">
+                <div className="soins-history-header">
                   <span>Dent(s)</span>
                   <span>Type de soin</span>
+                  <span>Observation</span>
                 </div>
 
                 {soins.map((soin) => (
-                  <div className="acts-history-row" key={soin.id}>
+                  <div className="soins-history-row" key={soin.id}>
                     <span className="tooth-number">
                       {soin.dents && soin.dents.length > 0 ? soin.dents.join(", ") : "—"}
                     </span>
                     <span>{typesSoinsMap[soin.typeSoinId] || "Soin non renseigné"}</span>
+                    <span>{soin.observation || "—"}</span>
                   </div>
                 ))}
               </div>
@@ -150,11 +141,7 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
               </div>
 
               {solde > 0 && !showAddPayment && (
-                <button
-                  type="button"
-                  className="add-payment-btn"
-                  onClick={() => setShowAddPayment(true)}
-                >
+                <button type="button" className="add-payment-btn" onClick={() => setShowAddPayment(true)}>
                   Enregistrer un paiement
                 </button>
               )}
@@ -182,14 +169,13 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
                   </div>
 
                   <div className="form-group">
-                    <label>Mode</label>
-                    <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-                      <option value="">Sélectionner</option>
-                      <option value="cash">Espèces</option>
-                      <option value="card">Carte bancaire</option>
-                      <option value="mobile-money">Mobile Money</option>
-                      <option value="bank-transfer">Virement</option>
-                    </select>
+                    <label>Remarque (facultatif)</label>
+                    <input
+                      type="text"
+                      value={paymentRemark}
+                      onChange={(e) => setPaymentRemark(e.target.value)}
+                      placeholder="Ex : solde réglé en espèces"
+                    />
                   </div>
 
                   {paymentError && <span className="form-error">{paymentError}</span>}
@@ -211,14 +197,17 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
             <div className="consultation-detail">
               <h4>Paiements</h4>
               <div className="acts-history-table">
-                <div className="acts-history-header">
+                <div className="payments-history-header">
                   <span>Date</span>
                   <span>Montant</span>
                 </div>
                 {paiements.map((p) => (
-                  <div className="acts-history-row" key={p.id}>
-                    <span>{formatDate(p.date)}</span>
-                    <span>{formatMontant(p.amount)}</span>
+                  <div className="payments-history-row" key={p.id}>
+                    <span>{formatDate(p.paymentDate)}</span>
+                    <span>
+                      {formatMontant(p.amount)}
+                      {p.remark && <span className="payment-remark"> — {p.remark}</span>}
+                    </span>
                   </div>
                 ))}
               </div>

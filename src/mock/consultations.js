@@ -5,12 +5,18 @@ export const consultations = [
     treatmentId: 1,
     patientId: 1,
     doctorId: 1,
-    reason: "Contrôle orthodontique",
+    consultationDate: "2026-08-18",
     compteRendu: "Contrôle de routine, patient asymptomatique depuis la dernière séance.",
-    observation: "Poursuite du traitement orthodontique, bon alignement observé.",
-    soins: [{ id: 1, typeSoinId: 1, dents: ["16", "17"] }],
+    soins: [
+      {
+        id: 1,
+        typeSoinId: 1,
+        dents: ["16", "17"],
+        observation: "Bon alignement observé, poursuite du traitement orthodontique.",
+      },
+    ],
     paiements: [
-      { id: 1, amount: 30000, date: "2026-08-18", method: "cash" }, // paiement partiel (tarif 50000, solde 20000)
+      { id: 1, amount: 30000, paymentDate: "2026-08-18", remark: "" },
     ],
     createdAt: "2026-08-18T08:30:00.000Z",
   },
@@ -21,12 +27,18 @@ export const consultations = [
     treatmentId: 2,
     patientId: 5,
     doctorId: 1,
-    reason: "Soins dentaires",
+    consultationDate: "2026-08-19",
     compteRendu: "Soins dentaires réalisés avec succès.",
-    observation: "Aucune complication constatée. Suivi recommandé.",
-    soins: [{ id: 2, typeSoinId: 2, dents: ["11", "21"] }],
+    soins: [
+      {
+        id: 2,
+        typeSoinId: 2,
+        dents: ["11", "21"],
+        observation: "Aucune complication constatée.",
+      },
+    ],
     paiements: [
-      { id: 2, amount: 80000, date: "2026-08-19", method: "mobile-money" }, // soldé (tarif 80000)
+      { id: 2, amount: 80000, paymentDate: "2026-08-19", remark: "" },
     ],
     createdAt: "2026-08-19T11:30:00.000Z",
   },
@@ -37,12 +49,18 @@ export const consultations = [
     treatmentId: 3,
     patientId: 4,
     doctorId: 2,
-    reason: "Consultation dentaire",
+    consultationDate: "2026-08-19",
     compteRendu: "Consultation dentaire effectuée. Aucun problème particulier signalé.",
-    observation: "État bucco-dentaire satisfaisant. Contrôle recommandé.",
-    soins: [{ id: 3, typeSoinId: 3, dents: ["26"] }],
+    soins: [
+      {
+        id: 3,
+        typeSoinId: 3,
+        dents: ["26"],
+        observation: "État bucco-dentaire satisfaisant.",
+      },
+    ],
     paiements: [
-      { id: 3, amount: 100000, date: "2026-08-19", method: "card" }, // soldé (tarif 100000) — cohérent avec status "completed"
+      { id: 3, amount: 100000, paymentDate: "2026-08-19", remark: "" },
     ],
     createdAt: "2026-08-19T08:30:00.000Z",
   },
