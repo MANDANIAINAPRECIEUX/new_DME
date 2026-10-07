@@ -355,8 +355,8 @@
 .soin-row,
 .act-row{
   display:grid;
-  grid-template-columns: 1fr 1.5fr 36px;
-  align-items:start;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) 36px;
+  align-items:end;
   gap:16px;
 
   padding:16px;
@@ -628,6 +628,11 @@
 .add-act-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.act-row-full {
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 /* =========================================================

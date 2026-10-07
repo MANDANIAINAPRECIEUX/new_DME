@@ -13,7 +13,7 @@ export const treatments = [
     label: "Soins dentaires",
     status: "completed",
     startDate: "2026-08-19",
-    dateFin: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 102)
+    endDate: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 102)
   },
 
   {
@@ -22,6 +22,6 @@ export const treatments = [
     label: "Consultation dentaire",
     status: "completed",
     startDate: "2026-08-19",
-    dateFin: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 103)
+    endDate: "2026-08-19", // ≥ startDate et ≥ dernière séance (consultation 103)
   },
 ];

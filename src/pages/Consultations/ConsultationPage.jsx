@@ -8,6 +8,7 @@ import { useTreatments } from "../../context/TreatmentContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
 import { useAuth } from "../../context/AuthContext";
 import { getTotalDu, getTotalPaye, getSolde, formatMontant } from "../../utils/billingUtils";
+import DentSelector from "../../components/Consultations/DentSelector";
 import "./ConsultationPage.css";
 
 function ConsultationPage() {
@@ -34,7 +35,6 @@ function ConsultationPage() {
   const [formData, setFormData] = useState({
     reason: appointment?.reason || "",
     compteRendu: "",
-    observation: "",
     treatmentId: "",
     isNewTreatment: false,
     newTreatmentLabel: "",
@@ -77,7 +77,7 @@ function ConsultationPage() {
   const addSoin = () => {
     setFormData((prev) => ({
       ...prev,
-      soins: [...prev.soins, { id: Date.now(), typeSoinId: "", dents: [] }],
+      soins: [...prev.soins, { id: Date.now(), typeSoinId: "", dents: [], observation: "" }],
     }));
   };
 
@@ -101,9 +101,8 @@ function ConsultationPage() {
     applySoinsChange(newSoins);
   };
 
-  const updateSoinDents = (index, value) => {
-    const dents = [...new Set(value.split(",").map((d) => d.trim()).filter(Boolean))];
-    const newSoins = formData.soins.map((soin, i) => (i === index ? { ...soin, dents } : soin));
+  const updateSoinDents = (index, newDents) => {
+    const newSoins = formData.soins.map((soin, i) => (i === index ? { ...soin, dents: newDents } : soin));
     applySoinsChange(newSoins);
   };
 
@@ -119,13 +118,13 @@ function ConsultationPage() {
   const solde = totalDu - totalPaye;
 
   const selectedTreatmentId =
-  !formData.isNewTreatment && formData.treatmentId ? Number(formData.treatmentId) : null;
+    !formData.isNewTreatment && formData.treatmentId ? Number(formData.treatmentId) : null;
 
   const soldeAutresConsultations = selectedTreatmentId
-  ? consultations
-      .filter((c) => c.treatmentId === selectedTreatmentId)
-      .reduce((total, c) => total + getSolde(c.soins, c.paiements, typesSoins), 0)
-  : 0;
+    ? consultations
+        .filter((c) => c.treatmentId === selectedTreatmentId)
+        .reduce((total, c) => total + getSolde(c.soins, c.paiements, typesSoins), 0)
+    : 0;
 
   const soldeTotalTraitement = soldeAutresConsultations + solde;
 
@@ -134,7 +133,7 @@ function ConsultationPage() {
       ...prev,
       paiements: [
         ...prev.paiements,
-        { id: Date.now(), amount: "", date: new Date().toISOString().split("T")[0], method: "" },
+        { id: Date.now(), amount: "", paymentDate: new Date().toISOString().split("T")[0], remark: "" },
       ],
     }));
   };
@@ -171,23 +170,20 @@ function ConsultationPage() {
   // --- Submit ---
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (formData.markTreatmentCompleted && soldeTotalTraitement > 0) {
-    alert(
-      `Impossible de marquer ce traitement comme terminé : il reste un solde de ${formatMontant(soldeTotalTraitement)}.`
-    );
-    return;
-  }
+    if (formData.markTreatmentCompleted && soldeTotalTraitement > 0) {
+      alert(
+        `Impossible de marquer ce traitement comme terminé : il reste un solde de ${formatMontant(soldeTotalTraitement)}.`
+      );
+      return;
+    }
 
-  const hasInvalidPaiement = formData.paiements.some(
-    (p, i) => !p.amount || getPaiementError(i)
-  );
-
-  if (hasInvalidPaiement) {
-    alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
-    return;
-  }
+    const hasInvalidPaiement = formData.paiements.some((p, i) => !p.amount || getPaiementError(i));
+    if (hasInvalidPaiement) {
+      alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
+      return;
+    }
 
     let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
     let treatmentLabel = null;
@@ -208,9 +204,8 @@ function ConsultationPage() {
       treatmentId,
       patientId: patient.id,
       doctorId: user?.id ?? null,
-      reason: formData.reason,
+      consultationDate: appointment.date,
       compteRendu: formData.compteRendu,
-      observation: formData.observation,
       soins: formData.soins.map((soin) => ({
         ...soin,
         typeSoinId: soin.typeSoinId ? Number(soin.typeSoinId) : null,
@@ -222,7 +217,8 @@ function ConsultationPage() {
       updateTreatment(treatmentId, { status: "completed" });
     }
 
-    updateAppointment(appointment.id, { status: "completed" });
+    // Le motif vit désormais uniquement sur le rendez-vous
+    updateAppointment(appointment.id, { status: "completed", reason: formData.reason });
 
     const shouldSuggestNextAppointment = treatmentId && !formData.markTreatmentCompleted;
 
@@ -290,17 +286,6 @@ function ConsultationPage() {
         <section className="consultation-section">
           <div className="section-title">
             <span>03</span>
-            <div><h2>Observation</h2><p>Observation du soin réalisé ou du traitement en cours.</p></div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="observation">Observation</label>
-            <textarea id="observation" name="observation" value={formData.observation} onChange={handleChange} rows="4" />
-          </div>
-        </section>
-
-        <section className="consultation-section">
-          <div className="section-title">
-            <span>04</span>
             <div><h2>Traitement</h2><p>Rattacher cette consultation à un traitement existant, ou en démarrer un nouveau.</p></div>
           </div>
 
@@ -341,10 +326,10 @@ function ConsultationPage() {
                 Marquer ce traitement comme terminé après cette séance
               </label>
 
-             {soldeTotalTraitement > 0 && (
-              <span className="form-help">
-                Impossible tant qu'il reste un solde de {formatMontant(soldeTotalTraitement)} sur ce traitement.
-              </span>
+              {soldeTotalTraitement > 0 && (
+                <span className="form-help">
+                  Impossible tant qu'il reste un solde de {formatMontant(soldeTotalTraitement)} sur ce traitement.
+                </span>
               )}
             </>
           )}
@@ -352,8 +337,8 @@ function ConsultationPage() {
 
         <section className="consultation-section">
           <div className="section-title">
-            <span>05</span>
-            <div><h2>Soins réalisés</h2><p>Enregistrer les soins réalisés et les dents concernées pendant cette consultation.</p></div>
+            <span>04</span>
+            <div><h2>Soins réalisés</h2><p>Enregistrer les soins réalisés, les dents concernées et une observation éventuelle.</p></div>
           </div>
 
           <div className="acts-header">
@@ -366,7 +351,7 @@ function ConsultationPage() {
           ) : (
             <div className="acts-list">
               {formData.soins.map((soin, index) => (
-                <div className="act-row" key={soin.id}>
+                <div className="act-row act-row-full" key={soin.id}>
                   <div className="form-group">
                     <label>Type de soin</label>
                     <select value={soin.typeSoinId} onChange={(e) => updateSoin(index, "typeSoinId", e.target.value)}>
@@ -378,12 +363,25 @@ function ConsultationPage() {
                       ))}
                     </select>
                   </div>
+
                   <div className="form-group">
                     <label>Dents concernées</label>
-                    <input type="text" placeholder="Ex : 16, 17" value={soin.dents.join(", ")}
-                      onChange={(e) => updateSoinDents(index, e.target.value)} />
-                    <span className="form-help">Séparer les numéros de dents par une virgule.</span>
+                    <DentSelector
+                      selectedDents={soin.dents}
+                      onChange={(newDents) => updateSoinDents(index, newDents)}
+                    />
                   </div>
+
+                  <div className="form-group">
+                    <label>Observation (facultatif)</label>
+                    <textarea
+                      value={soin.observation}
+                      onChange={(e) => updateSoin(index, "observation", e.target.value)}
+                      rows="2"
+                      placeholder="Observation sur ce soin..."
+                    />
+                  </div>
+
                   <button type="button" className="remove-act-btn" onClick={() => removeSoin(index)} title="Supprimer le soin">
                     <FaTrash />
                   </button>
@@ -395,7 +393,7 @@ function ConsultationPage() {
 
         <section className="consultation-section">
           <div className="section-title">
-            <span>06</span>
+            <span>05</span>
             <div><h2>Paiements</h2><p>Enregistrer les paiements associés à cette consultation.</p></div>
           </div>
 
@@ -437,18 +435,13 @@ function ConsultationPage() {
                     </div>
                     <div className="form-group">
                       <label>Date</label>
-                      <input type="date" value={paiement.date}
-                        onChange={(e) => updatePaiement(index, "date", e.target.value)} />
+                      <input type="date" value={paiement.paymentDate}
+                        onChange={(e) => updatePaiement(index, "paymentDate", e.target.value)} />
                     </div>
                     <div className="form-group">
-                      <label>Mode de paiement</label>
-                      <select value={paiement.method} onChange={(e) => updatePaiement(index, "method", e.target.value)}>
-                        <option value="">Sélectionner</option>
-                        <option value="cash">Espèces</option>
-                        <option value="card">Carte bancaire</option>
-                        <option value="mobile-money">Mobile Money</option>
-                        <option value="bank-transfer">Virement</option>
-                      </select>
+                      <label>Remarque (facultatif)</label>
+                      <input type="text" placeholder="Ex : reste à régler la semaine prochaine" value={paiement.remark}
+                        onChange={(e) => updatePaiement(index, "remark", e.target.value)} />
                     </div>
                     <button type="button" className="remove-act-btn" onClick={() => removePaiement(index)} title="Supprimer le paiement">
                       <FaTrash />

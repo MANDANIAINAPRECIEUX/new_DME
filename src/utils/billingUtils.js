@@ -17,7 +17,7 @@ export function formatMontant(montant) {
 
 export function getRecetteJour(consultations, dateStr) {
   return consultations.reduce((total, consultation) => {
-    const paiementsDuJour = (consultation.paiements || []).filter((p) => p.date === dateStr);
+    const paiementsDuJour = (consultation.paiements || []).filter((p) => p.paymentDate === dateStr);
     return total + getTotalPaye(paiementsDuJour);
   }, 0);
 }
