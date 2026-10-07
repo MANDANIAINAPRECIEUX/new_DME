@@ -3,6 +3,10 @@ import express from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
 import requireDoctor from "./middlewares/requireDoctor.js";
+import errorHandler from "./middlewares/errorHandler.js";
+
+
+
 
 const app = express();
 
