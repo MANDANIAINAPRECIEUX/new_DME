@@ -35,9 +35,12 @@ export default function errorHandler(err, req, res, next) {
 
   // Journaliser uniquement le type et le code de l’erreur.
   console.error("Erreur API :", {
-    name: err.name,
-    code: err.code,
-  });
+  method: req.method,
+  path: req.path,
+  name: err.name,
+  code: err.code,
+  message: err.message,
+});
 
   return res.status(500).json({
     error: {

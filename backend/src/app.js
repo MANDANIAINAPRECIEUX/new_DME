@@ -4,7 +4,7 @@ import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
 import requireDoctor from "./middlewares/requireDoctor.js";
 import errorHandler from "./middlewares/errorHandler.js";
-
+import patientRoutes from "./routes/patient.routes.js";
 
 
 
@@ -54,6 +54,9 @@ app.get("/api/doctors/me", requireDoctor, (req, res) => {
   res.status(200).json({ doctor: req.doctor });
 });
 
+
+
+app.use("/api/patients", patientRoutes);
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
   res.status(404).json({
