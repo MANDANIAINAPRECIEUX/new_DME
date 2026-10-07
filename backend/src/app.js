@@ -65,17 +65,6 @@ app.use((req, res) => {
 });
 
 // Renvoyer une réponse JSON en cas d’erreur interne.
-app.use((err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  res.status(500).json({
-    error: {
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Une erreur interne est survenue.",
-    },
-  });
-});
+app.use(errorHandler);
 
 export default app;
