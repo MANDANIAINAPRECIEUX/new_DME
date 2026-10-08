@@ -7,6 +7,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import patientRoutes from "./routes/patient.routes.js";
 import typeSoinRoutes from "./routes/typeSoin.routes.js";
 import appointmentRoutes from "./routes/appointment.routes.js";
+import treatmentRoutes from "./routes/treatment.routes.js";
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.get("/api/doctors/me", requireDoctor, (req, res) => {
 app.use("/api/patients", patientRoutes);
 app.use("/api/types-soins", typeSoinRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/treatments", treatmentRoutes);
 
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
