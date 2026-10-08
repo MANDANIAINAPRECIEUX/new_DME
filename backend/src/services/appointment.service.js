@@ -125,7 +125,9 @@ export async function createAppointment(data, connectedDoctorId) {
   return writeTransaction(async (tx) => {
     const values = {
       patientId: data.patientId,
-      doctorId: data.doctorId ?? connectedDoctorId,
+
+      doctorId: connectedDoctorId,
+
       date: toDate(data.date),
       time: data.time,
       reason: data.reason ?? null,
@@ -146,18 +148,18 @@ export async function createAppointment(data, connectedDoctorId) {
   });
 }
 
-export async function listAppointments(query) {
+export async function listAppointments(query, connectedDoctorId) {
   const page = Number(query.page ?? "1");
   const limit = Number(query.limit ?? "20");
-  const where = {};
+  const where = { doctorId: connectedDoctorId };
 
   if (query.patientId) {
     where.patientId = Number(query.patientId);
   }
 
-  if (query.doctorId) {
-    where.doctorId = Number(query.doctorId);
-  }
+  // if (query.doctorId) {
+  //   where.doctorId = Number(query.doctorId);
+  // }
 
   if (query.date) {
     where.date = toDate(query.date);
@@ -192,9 +194,12 @@ export async function listAppointments(query) {
   };
 }
 
-export async function getAppointmentById(id) {
-  const appointment = await prisma.appointment.findUnique({
-    where: { id },
+export async function getAppointmentById(id, connectedDoctorId) {
+  const appointment = await prisma.appointment.findFirst({
+    where: {
+      id,
+      doctorId: connectedDoctorId,
+    },
     include: appointmentInclude,
   });
 
@@ -209,11 +214,18 @@ export async function getAppointmentById(id) {
   return formatAppointment(appointment);
 }
 
-export async function updateAppointment(id, data) {
+export async function updateAppointment(id, data, connectedDoctorI) {
   return writeTransaction(async (tx) => {
     const current = await tx.appointment.findUnique({
-      where: { id },
-      include: { consultation: { select: { id: true } } },
+      where: {
+        id,
+        doctorId: connectedDoctorId,
+      },
+      include: {
+        consultation: {
+          select: { id: true },
+        },
+      },
     });
 
     if (!current) {
@@ -232,9 +244,17 @@ export async function updateAppointment(id, data) {
       );
     }
 
+    if (data.doctorId !== undefined && data.doctorId !== connectedDoctorId) {
+      throw new AppError(
+        403,
+        "DOCTOR_ACCESS_REQUIRED",
+        "Vous ne pouvez pas transférer ce rendez-vous à un autre médecin.",
+      );
+    }
+
     const changes = {};
 
-    for (const field of ["patientId", "doctorId", "time", "reason", "status"]) {
+    for (const field of ["patientId", "time", "reason", "status"]) {
       if (Object.hasOwn(data, field)) {
         changes[field] = data[field];
       }
