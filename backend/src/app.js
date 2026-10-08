@@ -16,6 +16,8 @@ import soinRoutes from "./routes/soin.routes.js";
 
 import dashboardRoutes from "./routes/dashboard.routes.js";
 
+import dentRoutes from "./routes/dent.routes.js";
+
 const app = express();
 
 // Autoriser le frontend local à appeler l’API.
@@ -77,6 +79,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/soins", soinRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
+
+app.use("/api/dents", dentRoutes);
 
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
