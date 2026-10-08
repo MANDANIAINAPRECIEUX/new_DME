@@ -8,6 +8,7 @@ import patientRoutes from "./routes/patient.routes.js";
 import typeSoinRoutes from "./routes/typeSoin.routes.js";
 import appointmentRoutes from "./routes/appointment.routes.js";
 import treatmentRoutes from "./routes/treatment.routes.js";
+import consultationRoutes from "./routes/consultation.routes.js";
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.use("/api/patients", patientRoutes);
 app.use("/api/types-soins", typeSoinRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/treatments", treatmentRoutes);
+app.use("/api/consultations", consultationRoutes);
 
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
