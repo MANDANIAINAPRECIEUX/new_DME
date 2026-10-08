@@ -18,3 +18,11 @@ export async function getPatient(req, res) {
 
   res.status(200).json({ data: patient });
 }
+
+export async function updatePatient(req, res) {
+  const id = Number(req.validated.params.id);
+
+  const patient = await patientService.updatePatient(id, req.validated.body);
+
+  res.status(200).json({ data: patient });
+}

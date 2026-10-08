@@ -51,15 +51,11 @@ export async function listPatients(query) {
         where,
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: [
-          { lastName: "asc" },
-          { firstName: "asc" },
-          { id: "asc" },
-        ],
+        orderBy: [{ lastName: "asc" }, { firstName: "asc" }, { id: "asc" }],
       }),
       prisma.patient.count({ where }),
     ],
-    { isolationLevel: "RepeatableRead" }
+    { isolationLevel: "RepeatableRead" },
   );
 
   return {
@@ -80,12 +76,38 @@ export async function getPatientById(id) {
   });
 
   if (!patient) {
-    throw new AppError(
-      404,
-      "PATIENT_NOT_FOUND",
-      "Patient introuvable."
-    );
+    throw new AppError(404, "PATIENT_NOT_FOUND", "Patient introuvable.");
   }
 
   return formatPatient(patient);
+}
+
+// Modifier uniquement les champs envoyés et autorisés.
+export async function updatePatient(id, data) {
+  const changes = {};
+
+  for (const field of ["firstName", "lastName", "gender", "phone", "address"]) {
+    if (Object.hasOwn(data, field)) {
+      changes[field] = data[field];
+    }
+  }
+
+  if (Object.hasOwn(data, "birthDate")) {
+    changes.birthDate = new Date(`${data.birthDate}T00:00:00.000Z`);
+  }
+
+  try {
+    const patient = await prisma.patient.update({
+      where: { id },
+      data: changes,
+    });
+
+    return formatPatient(patient);
+  } catch (error) {
+    if (error.code === "P2025") {
+      throw new AppError(404, "PATIENT_NOT_FOUND", "Patient introuvable.");
+    }
+
+    throw error;
+  }
 }

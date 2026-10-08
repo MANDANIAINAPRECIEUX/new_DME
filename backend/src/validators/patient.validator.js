@@ -31,7 +31,7 @@ export const createPatientSchema = yup
       .test(
         "birth-date",
         "La date de naissance doit être valide, au format YYYY-MM-DD, et non future.",
-        validBirthDate
+        validBirthDate,
       ),
 
     phone: yup.string().trim().required("Téléphone obligatoire.").max(30),
@@ -49,7 +49,7 @@ export const patientIdSchema = yup
       .test(
         "id-range",
         "Identifiant invalide.",
-        (value) => Number(value) <= 2147483647
+        (value) => Number(value) <= 2147483647,
       ),
   })
   .noUnknown();
@@ -61,7 +61,7 @@ function positiveInteger(maximum) {
     .test(
       "maximum",
       `La valeur ne doit pas dépasser ${maximum}.`,
-      (value) => value === undefined || Number(value) <= maximum
+      (value) => value === undefined || Number(value) <= maximum,
     )
     .optional();
 }
@@ -74,3 +74,28 @@ export const listPatientsSchema = yup
     gender: yup.string().oneOf(["M", "F"]).optional(),
   })
   .noUnknown(true, "Un paramètre de recherche n'est pas autorisé.");
+
+// Les champs sont facultatifs, mais valides lorsqu'ils sont envoyés.
+export const updatePatientSchema = yup
+  .object({
+    firstName: yup.string().trim().min(1).max(100).optional(),
+    lastName: yup.string().trim().min(1).max(100).optional(),
+    gender: yup.string().oneOf(["M", "F"]).optional(),
+
+    birthDate: yup
+      .string()
+      .optional()
+      .test(
+        "birth-date",
+        "La date de naissance doit être valide, au format YYYY-MM-DD, et non future.",
+        (value) => value === undefined || validBirthDate(value),
+      ),
+
+    phone: yup.string().trim().min(1).max(30).optional(),
+    address: yup.string().trim().max(500).nullable().optional(),
+  })
+  .noUnknown(true, "Un champ envoyé n'est pas autorisé.")
+  .required()
+  .test("non-empty", "Envoyez au moins un champ à modifier.", (value) =>
+    Boolean(value && Object.keys(value).length > 0),
+  );
