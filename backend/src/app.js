@@ -10,6 +10,8 @@ import appointmentRoutes from "./routes/appointment.routes.js";
 import treatmentRoutes from "./routes/treatment.routes.js";
 import consultationRoutes from "./routes/consultation.routes.js";
 
+import soinRoutes from "./routes/soin.routes.js";
+
 const app = express();
 
 // Autoriser le frontend local à appeler l’API.
@@ -65,6 +67,8 @@ app.use("/api/types-soins", typeSoinRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/treatments", treatmentRoutes);
 app.use("/api/consultations", consultationRoutes);
+
+app.use("/api/soins", soinRoutes);
 
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
