@@ -5,15 +5,16 @@ import { clerkMiddleware, getAuth } from "@clerk/express";
 import requireDoctor from "./middlewares/requireDoctor.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import patientRoutes from "./routes/patient.routes.js";
-
-
+import typeSoinRoutes from "./routes/typeSoin.routes.js";
 
 const app = express();
 
 // Autoriser le frontend local à appeler l’API.
-app.use(cors({
-  origin: "http://localhost:5173",
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 
 // Lire les données JSON des requêtes.
 app.use(express.json());
@@ -27,9 +28,11 @@ app.get("/api/health", (req, res) => {
 });
 
 // Vérifier les sessions Clerk pour les routes suivantes.
-app.use(clerkMiddleware({
-  authorizedParties: ["http://localhost:5173"],
-}));
+app.use(
+  clerkMiddleware({
+    authorizedParties: ["http://localhost:5173"],
+  }),
+);
 
 // Retourner l’identité Clerk de l’utilisateur connecté.
 app.get("/api/auth/me", (req, res) => {
@@ -54,9 +57,10 @@ app.get("/api/doctors/me", requireDoctor, (req, res) => {
   res.status(200).json({ doctor: req.doctor });
 });
 
-
-
 app.use("/api/patients", patientRoutes);
+
+app.use("/api/types-soins", typeSoinRoutes);
+
 // Répondre aux routes inexistantes.
 app.use((req, res) => {
   res.status(404).json({
