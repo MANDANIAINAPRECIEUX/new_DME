@@ -10,6 +10,8 @@ import appointmentRoutes from "./routes/appointment.routes.js";
 import treatmentRoutes from "./routes/treatment.routes.js";
 import consultationRoutes from "./routes/consultation.routes.js";
 
+import paymentRoutes from "./routes/payment.routes.js";
+
 import soinRoutes from "./routes/soin.routes.js";
 
 const app = express();
@@ -67,6 +69,8 @@ app.use("/api/types-soins", typeSoinRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/treatments", treatmentRoutes);
 app.use("/api/consultations", consultationRoutes);
+
+app.use("/api/payments", paymentRoutes);
 
 app.use("/api/soins", soinRoutes);
 
