@@ -1,61 +1,49 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { doctors } from "../mock/doctors";
+import { createContext, useContext } from "react";
+import { useUser, useClerk } from "@clerk/react";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [initializing, setInitializing] = useState(true);
+  const { user, isLoaded, isSignedIn } = useUser();
+  const { signOut } = useClerk();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("dme_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setInitializing(false);
-  }, []);
-
-  const login = async (email, password) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
-      const matchedDoctor = doctors.find(
-        (d) => d.email === email && d.password === password
-      );
-
-      if (matchedDoctor) {
-        const { password: _password, ...connectedUser } = matchedDoctor;
-        setUser(connectedUser);
-        localStorage.setItem("dme_user", JSON.stringify(connectedUser));
-        setLoading(false);
-        return true;
-      }
-
-      throw new Error("Email ou mot de passe incorrect");
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      return false;
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
+  const logout = async () => {
     localStorage.removeItem("dme_user");
+    await signOut({ redirectUrl: "/login" });
   };
+
+  const connectedUser =
+    isLoaded && isSignedIn && user
+      ? {
+          id: user.id,
+          firstName: user.firstName ?? "",
+          lastName: user.lastName ?? "",
+          email: user.primaryEmailAddress?.emailAddress ?? "",
+          photo: user.imageUrl,
+        }
+      : null;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, error, initializing }}>
+    <AuthContext.Provider
+      value={{
+        user: connectedUser,
+        logout,
+        initializing: !isLoaded,
+        loading: !isLoaded,
+        error: null,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth doit être utilisé dans AuthProvider");
+  }
+
+  return context;
 }
