@@ -16,7 +16,7 @@ function ConsultationPage() {
   const navigate = useNavigate();
 
   const { appointments, updateAppointment } = useAppointments();
-  const { patients } = usePatients();
+  const { patients, loading: patientsLoading } = usePatients();
   const { consultations, addConsultation } = useConsultations();
   const { treatments, addTreatment, updateTreatment } = useTreatments();
   const { typesSoins } = useTypesSoins();
@@ -42,6 +42,10 @@ function ConsultationPage() {
     soins: [],
     paiements: [],
   });
+
+  if (patientsLoading) {
+    return <div className="consultation-page"><p>Chargement…</p></div>;
+  }
 
   if (!appointment || !patient) {
     return (

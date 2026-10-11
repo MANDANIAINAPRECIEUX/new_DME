@@ -9,7 +9,7 @@ import "./Patients.css";
 const ITEMS_PER_PAGE = 5;
 
 function Patients() {
-  const { patients } = usePatients();
+  const { patients, loading, error } = usePatients();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -46,8 +46,10 @@ function Patients() {
       </div>
 
       <PatientSearch searchTerm={searchTerm} onSearch={setSearchTerm} />
-
-      <PatientTable patients={paginatedPatients} />
+      
+      {error && <p className="form-error">{error}</p>}
+      {loading ? <p>Chargement des patients…</p> : <PatientTable patients={paginatedPatients} />}
+      
 
       <Pagination
         currentPage={currentPage}

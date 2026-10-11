@@ -23,6 +23,8 @@ function PatientForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
     if (isEditMode) {
@@ -34,18 +36,22 @@ function PatientForm() {
           birthDate: patient.birthDate || "",
           gender: patient.gender || "",
           phone: patient.phone || "",
-          email: patient.email || "",
           address: patient.address || "",
         });
       }
     }
   }, [id, isEditMode, patients]);
 
+  const today = new Date().toISOString().split("T")[0];
   const validateForm = () => {
     const newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "Veuillez renseigner le prénom.";
     if (!formData.lastName.trim()) newErrors.lastName = "Veuillez renseigner le nom.";
-    if (!formData.birthDate) newErrors.birthDate = "Veuillez renseigner la date de naissance.";
+    if (!formData.birthDate) { 
+      newErrors.birthDate = "Veuillez renseigner la date de naissance.";
+    } else if (formData.birthDate > today) { 
+      newErrors.birthDate = "La date de naissance ne peut pas être dans le futur.";
+    }
     if (!formData.gender) newErrors.gender = "Veuillez sélectionner le sexe.";
     if (!formData.phone.trim()) newErrors.phone = "Veuillez renseigner le numéro de téléphone.";
     setErrors(newErrors);
@@ -57,28 +63,42 @@ function PatientForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    if (isEditMode) {
-      updatePatient(id, formData);
-      navigate(`/patients/${id}`);
-      return;
-    }
+    setSubmitting(true);
+    setServerError("");
 
-    const newPatient = addPatient(formData);
+    try {
+      if (isEditMode) {
+        await updatePatient(id, formData);
+        navigate(`/patients/${id}`);
+        return;
+      }
 
-    // Création rapide : on enchaîne directement vers un nouveau rendez-vous pour ce patient
-    if (isQuickCreate) {
-      navigate("/appointments/new", {
-        state: { patientId: newPatient.id },
-      });
-      return;
-    }
+      const newPatient = await addPatient(formData);
 
-    navigate("/patients");
+      if (isQuickCreate) {
+        navigate("/appointments/new", { state: { patientId: newPatient.id } });
+        return;
+      }
+
+      navigate("/patients");
+    } catch (err) {
+    // Erreurs de validation renvoyées par le backend, champ par champ
+      if (err.details?.length) {
+        const fieldErrors = {};
+        err.details.forEach(({ field, message }) => {
+          fieldErrors[field] = message;
+        });
+        setErrors((prev) => ({ ...prev, ...fieldErrors }));
+      }
+      setServerError(err.message);
+    } finally {
+        setSubmitting(false);
+      }
   };
 
   const handleCancel = () => {
@@ -130,7 +150,7 @@ function PatientForm() {
             <div className="form-group">
               <label htmlFor="birthDate">Date de naissance *</label>
               <input id="birthDate" name="birthDate" type="date" value={formData.birthDate}
-                onChange={handleChange} />
+                onChange={handleChange} max={today} />
               {errors.birthDate && <span className="form-error">{errors.birthDate}</span>}
             </div>
 
@@ -156,12 +176,6 @@ function PatientForm() {
                 onChange={handleChange} placeholder="Numéro de téléphone" />
               {errors.phone && <span className="form-error">{errors.phone}</span>}
             </div>
-
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
-              <input id="email" name="email" type="email" value={formData.email}
-                onChange={handleChange} placeholder="Adresse e-mail" />
-            </div>
           </div>
 
           <div className="form-group">
@@ -171,12 +185,16 @@ function PatientForm() {
           </div>
         </div>
 
+        {serverError && <span className="form-error">{serverError}</span>}
+
         <div className="form-actions">
           <button type="button" className="cancel-btn" onClick={handleCancel}>
-            Annuler
+          Annuler
           </button>
-          <button type="submit" className="save-btn">
-            {isEditMode
+          <button type="submit" className="save-btn" disabled={submitting}>
+            {submitting
+              ? "Enregistrement..."
+              : isEditMode
               ? "Enregistrer les modifications"
               : isQuickCreate
               ? "Enregistrer et planifier un rendez-vous"

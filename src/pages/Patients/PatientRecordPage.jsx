@@ -25,13 +25,17 @@ function PatientRecordPage() {
     });
   };
 
-  const { patients } = usePatients();
+  const { patients, loading: patientsLoading } = usePatients();
   const { appointments } = useAppointments();
   const { consultations } = useConsultations();
   const { treatments, updateTreatment } = useTreatments();
 
   const patient = patients.find((p) => p.id.toString() === id);
 
+  if (patientsLoading) {
+    return <div className="patient-record-page"><p>Chargement du dossier…</p></div>;
+  }
+  
   if (!patient) {
     return (
       <div className="patient-record-page">
