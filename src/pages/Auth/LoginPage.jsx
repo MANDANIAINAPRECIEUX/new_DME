@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSignIn, useClerk } from "@clerk/react";
+import { useSignIn } from "@clerk/react";
 import { FaTooth, FaEnvelope, FaLock } from "react-icons/fa";
 import "./LoginPage.css";
 
 function LoginPage() {
-  const { signIn, setActive } = useSignIn();
-  const clerk = useClerk();
-  const isLoaded = clerk.loaded;
-
+  const { isLoaded, signIn, setActive } = useSignIn();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -18,10 +15,6 @@ function LoginPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log("Clerk chargé :", isLoaded);
-  console.log("Objet signIn :", !!signIn);
-  console.log("Chargement :", loading);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,36 +34,34 @@ function LoginPage() {
     setError(null);
 
     try {
-      const { error: clerkError } = await signIn.password({
-        emailAddress: formData.email.trim(),
+      // Authentification réelle via Clerk
+      const result = await signIn.create({
+        identifier: formData.email.trim(),
         password: formData.password,
       });
 
-      if (clerkError) {
-        console.error("Code erreur Clerk :", clerkError.code);
-
-        setError(
-          clerkError.message ||
-            "Connexion impossible. Vérifiez vos identifiants.",
-        );
-        return;
-      }
-
-      console.log("Statut Clerk :", signIn.status);
-
-      if (signIn.status === "complete") {
-        await signIn.finalize({
-          navigate: () => navigate("/", { replace: true }),
+      if (result.status === "complete") {
+        // Activer la session Clerk
+        await setActive({
+          session: result.createdSessionId,
         });
+
+        // Rediriger vers le Dashboard
+        navigate("/", { replace: true });
       } else {
         setError(
-          "La connexion nécessite une étape supplémentaire : " + signIn.status,
+          "Une vérification supplémentaire est nécessaire. " +
+            "Veuillez contacter l'administrateur.",
         );
       }
     } catch (err) {
-      console.error("Erreur de connexion :", err);
+      const clerkError = err?.errors?.[0];
 
-      setError("Une erreur est survenue pendant la connexion.");
+      setError(
+        clerkError?.longMessage ||
+          clerkError?.message ||
+          "Connexion impossible. Vérifiez vos identifiants.",
+      );
     } finally {
       setLoading(false);
     }
