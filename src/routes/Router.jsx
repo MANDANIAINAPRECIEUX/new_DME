@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "../pages/Auth/LoginPage";
+import NotAuthorizedPage from "../pages/Auth/NotAuthorizedPage";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Patients from "../pages/Patients/Patients";
 import PatientFormPage from "../pages/Patients/PatientFormPage";
@@ -15,9 +16,8 @@ import Help from "../pages/Help/Help";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
+    path: "/login/*", element: <LoginPage /> }, // route wildcard requise par Clerk (routing="path")
+  { path: "/not-authorized", element: <NotAuthorizedPage /> },
   {
     path: "/",
     element: (

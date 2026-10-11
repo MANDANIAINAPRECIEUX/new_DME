@@ -8,10 +8,10 @@ function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
+  const handleLogout = async () => {
+  await logout(); // signOut() de Clerk est asynchrone
+  navigate("/login", { replace: true });
+};
 
   return (
     <aside className="sidebar">

@@ -1,56 +1,67 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { doctors } from "../mock/doctors";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth as useClerkAuth, useClerk } from "@clerk/react";
+import { useApi } from "../services/useApi";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { isLoaded: clerkLoaded, isSignedIn } = useClerkAuth();
+  const { signOut } = useClerk();
+  const api = useApi();
+
+  const [doctor, setDoctor] = useState(null);
+  // "loading" | "signed-out" | "not-authorized" | "error" | "authorized"
+  const [status, setStatus] = useState("loading");
   const [error, setError] = useState(null);
-  const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("dme_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (!clerkLoaded) return;
+
+    if (!isSignedIn) {
+      setDoctor(null);
+      setStatus("signed-out");
+      return;
     }
-    setInitializing(false);
-  }, []);
 
-  const login = async (email, password) => {
-    setLoading(true);
-    setError(null);
+    let cancelled = false;
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+    const fetchDoctor = async () => {
+      setStatus("loading");
+      setError(null);
 
-      const matchedDoctor = doctors.find(
-        (d) => d.email === email && d.password === password
-      );
+      try {
+        const data = await api("/api/doctors/me");
+        if (cancelled) return;
 
-      if (matchedDoctor) {
-        const { password: _password, ...connectedUser } = matchedDoctor;
-        setUser(connectedUser);
-        localStorage.setItem("dme_user", JSON.stringify(connectedUser));
-        setLoading(false);
-        return true;
+        setDoctor(data.doctor);
+        setStatus("authorized");
+      } catch (err) {
+        if (cancelled) return;
+
+        setDoctor(null);
+
+        // Session Clerk valide, mais compte non lié à un docteur
+        if (err.status === 403) {
+          setStatus("not-authorized");
+          return;
+        }
+
+        console.error("AuthContext — échec de la récupération du profil :", err);
+        setError(err.message);
+        setStatus("error");
       }
+    };
 
-      throw new Error("Email ou mot de passe incorrect");
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      return false;
-    }
-  };
+    fetchDoctor();
+    return () => {
+      cancelled = true;
+    };
+  }, [clerkLoaded, isSignedIn, api]);
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("dme_user");
-  };
+  const logout = () => signOut();
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, error, initializing }}>
+    <AuthContext.Provider value={{ user: doctor, status, error, logout }}>
       {children}
     </AuthContext.Provider>
   );
