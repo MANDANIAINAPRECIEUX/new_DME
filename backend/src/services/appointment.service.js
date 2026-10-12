@@ -214,7 +214,7 @@ export async function getAppointmentById(id, connectedDoctorId) {
   return formatAppointment(appointment);
 }
 
-export async function updateAppointment(id, data, connectedDoctorI) {
+export async function updateAppointment(id, data, connectedDoctorId) {
   return writeTransaction(async (tx) => {
     const current = await tx.appointment.findUnique({
       where: {

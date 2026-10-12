@@ -19,9 +19,8 @@ export async function listAppointments(req, res) {
 }
 
 export async function getAppointment(req, res) {
-  const appointment = await appointmentService.updateAppointment(
+  const appointment = await appointmentService.getAppointmentById(
     Number(req.validated.params.id),
-    req.validated.body,
     req.doctor.id,
   );
 
@@ -32,6 +31,7 @@ export async function updateAppointment(req, res) {
   const appointment = await appointmentService.updateAppointment(
     Number(req.validated.params.id),
     req.validated.body,
+    req.doctor.id,
   );
 
   res.status(200).json({ data: appointment });
