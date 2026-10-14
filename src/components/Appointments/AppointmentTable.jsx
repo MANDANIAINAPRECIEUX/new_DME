@@ -1,47 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import { useAppointments } from "../../context/AppointmentContext";
-import { usePatients } from "../../context/PatientContext";
-import { doctors } from "../../mock/doctors";
 import "./AppointmentTable.css";
 
-function AppointmentTable({ appointments}){
-  const navigate=useNavigate();
-  const { updateAppointment }=useAppointments();
-  const { patients }=usePatients();
-  
-  const patientsMap=Object.fromEntries(
-    patients.map((patient)=>[patient.id,patient])
-  );
-  const doctorsMap = Object.fromEntries(doctors.map((d) => [d.id, d]));
+const STATUS_LABELS = {
+  pending: "En attente",
+  completed: "Terminé",
+  cancelled: "Annulé",
+};
 
-  const getStatusLabel=(status)=>{
-    switch(status){
-      case "pending":
-        return "En attente";
-      case "completed":
-        return "Terminé";
-      case "cancelled":
-        return "Annulé";
-      default:
-        return status;
-    }
-  };
+function AppointmentTable({ appointments }) {
+  const navigate = useNavigate();
+  const { cancelAppointment } = useAppointments();
 
-  const handleCancel = (appointmentId) => {
+  const handleCancel = async (appointmentId) => {
     const confirmed = window.confirm(
       "Voulez-vous vraiment annuler ce rendez-vous ?"
     );
+    if (!confirmed) return;
 
-    if (!confirmed) {
-      return;
+    try {
+      await cancelAppointment(appointmentId);
+    } catch (err) {
+      alert(err.message);
     }
-
-    updateAppointment(appointmentId, {
-      status: "cancelled",
-    });
   };
 
-  return(
+  return (
     <div className="appointment-table-card">
       <table className="appointment-table">
         <thead>
@@ -57,79 +41,63 @@ function AppointmentTable({ appointments}){
         </thead>
 
         <tbody>
-          {appointments.length===0 ? (
+          {appointments.length === 0 ? (
             <tr>
               <td colSpan="7" className="empty-message">
                 Aucun rendez-vous trouvé.
               </td>
             </tr>
           ) : (
-            appointments.map((appointment)=>{
-              const patient=patientsMap[appointment.patientId];
-              const doctor = doctorsMap[appointment.doctorId];
+            appointments.map((appointment) => {
+              const { patient, doctor } = appointment;
+              const isPending = appointment.status === "pending";
 
-              return(
+              return (
                 <tr key={appointment.id}>
-                  <td>
-                    {new Date(appointment.date).toLocaleDateString("fr-FR")}
-                  </td>
-
-                  <td>
-                    {appointment.time}
-                  </td>
-
+                  <td>{new Date(appointment.date).toLocaleDateString("fr-FR")}</td>
+                  <td>{appointment.time}</td>
                   <td>
                     {patient
                       ? `${patient.firstName} ${patient.lastName}`
                       : "Patient inconnu"}
                   </td>
-
                   <td>{doctor ? `Dr. ${doctor.firstName}` : "—"}</td>
-
-                  <td>
-                    {appointment.reason||"—"}
-                  </td>
-
+                  <td>{appointment.reason || "—"}</td>
                   <td>
                     <span className={`status ${appointment.status}`}>
-                      {getStatusLabel(appointment.status)}
+                      {STATUS_LABELS[appointment.status] ?? appointment.status}
                     </span>
                   </td>
-
                   <td>
-                  <div className="appointment-actions">
+                    <div className="appointment-actions">
+                      <button
+                        className={`edit-appointment-btn ${!isPending ? "disabled" : ""}`}
+                        disabled={!isPending}
+                        onClick={() =>
+                          navigate(`/appointments/${appointment.id}/edit`)
+                        }
+                      >
+                        Modifier
+                      </button>
 
-                    <button className={`edit-appointment-btn ${
-                      appointment.status !== "pending" ? "disabled" : ""
-                    }`}
-                      disabled={appointment.status !== "pending"}
-                      onClick={() =>
-                        navigate(`/appointments/${appointment.id}/edit`)
-                      }
-                    >
-                    Modifier
-                    </button>
+                      <button
+                        className={`start-consultation-btn ${!isPending ? "disabled" : ""}`}
+                        disabled={!isPending}
+                        onClick={() =>
+                          navigate(`/consultations/${appointment.id}`)
+                        }
+                      >
+                        Démarrer
+                      </button>
 
-                    <button className={`start-consultation-btn ${
-                      appointment.status !== "pending" ? "disabled" : ""
-                    }`}
-                      disabled={appointment.status !== "pending"}
-                      onClick={() =>
-                        navigate(`/consultations/${appointment.id}`)
-                      }
-                    >
-                    Démarrer
-                    </button>
-
-                    <button className="cancel-appointment-btn"
-                      disabled={appointment.status !== "pending"}
-                      onClick={() => handleCancel(appointment.id)}
-                    >
-                    Annuler
-                    </button>
-
-
-                  </div>
+                      <button
+                        className="cancel-appointment-btn"
+                        disabled={!isPending}
+                        onClick={() => handleCancel(appointment.id)}
+                      >
+                        Annuler
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

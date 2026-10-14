@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { usePatients } from "../../context/PatientContext";
 import { useAppointments } from "../../context/AppointmentContext";
 import { useAuth } from "../../context/AuthContext";
 import PatientSearchSelect from "../Patients/PatientSearchSelect";
-import { hasAppointmentConflict, CRENEAUX, formatCreneau } from "../../utils/appointmentUtils";
+import {
+  hasAppointmentConflict,
+  CRENEAUX,
+  formatCreneau,
+} from "../../utils/appointmentUtils";
 import "./AppointmentForm.css";
 
 function AppointmentForm() {
@@ -12,8 +15,8 @@ function AppointmentForm() {
   const { id } = useParams();
   const location = useLocation();
 
-  const { patients } = usePatients();
-  const { appointments, addAppointment, updateAppointment } = useAppointments();
+  const { appointments, loading, addAppointment, updateAppointment } =
+    useAppointments();
   const { user } = useAuth();
 
   const isEditMode = Boolean(id);
@@ -26,10 +29,10 @@ function AppointmentForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  const appointmentToEdit = appointments.find(
-    (appointment) => appointment.id.toString() === id
-  );
+  const appointmentToEdit = appointments.find((a) => a.id.toString() === id);
 
   useEffect(() => {
     if (appointmentToEdit) {
@@ -42,8 +45,8 @@ function AppointmentForm() {
     }
   }, [appointmentToEdit]);
 
-  // Le docteur du rendez-vous : celui déjà enregistré en modification,
-  // sinon le docteur actuellement connecté (RG04).
+  // Le docteur du rendez-vous : celui d'origine en modification,
+  // sinon le docteur connecté.
   const doctorId = isEditMode
     ? appointmentToEdit?.doctorId ?? user?.id
     : user?.id;
@@ -52,13 +55,13 @@ function AppointmentForm() {
   const creneauxOccupes = formData.date
     ? appointments
         .filter(
-          (appointment) =>
-            appointment.status !== "cancelled" &&
-            Number(appointment.doctorId) === Number(doctorId) &&
-            appointment.date === formData.date &&
-            (!isEditMode || appointment.id.toString() !== id)
+          (a) =>
+            a.status !== "cancelled" &&
+            Number(a.doctorId) === Number(doctorId) &&
+            a.date === formData.date &&
+            (!isEditMode || a.id.toString() !== id)
         )
-        .map((appointment) => appointment.time)
+        .map((a) => a.time)
     : [];
 
   const validateForm = () => {
@@ -67,33 +70,27 @@ function AppointmentForm() {
     if (!formData.patientId) {
       newErrors.patientId = "Veuillez sélectionner un patient.";
     }
-
     if (!formData.date) {
       newErrors.date = "Veuillez renseigner la date.";
     }
-
     if (!formData.time) {
       newErrors.time = "Veuillez sélectionner un créneau.";
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     const conflict = hasAppointmentConflict(
       appointments,
@@ -108,20 +105,42 @@ function AppointmentForm() {
       return;
     }
 
-    const appointmentData = {
-      ...formData,
-      patientId: Number(formData.patientId),
-      doctorId: Number(doctorId),
-    };
+    setSubmitting(true);
+    setServerError("");
 
-    if (isEditMode) {
-      updateAppointment(Number(id), appointmentData);
-    } else {
-      addAppointment(appointmentData);
+    try {
+      if (isEditMode) {
+        await updateAppointment(id, formData);
+      } else {
+        await addAppointment(formData);
+      }
+      navigate("/appointments");
+    } catch (err) {
+      // Filet de sécurité : le serveur revalide le créneau
+      if (err.code === "APPOINTMENT_SLOT_UNAVAILABLE") {
+        setErrors({ time: err.message });
+      } else {
+        if (err.details?.length) {
+          const fieldErrors = {};
+          err.details.forEach(({ field, message }) => {
+            fieldErrors[field] = message;
+          });
+          setErrors((prev) => ({ ...prev, ...fieldErrors }));
+        }
+        setServerError(err.message);
+      }
+    } finally {
+      setSubmitting(false);
     }
-
-    navigate("/appointments");
   };
+
+  if (isEditMode && loading) {
+    return (
+      <div className="appointment-form-card">
+        <p>Chargement…</p>
+      </div>
+    );
+  }
 
   if (isEditMode && !appointmentToEdit) {
     return (
@@ -132,7 +151,11 @@ function AppointmentForm() {
         </div>
 
         <div className="form-actions">
-          <button type="button" className="cancel-btn" onClick={() => navigate("/appointments")}>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/appointments")}
+          >
             Retour aux rendez-vous
           </button>
         </div>
@@ -190,12 +213,13 @@ function AppointmentForm() {
                 disabled={!formData.date}
               >
                 <option value="">
-                  {formData.date ? "Sélectionner un créneau" : "Choisir d'abord une date"}
+                  {formData.date
+                    ? "Sélectionner un créneau"
+                    : "Choisir d'abord une date"}
                 </option>
 
                 {CRENEAUX.map((creneau) => {
                   const occupe = creneauxOccupes.includes(creneau);
-
                   return (
                     <option key={creneau} value={creneau} disabled={occupe}>
                       {formatCreneau(creneau)}
@@ -205,10 +229,7 @@ function AppointmentForm() {
                 })}
               </select>
 
-              <span className="form-help">
-                Chaque rendez-vous dure une heure.
-              </span>
-
+              <span className="form-help">Chaque rendez-vous dure une heure.</span>
               {errors.time && <span className="form-error">{errors.time}</span>}
             </div>
           </div>
@@ -222,16 +243,27 @@ function AppointmentForm() {
               value={formData.reason}
               onChange={handleChange}
               placeholder="Motif du rendez-vous"
+              maxLength={500}
             />
           </div>
         </div>
 
+        {serverError && <span className="form-error">{serverError}</span>}
+
         <div className="form-actions">
-          <button type="button" className="cancel-btn" onClick={() => navigate("/appointments")}>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/appointments")}
+          >
             Annuler
           </button>
-          <button type="submit" className="save-btn">
-            {isEditMode ? "Enregistrer les modifications" : "Enregistrer le rendez-vous"}
+          <button type="submit" className="save-btn" disabled={submitting}>
+            {submitting
+              ? "Enregistrement..."
+              : isEditMode
+              ? "Enregistrer les modifications"
+              : "Enregistrer le rendez-vous"}
           </button>
         </div>
       </form>

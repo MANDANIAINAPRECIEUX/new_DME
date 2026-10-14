@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAppointments } from "../../context/AppointmentContext";
 import { usePatients } from "../../context/PatientContext";
-import { doctors } from "../../mock/doctors";
 import PatientSearch from "../../components/Patients/PatientSearch";
 import AppointmentFilters from "../../components/Appointments/AppointmentFilters";
 import AppointmentTable from "../../components/Appointments/AppointmentTable";
@@ -18,7 +17,7 @@ import "./Appointments.css";
 const ITEMS_PER_PAGE = 5;
 
 function Appointments() {
-  const { appointments } = useAppointments();
+  const { appointments, loading, error } = useAppointments();
   const { patients } = usePatients();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,12 +26,20 @@ function Appointments() {
   const [doctorFilter, setDoctorFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Docteurs présents dans les rendez-vous chargés (pour le filtre)
+  const doctorsInList = useMemo(() => {
+    const byId = new Map();
+    appointments.forEach((a) => {
+      if (a.doctor) byId.set(a.doctor.id, a.doctor);
+    });
+    return [...byId.values()];
+  }, [appointments]);
+
   const filteredByPatient = filterAppointmentsByPatient(appointments, patients, searchTerm);
   const filteredByStatus = filterAppointmentsByStatus(filteredByPatient, statusFilter);
   const filteredByDate = filterAppointmentsByDate(filteredByStatus, dateFilter);
   const filteredAppointments = filterAppointmentsByDoctor(filteredByDate, doctorFilter);
 
-  // Revenir à la page 1 si n'importe quel filtre change
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter, dateFilter, doctorFilter]);
@@ -63,13 +70,20 @@ function Appointments() {
           statusFilter={statusFilter}
           dateFilter={dateFilter}
           doctorFilter={doctorFilter}
+          doctors={doctorsInList}
           onStatusChange={setStatusFilter}
           onDateChange={setDateFilter}
           onDoctorChange={setDoctorFilter}
         />
       </div>
 
-      <AppointmentTable appointments={paginatedAppointments} />
+      {error && <p className="form-error">{error}</p>}
+
+      {loading ? (
+        <p>Chargement des rendez-vous…</p>
+      ) : (
+        <AppointmentTable appointments={paginatedAppointments} />
+      )}
 
       <Pagination
         currentPage={currentPage}

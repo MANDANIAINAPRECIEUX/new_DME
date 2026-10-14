@@ -15,7 +15,7 @@ function ConsultationPage() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
 
-  const { appointments, updateAppointment } = useAppointments();
+  const { appointments, loading: appointmentsLoading, patchAppointmentLocally } = useAppointments();
   const { patients, loading: patientsLoading } = usePatients();
   const { consultations, addConsultation } = useConsultations();
   const { treatments, addTreatment, updateTreatment } = useTreatments();
@@ -43,7 +43,7 @@ function ConsultationPage() {
     paiements: [],
   });
 
-  if (patientsLoading) {
+  if (patientsLoading || appointmentsLoading) {
     return <div className="consultation-page"><p>Chargement…</p></div>;
   }
 
@@ -222,7 +222,7 @@ function ConsultationPage() {
     }
 
     // Le motif vit désormais uniquement sur le rendez-vous
-    updateAppointment(appointment.id, { status: "completed", reason: formData.reason });
+    patchAppointmentLocally(appointment.id, { status: "completed", reason: formData.reason });
 
     const shouldSuggestNextAppointment = treatmentId && !formData.markTreatmentCompleted;
 

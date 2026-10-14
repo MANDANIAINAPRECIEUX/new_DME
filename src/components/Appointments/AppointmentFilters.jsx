@@ -1,17 +1,16 @@
-import { doctors } from "../../mock/doctors";
 import "./AppointmentFilters.css";
 
 function AppointmentFilters({
   statusFilter,
   dateFilter,
   doctorFilter,
+  doctors = [],
   onStatusChange,
   onDateChange,
   onDoctorChange,
 }) {
   return (
     <div className="appointment-filters">
-
       <select
         value={statusFilter}
         onChange={(e) => onStatusChange(e.target.value)}
@@ -22,10 +21,7 @@ function AppointmentFilters({
         <option value="cancelled">Annulé</option>
       </select>
 
-      <select
-        value={dateFilter}
-        onChange={(e) => onDateChange(e.target.value)}
-      >
+      <select value={dateFilter} onChange={(e) => onDateChange(e.target.value)}>
         <option value="all">Toutes les dates</option>
         <option value="today">Aujourd'hui</option>
         <option value="tomorrow">Demain</option>
@@ -47,7 +43,6 @@ function AppointmentFilters({
           ))}
         </select>
       )}
-
     </div>
   );
 }
