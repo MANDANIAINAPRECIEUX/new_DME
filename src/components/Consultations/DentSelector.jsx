@@ -1,25 +1,43 @@
-import { dents } from "../../mock/dents";
+import { useDents } from "../../context/DentContext";
 import "./DentSelector.css";
 
 function DentSelector({ selectedDents, onChange }) {
-  const toggleDent = (dent) => {
-    if (selectedDents.includes(dent)) {
-      onChange(selectedDents.filter((d) => d !== dent));
+  const { dents, loading, error } = useDents();
+
+  const toggleDent = (number) => {
+    if (selectedDents.includes(number)) {
+      onChange(selectedDents.filter((d) => d !== number));
     } else {
-      onChange([...selectedDents, dent]);
+      onChange([...selectedDents, number]);
     }
   };
 
+  if (loading) {
+    return <p className="dent-selector-status">Chargement des dents…</p>;
+  }
+
+  if (error) {
+    return <p className="dent-selector-status error">{error}</p>;
+  }
+
+  if (dents.length === 0) {
+    return (
+      <p className="dent-selector-status">
+        Aucune dent disponible : le référentiel est vide.
+      </p>
+    );
+  }
+
   return (
     <div className="dent-selector">
-      {dents.map((dent) => (
+      {dents.map(({ id, number }) => (
         <button
           type="button"
-          key={dent}
-          className={`dent-chip ${selectedDents.includes(dent) ? "selected" : ""}`}
-          onClick={() => toggleDent(dent)}
+          key={id}
+          className={`dent-chip ${selectedDents.includes(number) ? "selected" : ""}`}
+          onClick={() => toggleDent(number)}
         >
-          {dent}
+          {number}
         </button>
       ))}
     </div>

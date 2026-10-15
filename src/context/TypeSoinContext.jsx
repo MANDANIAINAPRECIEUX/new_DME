@@ -1,34 +1,63 @@
-import { createContext, useContext, useState } from "react";
-import { typesSoins as initialTypesSoins } from "../mock/typesSoins";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useApi } from "../services/useApi";
+import { useAuth } from "./AuthContext";
 
 const TypeSoinContext = createContext();
 
+function sortTypesSoins(list) {
+  return [...list].sort(
+    (a, b) => a.label.localeCompare(b.label, "fr") || a.id - b.id
+  );
+}
+
 export function TypeSoinProvider({ children }) {
-  const [typesSoins, setTypesSoins] = useState(initialTypesSoins);
+  const api = useApi();
+  const { status } = useAuth();
 
-  const addTypeSoin = (label, tarif) => {
-    const newType = {
-      id: Date.now(),
-      label: label.trim(),
-      tarif: Number(tarif) >= 0 ? Number(tarif) : 0,
+  const [typesSoins, setTypesSoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (status !== "authorized") {
+      setTypesSoins([]);
+      return;
+    }
+
+    let cancelled = false;
+
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await api("/api/types-soins");
+        if (!cancelled) setTypesSoins(res.data);
+      } catch (err) {
+        if (!cancelled) setError(err.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     };
-    setTypesSoins((prev) => [...prev, newType]);
-    return newType;
-  };
 
-  // RG10/RG13 : le tarif ne peut jamais être modifié après création, seul le libellé l'est
-  const updateTypeSoin = (id, label) => {
-    setTypesSoins((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, label: label.trim() } : t))
-    );
-  };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [status, api]);
 
-  const deleteTypeSoin = (id) => {
-    setTypesSoins((prev) => prev.filter((t) => t.id !== id));
+  // Le backend exige un tarif de type nombre et un libellé déjà nettoyé
+  const addTypeSoin = async (label, tarif) => {
+    const res = await api("/api/types-soins", {
+      method: "POST",
+      body: JSON.stringify({ label: label.trim(), tarif: Number(tarif) }),
+    });
+
+    setTypesSoins((prev) => sortTypesSoins([...prev, res.data]));
+    return res.data;
   };
 
   return (
-    <TypeSoinContext.Provider value={{ typesSoins, addTypeSoin, updateTypeSoin, deleteTypeSoin }}>
+    <TypeSoinContext.Provider value={{ typesSoins, loading, error, addTypeSoin }}>
       {children}
     </TypeSoinContext.Provider>
   );

@@ -28,17 +28,22 @@ export async function apiFetch(path, { token, ...options } = {}) {
 
   if (res.status === 204) return null;
 
-  const body = await res.json().catch(() => null);
+    const body = await res.json().catch(() => null);
 
   if (!res.ok) {
     const err = body?.error;
+
+  // Certains endpoints renvoient les détails sous forme de simples chaînes
+    const details = Array.isArray(err?.details)
+      ? err.details.map((d) => (typeof d === "string" ? { message: d } : d))
+      : undefined;
+
     throw new ApiError(
       res.status,
       err?.code ?? "UNKNOWN_ERROR",
       err?.message ?? `Erreur ${res.status}`,
-      err?.details
+      details
     );
   }
-
   return body;
 }

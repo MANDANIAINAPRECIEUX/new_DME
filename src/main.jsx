@@ -8,6 +8,7 @@ import { AppointmentProvider } from "./context/AppointmentContext";
 import { ConsultationProvider } from "./context/ConsultationContext";
 import { TreatmentProvider } from "./context/TreatmentContext";
 import { TypeSoinProvider } from "./context/TypeSoinContext";
+import { DentProvider } from "./context/DentContext";
 import "./styles/global.css";
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -27,7 +28,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <TreatmentProvider>
               <ConsultationProvider>
                 <TypeSoinProvider>
-                  <App />
+                  <DentProvider>
+                    <App />
+                  </DentProvider>
                 </TypeSoinProvider>
               </ConsultationProvider>
             </TreatmentProvider>

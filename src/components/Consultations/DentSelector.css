@@ -30,3 +30,13 @@
   border-color: #2fa8b8;
   color: #fff;
 }
+
+.dent-selector-status {
+  margin: 0;
+  color: #95a5a6;
+  font-size: 12px;
+}
+
+.dent-selector-status.error {
+  color: #e74c3c;
+}
