@@ -27,12 +27,17 @@ function PatientRecordPage() {
 
   const { patients, loading: patientsLoading } = usePatients();
   const { appointments } = useAppointments();
-  const { consultations } = useConsultations();
-  const { treatments, updateTreatment } = useTreatments();
+  const { consultations, loading: consultationsLoading } = useConsultations();
+  const {
+    treatments,
+    loading: treatmentsLoading,
+    completeTreatment,
+    reopenTreatment,
+  } = useTreatments();
 
   const patient = patients.find((p) => p.id.toString() === id);
 
-  if (patientsLoading) {
+  if (patientsLoading || treatmentsLoading || consultationsLoading) {
     return <div className="patient-record-page"><p>Chargement du dossier…</p></div>;
   }
   
@@ -193,7 +198,7 @@ function PatientRecordPage() {
                 key={treatment.id}
                 treatment={treatment}
                 patientAppointments={patientAppointments}
-                updateTreatment={updateTreatment}
+                reopenTreatment={reopenTreatment}
                 suggestNextAppointment={suggestNextAppointment}
                 onPlanNextAppointment={handlePlanNextAppointment}
               />

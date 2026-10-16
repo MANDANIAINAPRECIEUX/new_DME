@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FaNotesMedical, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useTypesSoins } from "../../context/TypeSoinContext";
 import { useConsultations } from "../../context/ConsultationContext";
-import { doctors } from "../../mock/doctors";
 import { getTotalDu, getTotalPaye, formatMontant } from "../../utils/billingUtils";
 import { formatDate } from "../../utils/dateUtils";
 import "./ConsultationCard.css";
@@ -16,13 +15,12 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
   const [paymentError, setPaymentError] = useState("");
 
   const { typesSoins } = useTypesSoins();
-  const { updateConsultation } = useConsultations();
+  const { addPayment } = useConsultations();
   const typesSoinsMap = Object.fromEntries(typesSoins.map((t) => [t.id, t.label]));
-  const doctorsMap = Object.fromEntries(doctors.map((d) => [d.id, d]));
+  const consultationDoctor = consultation.doctor;
 
   const soins = consultation.soins || [];
   const paiements = consultation.paiements || [];
-  const consultationDoctor = doctorsMap[consultation.doctorId];
 
   const totalDu = getTotalDu(soins, typesSoins);
   const totalPaye = getTotalPaye(paiements);
@@ -30,28 +28,35 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
 
   const hasDetails = consultation.compteRendu || soins.length > 0;
 
-  const handleAddPayment = (e) => {
-    e.preventDefault();
-    const amount = Number(paymentAmount);
+  const [paymentBusy, setPaymentBusy] = useState(false);
 
-    if (!paymentAmount || amount <= 0) {
-      setPaymentError("Le montant doit être strictement positif.");
-      return;
-    }
-    if (amount > solde) {
-      setPaymentError(`Dépasse le solde restant (${formatMontant(solde)}).`);
-      return;
-    }
+const handleAddPayment = async (e) => {
+  e.preventDefault();
+  const amount = Number(paymentAmount);
 
-    updateConsultation(consultation.id, {
-      paiements: [...paiements, { id: Date.now(), amount, paymentDate, remark: paymentRemark }],
-    });
+  if (!paymentAmount || amount <= 0) {
+    setPaymentError("Le montant doit être strictement positif.");
+    return;
+  }
+  if (amount > solde) {
+    setPaymentError(`Dépasse le solde restant (${formatMontant(solde)}).`);
+    return;
+  }
+
+  setPaymentBusy(true);
+  try {
+    await addPayment(consultation.id, { amount, paymentDate, remark: paymentRemark });
 
     setPaymentAmount("");
     setPaymentRemark("");
     setPaymentError("");
     setShowAddPayment(false);
-  };
+  } catch (err) {
+    setPaymentError(err.message);
+  } finally {
+    setPaymentBusy(false);
+  }
+};
 
   return (
     <div className="medical-history-card">
@@ -141,7 +146,7 @@ function ConsultationCard({ consultation, appointment, seanceNumber }) {
               </div>
 
               {solde > 0 && !showAddPayment && (
-                <button type="button" className="add-payment-btn" onClick={() => setShowAddPayment(true)}>
+                <button type="button" className="add-payment-btn" disabled={paymentBusy} onClick={() => setShowAddPayment(true)}>
                   Enregistrer un paiement
                 </button>
               )}

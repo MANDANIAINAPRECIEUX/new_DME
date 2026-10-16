@@ -7,6 +7,14 @@ const AppointmentContext = createContext();
 // 100 = maximum autorisé par appointment.validator.js
 const PAGE_SIZE = 100;
 
+// RG07 : le serveur ne passe pas encore le rendez-vous à "completed"
+// quand une consultation est créée : on le déduit de la consultation liée.
+function normalizeAppointment(appointment) {
+  return appointment.consultation && appointment.status === "pending"
+    ? { ...appointment, status: "completed" }
+    : appointment;
+}
+
 function sortAppointments(list) {
   return [...list].sort(
     (a, b) =>
@@ -63,7 +71,7 @@ export function AppointmentProvider({ children }) {
       setError(null);
       try {
         const all = await fetchAllAppointments(api);
-        if (!cancelled) setAppointments(all);
+        if (!cancelled) setAppointments(all.map(normalizeAppointment));
       } catch (err) {
         if (!cancelled) setError(err.message);
       } finally {
@@ -77,10 +85,12 @@ export function AppointmentProvider({ children }) {
     };
   }, [status, api]);
 
-  const replaceInState = (updated) =>
+  const replaceInState = (updated) => {
+    const next = normalizeAppointment(updated);
     setAppointments((prev) =>
-      sortAppointments(prev.map((a) => (a.id === updated.id ? updated : a)))
+      sortAppointments(prev.map((a) => (a.id === next.id ? next : a)))
     );
+  };
 
   const addAppointment = async (formData) => {
     const res = await api("/api/appointments", {
@@ -88,7 +98,7 @@ export function AppointmentProvider({ children }) {
       body: JSON.stringify(toAppointmentPayload(formData)),
     });
 
-    setAppointments((prev) => sortAppointments([...prev, res.data]));
+    setAppointments((prev) => sortAppointments([...prev, normalizeAppointment(res.data)]));
     return res.data;
   };
 

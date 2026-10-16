@@ -6,6 +6,7 @@ import { usePatients } from "../../context/PatientContext";
 import { useConsultations } from "../../context/ConsultationContext";
 import { useTreatments } from "../../context/TreatmentContext";
 import { useTypesSoins } from "../../context/TypeSoinContext";
+import { useDents } from "../../context/DentContext";
 import { useAuth } from "../../context/AuthContext";
 import { getTotalDu, getTotalPaye, getSolde, formatMontant } from "../../utils/billingUtils";
 import DentSelector from "../../components/Consultations/DentSelector";
@@ -15,11 +16,12 @@ function ConsultationPage() {
   const { appointmentId } = useParams();
   const navigate = useNavigate();
 
-  const { appointments, loading: appointmentsLoading, patchAppointmentLocally } = useAppointments();
+  const { appointments, loading: appointmentsLoading, updateAppointment, patchAppointmentLocally } = useAppointments();
   const { patients, loading: patientsLoading } = usePatients();
   const { consultations, addConsultation } = useConsultations();
-  const { treatments, addTreatment, updateTreatment } = useTreatments();
+  const { treatments, addTreatment, completeTreatment } = useTreatments();
   const { typesSoins } = useTypesSoins();
+  const { toDentIds } = useDents;
   const { user } = useAuth();
 
   const appointment = appointments.find((a) => a.id.toString() === appointmentId);
@@ -43,11 +45,43 @@ function ConsultationPage() {
     paiements: [],
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
   if (patientsLoading || appointmentsLoading) {
     return <div className="consultation-page"><p>Chargement…</p></div>;
   }
 
   if (!appointment || !patient) {
+    if (appointment.consultation) {
+      return (
+        <div className="consultation-page">
+          <div className="consultation-not-found">
+            <h2>Consultation déjà enregistrée</h2>
+            <p>Ce rendez-vous a déjà donné lieu à une consultation.</p>
+            <button
+              className="back-btn"
+              onClick={() => navigate(`/patients/${patient.id}`)}
+            >
+              Voir le dossier du patient
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    if (appointment.status === "cancelled") {
+      return (
+        <div className="consultation-page">
+          <div className="consultation-not-found">
+            <h2>Rendez-vous annulé</h2>
+            <p>Un rendez-vous annulé ne peut pas donner lieu à une consultation.</p>
+            <button className="back-btn" onClick={() => navigate("/appointments")}>
+              Retour aux rendez-vous
+            </button>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="consultation-page">
         <div className="consultation-not-found">
@@ -172,57 +206,109 @@ function ConsultationPage() {
   };
 
   // --- Submit ---
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (submitting) return;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  if (formData.markTreatmentCompleted && soldeTotalTraitement > 0) {
+    alert(
+      `Impossible de marquer ce traitement comme terminé : il reste un solde de ${formatMontant(soldeTotalTraitement)}.`
+    );
+    return;
+  }
 
-    if (formData.markTreatmentCompleted && soldeTotalTraitement > 0) {
-      alert(
-        `Impossible de marquer ce traitement comme terminé : il reste un solde de ${formatMontant(soldeTotalTraitement)}.`
-      );
-      return;
-    }
+  // L'API refuse un soin sans type de soin
+  if (formData.soins.some((soin) => !soin.typeSoinId)) {
+    alert("Choisissez un type de soin pour chaque soin ajouté, ou retirez la ligne vide.");
+    return;
+  }
 
-    const hasInvalidPaiement = formData.paiements.some((p, i) => !p.amount || getPaiementError(i));
-    if (hasInvalidPaiement) {
-      alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
-      return;
-    }
+  const hasInvalidPaiement = formData.paiements.some(
+    (p, i) => !p.amount || getPaiementError(i)
+  );
+  if (hasInvalidPaiement) {
+    alert("Veuillez corriger les paiements saisis avant d'enregistrer.");
+    return;
+  }
 
-    let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
-    let treatmentLabel = null;
+  if (formData.isNewTreatment && formData.newTreatmentLabel.trim().length < 2) {
+    alert("Le nom du nouveau traitement doit contenir au moins 2 caractères.");
+    return;
+  }
 
-    if (formData.isNewTreatment && formData.newTreatmentLabel.trim()) {
-      const newTreatment = addTreatment({
+  setSubmitting(true);
+
+  let treatmentId = formData.treatmentId ? Number(formData.treatmentId) : null;
+  let treatmentLabel = null;
+  let treatmentJustCreated = false;
+
+  try {
+    // 1. Traitement : nouveau ou existant
+    if (formData.isNewTreatment) {
+      const newTreatment = await addTreatment({
         patientId: patient.id,
-        label: formData.newTreatmentLabel.trim(),
+        label: formData.newTreatmentLabel,
+        startDate: appointment.date,
       });
       treatmentId = newTreatment.id;
       treatmentLabel = newTreatment.label;
+      treatmentJustCreated = true;
     } else if (treatmentId) {
       treatmentLabel = patientTreatments.find((t) => t.id === treatmentId)?.label;
     }
 
-    addConsultation({
+    // 2. Motif : il est porté par le rendez-vous, verrouillé dès que la consultation existe.
+    // On le met donc à jour avant, sans bloquer l'enregistrement si cela échoue.
+    const reason = formData.reason.trim();
+    if (reason !== (appointment.reason || "")) {
+      try {
+        await updateAppointment(appointment.id, {
+          patientId: appointment.patientId,
+          date: appointment.date,
+          time: appointment.time,
+          reason,
+        });
+      } catch (err) {
+        console.warn("Motif non enregistré :", err.message);
+      }
+    }
+
+    // 3. Consultation, puis soins, puis paiements
+    const { consultation, failures } = await addConsultation({
       appointmentId: appointment.id,
       treatmentId,
-      patientId: patient.id,
-      doctorId: user?.id ?? null,
       consultationDate: appointment.date,
       compteRendu: formData.compteRendu,
       soins: formData.soins.map((soin) => ({
-        ...soin,
-        typeSoinId: soin.typeSoinId ? Number(soin.typeSoinId) : null,
+        typeSoinId: Number(soin.typeSoinId),
+        observation: soin.observation,
+        dentIds: toDentIds(soin.dents),
       })),
-      paiements: formData.paiements.map((p) => ({ ...p, amount: Number(p.amount) })),
+      paiements: formData.paiements,
     });
 
-    if (treatmentId && formData.markTreatmentCompleted) {
-      updateTreatment(treatmentId, { status: "completed" });
+    if (failures.length > 0) {
+      alert(
+        `La consultation est enregistrée, mais certains éléments ne l'ont pas été :\n- ${failures.join("\n- ")}`
+      );
     }
 
-    // Le motif vit désormais uniquement sur le rendez-vous
-    patchAppointmentLocally(appointment.id, { status: "completed", reason: formData.reason });
+    // 4. Clôture du traitement, si demandée
+    if (treatmentId && formData.markTreatmentCompleted) {
+      try {
+        await completeTreatment(treatmentId, appointment.date);
+      } catch (err) {
+        alert(
+          `La consultation est enregistrée, mais le traitement n'a pas pu être terminé : ${err.message}`
+        );
+      }
+    }
+
+    // 5. RG07 : le serveur ne marque pas encore le rendez-vous comme réalisé
+    patchAppointmentLocally(appointment.id, {
+      status: "completed",
+      consultation: { id: consultation.id },
+    });
 
     const shouldSuggestNextAppointment = treatmentId && !formData.markTreatmentCompleted;
 
@@ -237,7 +323,22 @@ function ConsultationPage() {
           }
         : undefined,
     });
-  };
+  } catch (err) {
+    alert(`La consultation n'a pas pu être enregistrée : ${err.message}`);
+
+    // Un nouveau traitement vient d'être créé : on le réutilise au prochain essai
+    if (treatmentJustCreated) {
+      setFormData((prev) => ({
+        ...prev,
+        treatmentId: String(treatmentId),
+        isNewTreatment: false,
+        newTreatmentLabel: "",
+      }));
+    }
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const hasTreatmentSelected = formData.treatmentId || formData.isNewTreatment;
 
@@ -459,7 +560,9 @@ function ConsultationPage() {
 
         <div className="consultation-actions">
           <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Annuler</button>
-          <button type="submit" className="save-consultation-btn">Enregistrer la consultation</button>
+          <button type="submit" className="save-consultation-btn" disabled={submitting}>
+            {submitting ? "Enregistrement…" : "Enregistrer la consultation"}
+          </button>
         </div>
       </form>
     </div>
