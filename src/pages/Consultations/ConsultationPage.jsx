@@ -21,7 +21,7 @@ function ConsultationPage() {
   const { consultations, addConsultation } = useConsultations();
   const { treatments, addTreatment, completeTreatment } = useTreatments();
   const { typesSoins } = useTypesSoins();
-  const { toDentIds } = useDents;
+  const { toDentIds } = useDents();
   const { user } = useAuth();
 
   const appointment = appointments.find((a) => a.id.toString() === appointmentId);
